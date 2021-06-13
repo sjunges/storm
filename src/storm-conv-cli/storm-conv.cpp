@@ -1,4 +1,3 @@
-
 #include "storm-conv/api/storm-conv.h"
 
 #include "storm/settings/SettingsManager.h"
@@ -15,13 +14,19 @@
 #include "storm/utility/macros.h"
 #include "storm/utility/Stopwatch.h"
 
-#include "storm/storage/SymbolicModelDescription.h"
 #include "storm/storage/jani/Model.h"
 #include "storm/storage/jani/Property.h"
+#include "storm/storage/SymbolicModelDescription.h"
 
 
 #include "storm-cli-utilities/cli.h"
 #include "storm/exceptions/OptionParserException.h"
+
+#include <cstdio>
+
+extern "C" {
+#include "aiger.h"
+}
 
 namespace storm {
     namespace conv {
@@ -164,6 +169,55 @@ namespace storm {
             }
             stopStopwatch(exportingTime);
         }
+
+        void processPrismInputAigerOutput(storm::prism::Program const& prismProg, std::vector<storm::jani::Property> const& properties) {
+            auto const& output = storm::settings::getModule<storm::settings::modules::ConversionOutputSettings>();
+            auto const& input = storm::settings::getModule<storm::settings::modules::ConversionInputSettings>();
+            auto const& prism = storm::settings::getModule<storm::settings::modules::PrismExportSettings>();
+            
+            auto conversionTime = startStopwatch("Processing Prism Program ... " );
+
+            // Get the name of the output file
+            std::string outputFilename = "";
+            if (output.isAigerOutputFilenameSet()) {
+                outputFilename = output.getAigerOutputFilename();
+            } else if (input.isPrismInputSet() && !output.isStdOutOutputEnabled()) {
+                outputFilename = input.getPrismInputFilename();
+                // Remove extension if present
+                auto dotPos = outputFilename.rfind('.');
+                if (dotPos != std::string::npos) {
+                    outputFilename.erase(dotPos);
+                }
+                std::string suffix = "";
+                if (input.isConstantsSet()) {
+                    suffix = input.getConstantDefinitionString();
+                    std::replace(suffix.begin(), suffix.end(), ',', '_');
+                    std::replace(suffix.begin(), suffix.end(), '=', '-');
+                }
+                suffix += "_converted.aag";
+                outputFilename += suffix;
+            }
+            
+            std::vector<storm::jani::Property> outputProperties = properties;
+            
+            // prism-to-aiger transformation
+            std::shared_ptr<aiger> outputCircuit = storm::api::convertPrismToAiger(prismProg, outputProperties);
+            
+
+            // exporting of aiger file
+            stopStopwatch(conversionTime);
+            auto exportingTime = startStopwatch("Exporting Aiger program ... ");
+            
+            if (outputFilename != "") {
+                aiger_open_and_write_to_file(outputCircuit.get(), outputFilename.c_str());
+                STORM_PRINT_AND_LOG("Stored to file '" << outputFilename << "'");
+            }
+            
+            if (output.isStdOutOutputEnabled()) {
+                aiger_write_to_file(outputCircuit.get(), aiger_ascii_mode, stdout);
+            }
+            stopStopwatch(exportingTime);
+        }
         
         void processPrismInput() {
             auto parsingTime = startStopwatch("Parsing PRISM input ... " );
@@ -195,6 +249,8 @@ namespace storm {
                 processPrismInputJaniOutput(prismProg.asPrismProgram(), properties);
             } else if (output.isPrismOutputSet()) {
                 processPrismInputPrismOutput(prismProg.asPrismProgram(), properties);
+            } else if (output.isAigerOutputSet()) {
+                processPrismInputAigerOutput(prismProg.asPrismProgram(), properties);
             } else {
                 STORM_LOG_THROW(false, storm::exceptions::InvalidSettingsException, "There is either no outputformat specified or the provided combination of input and output format is not compatible.");
             }
