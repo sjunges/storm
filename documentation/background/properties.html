@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <title>Storm -- A Modern Probabilistic Model Checker -- Properties</title>
+    <meta name="description" content="">
+
+    <!-- CSS -->
+    <link rel="shortcut icon" type="image/png" href="/favicon.png" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/flatly/bootstrap.min.css" rel="stylesheet" integrity="sha384-+ENW/yibaokMnme+vBLnHMphUYxHs34h9lpdbSLuAwGkOKFRl4C34WkjazBtb7eT" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/syntax.css">
+    <link rel="stylesheet" href="/fonts/font-mfizz/font-mfizz.css">
+    <link rel="stylesheet" href="/fonts/weather-icons/weather-icons.min.css">
+  </head>
+
+    <body>
+
+    <div class="navbar navbar-default navbar-static-top">
+    <div class="container">
+        <div class="navbar-header">
+            <a href="/index.html" class="navbar-brand"><i class="wi wi-thunderstorm" aria-hidden="true"></i> Storm</a>
+            <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        </div>
+        <div class="navbar-collapse collapse" id="navbar-main">
+            <ul class="nav navbar-nav">
+                
+                
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        <li class="nav-item">
+                            <a href="/news.html" class="nav-link ">
+                            News
+                            </a>
+                        </li>
+                        
+                    
+                
+                    
+                        
+                        <li class="nav-item">
+                            <a href="/about.html" class="nav-link ">
+                            About
+                            </a>
+                        </li>
+                        
+                    
+                
+                    
+                        
+                        <li class="nav-item">
+                            <a href="/getting-started.html" class="nav-link ">
+                            Getting Started
+                            </a>
+                        </li>
+                        
+                    
+                
+                    
+                        
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Documentation<span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                            
+                                <li class="container">Obtain Storm</li>
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/obtain-storm/build.html">Build from Source</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/obtain-storm/homebrew.html">Install via Homebrew</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/obtain-storm/docker.html">Use Docker Container</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/obtain-storm/vm.html">Use Virtual Machine</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/obtain-storm/troubleshooting.html">Troubleshooting</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                
+                                <li class="divider"></li>
+                                
+                            
+                                <li class="container">Background</li>
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/background/models.html">Models</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/background/languages.html">Languages</a></li>
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/background/properties.html">Properties</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/background/engines.html">Engines</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                
+                                <li class="divider"></li>
+                                
+                            
+                                <li class="container">Use Storm</li>
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/usage/running-storm.html">Running Storm</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/usage/running-storm-on-dfts.html">Running Storm on DFTs</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/usage/running-storm-on-parametric-models.html">Running Storm on Parametric Models</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/usage/troubleshooting.html">Troubleshooting</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                
+                                <li class="divider"></li>
+                                
+                            
+                                <li class="container">Develop with Storm</li>
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/api/">C++ API</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/dependencies.html">Dependencies</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                
+                            
+                            </ul>
+                        </li>
+                        
+                    
+                
+                    
+                        
+                        <li class="nav-item">
+                            <a href="/tutorials.html" class="nav-link ">
+                            Tutorials
+                            </a>
+                        </li>
+                        
+                    
+                
+                    
+                        
+                        <li class="nav-item">
+                            <a href="/publications.html" class="nav-link ">
+                            Publications
+                            </a>
+                        </li>
+                        
+                    
+                
+                    
+                        
+                        <li class="nav-item">
+                            <a href="/benchmarks.html" class="nav-link ">
+                            Benchmarks
+                            </a>
+                        </li>
+                        
+                    
+                
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="nav-item">
+                   <a href="https://github.com/moves-rwth/storm" class="nav-link" target="_blank"><i class="fa fa-github" aria-hidden="true"></i> Source</a>
+                </li>
+                <li class="nav-item">
+                    <a href="https://moves-rwth.github.io/stormpy/" class="nav-link" target="_blank"><i class="icon-python"></i> Stormpy</a>
+                </li>
+            </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+        <ul class="breadcrumb">
+            <li><a href="/index.html">Home</a></li>
+            
+            <li>Background</li>
+            
+            <li class="active">Properties</li>
+        </ul>
+
+        <!--
+        <div class="page-header">
+            <h1>Properties</h1>
+            <hr />
+        </div>
+        -->
+                
+        <div class="content">
+            <h1>Properties</h1>
+
+<div class="panel panel-default">
+<div class="panel-heading">Table of contents</div>
+<div class="panel-body">
+<ul id="markdown-toc">
+  <li><a href="#identifying-states" id="markdown-toc-identifying-states">Identifying States</a>    <ul>
+      <li><a href="#labels" id="markdown-toc-labels">Labels</a></li>
+      <li><a href="#propositional-expressions" id="markdown-toc-propositional-expressions">Propositional Expressions</a></li>
+    </ul>
+  </li>
+  <li><a href="#probabilistic-computation-tree-logic-pctl--continuous-stochastic-logic-csl" id="markdown-toc-probabilistic-computation-tree-logic-pctl--continuous-stochastic-logic-csl">Probabilistic Computation Tree Logic (PCTL) / Continuous Stochastic Logic (CSL)</a>    <ul>
+      <li><a href="#idea" id="markdown-toc-idea">Idea</a></li>
+      <li><a href="#path-formulae" id="markdown-toc-path-formulae">Path Formulae</a></li>
+      <li><a href="#state-formulae" id="markdown-toc-state-formulae">State Formulae</a></li>
+      <li><a href="#obtaining-probabilities" id="markdown-toc-obtaining-probabilities">Obtaining Probabilities</a></li>
+      <li><a href="#nondeterministic-models" id="markdown-toc-nondeterministic-models">Nondeterministic Models</a></li>
+    </ul>
+  </li>
+  <li><a href="#reward-extensions" id="markdown-toc-reward-extensions">Reward extensions</a></li>
+  <li><a href="#conditional-properties" id="markdown-toc-conditional-properties">Conditional Properties</a></li>
+  <li><a href="#examples" id="markdown-toc-examples">Examples</a></li>
+  <li><a href="#multi-objective-model-checking" id="markdown-toc-multi-objective-model-checking">Multi-objective Model Checking</a></li>
+  <li><a href="#naming-properties" id="markdown-toc-naming-properties">Naming Properties</a></li>
+</ul>
+
+  </div>
+</div>
+
+<p>Storm takes properties in a format that can be described as an “extended subset” of the <a href="http://www.prismmodelchecker.org/manual/PropertySpecification/Introduction" target="_blank">PRISM property language</a>. Alternatively, if the input is given in terms of a <a href="languages.html#jani">JANI</a> model, the properties are embedded in the model in the appropriate format.</p>
+
+<p class="alert alert-info">For DFTs, GSPNs and probabilistic programs, domain-specific properties can be given. For this, we refer to the guide on how to <a href="/documentation/usage/running-storm.html" class="alert-link">run Storm</a> on those inputs.</p>
+
+<h2 id="identifying-states">Identifying States</h2>
+
+<p>Storm allows to identify sets of states by either labels or via the symbolic variables describing the model. Note that it depends on the <a href="languages.html">input language</a> which of these two ways are enabled. For example, for explicit models, there are no symbolic variables and therefore only labels can be used. For PRISM and JANI input, both labels and expressions over model variables are valid. Finally, the expression <code class="language-plaintext highlighter-rouge">true</code> can be used to describe the set of all states.</p>
+
+<h3 id="labels">Labels</h3>
+
+<p>To refer to a label a model exports, put the name of the label in quotes. For example, if a model has the label <code class="language-plaintext highlighter-rouge">done</code> to express that in these states the model is done with something, write <code class="language-plaintext highlighter-rouge">"done"</code> to refer to these states.</p>
+
+<h3 id="propositional-expressions">Propositional Expressions</h3>
+
+<p>For symbolic input (PRISM and JANI), one may also use expressions over the model variables to identify states. For example, if the model has an integer-valued state variable <code class="language-plaintext highlighter-rouge">s</code>, then <code class="language-plaintext highlighter-rouge">s &lt; 5</code> refers to all states in which <code class="language-plaintext highlighter-rouge">s</code> is smaller than five. Of course, Boolean combinations of such expressions are allowed, i.e. <code class="language-plaintext highlighter-rouge">s &lt; 5 &amp; (b | s &lt; y)</code> is valid for a model with integer variables <code class="language-plaintext highlighter-rouge">s</code> and <code class="language-plaintext highlighter-rouge">y</code> and Boolean variable <code class="language-plaintext highlighter-rouge">b</code>.</p>
+
+<h2 id="probabilistic-computation-tree-logic-pctl--continuous-stochastic-logic-csl">Probabilistic Computation Tree Logic (PCTL) / Continuous Stochastic Logic (CSL)</h2>
+
+<h3 id="idea">Idea</h3>
+<p>The (probability) measure on Markov models is typically defined on paths. These paths are defined as in temporal logic, or more specifically computation tree logic (CTL), a branching-time logic. That means that the formula alternates over descriptions of paths and descriptions of states.</p>
+
+<h3 id="path-formulae">Path Formulae</h3>
+
+<p>For this, we assume that <code class="language-plaintext highlighter-rouge">a</code> and <code class="language-plaintext highlighter-rouge">b</code> are <a href="#state-formulae">state formulae</a> and <code class="language-plaintext highlighter-rouge">{op}</code> is any one of <code class="language-plaintext highlighter-rouge">&lt;, &lt;=, &gt;, &gt;=</code>. The available path formulae are:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">a U b</code> to describe paths on which at some point <code class="language-plaintext highlighter-rouge">b</code> holds and in all prior steps <code class="language-plaintext highlighter-rouge">a</code> holds.</li>
+  <li><code class="language-plaintext highlighter-rouge">F b</code> as a shortcut for <code class="language-plaintext highlighter-rouge">true U b</code>.</li>
+  <li><code class="language-plaintext highlighter-rouge">a U{op}k b</code> (where <code class="language-plaintext highlighter-rouge">k</code> is an expression evaluating to a number) to describe the paths on which <code class="language-plaintext highlighter-rouge">b</code> holds within <code class="language-plaintext highlighter-rouge">k</code> time (where time in discrete models means steps) and <code class="language-plaintext highlighter-rouge">a</code> holds before.</li>
+  <li><code class="language-plaintext highlighter-rouge">F{op}k b</code> as a shortcut for <code class="language-plaintext highlighter-rouge">true U{op}k b</code>.</li>
+  <li><code class="language-plaintext highlighter-rouge">G a</code> to describe paths on which <code class="language-plaintext highlighter-rouge">a</code> holds in every step.</li>
+</ul>
+
+<h3 id="state-formulae">State Formulae</h3>
+
+<p>Here, we assume that <code class="language-plaintext highlighter-rouge">a</code> and <code class="language-plaintext highlighter-rouge">b</code> are state formulae, <code class="language-plaintext highlighter-rouge">phi</code> is a <a href="#path-formulae">path formula</a> and <code class="language-plaintext highlighter-rouge">{op}</code> is any one of <code class="language-plaintext highlighter-rouge">&lt;, &lt;=, &gt;, &gt;=</code>. The available state formulae are:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">c</code> where <code class="language-plaintext highlighter-rouge">c</code> is either a <a href="#labels">label</a> or an <a href="#propositional-expressions">expression</a> over the model variables.</li>
+  <li><code class="language-plaintext highlighter-rouge">a | b</code>, <code class="language-plaintext highlighter-rouge">a &amp; b</code> to describe all states that satisfy <code class="language-plaintext highlighter-rouge">a</code> or <code class="language-plaintext highlighter-rouge">b</code>, <code class="language-plaintext highlighter-rouge">a</code> and <code class="language-plaintext highlighter-rouge">b</code>, respectively.</li>
+  <li><code class="language-plaintext highlighter-rouge">!a</code> to describe the states <em>not</em> satisfying <code class="language-plaintext highlighter-rouge">a</code>.</li>
+  <li><code class="language-plaintext highlighter-rouge">P{op}t [ phi ]</code> (where <code class="language-plaintext highlighter-rouge">t</code> is a threshold value) to describe the states in which the probability to satisfy <code class="language-plaintext highlighter-rouge">phi</code> conforms to the comparison <code class="language-plaintext highlighter-rouge">{op} t</code>.</li>
+  <li><code class="language-plaintext highlighter-rouge">LRA{op}t [a]</code> to describe states in which the long-run average probability to be in a state satisfying <code class="language-plaintext highlighter-rouge">a</code> conforms to <code class="language-plaintext highlighter-rouge">{op} t</code>.</li>
+</ul>
+
+<h3 id="obtaining-probabilities">Obtaining Probabilities</h3>
+
+<p>Although formally not allowed in PCTL/CSL, one can also request the probability of fulfilling a path formula from each state. Instead of comparing to a given value <code class="language-plaintext highlighter-rouge">P{op}b [ phi ]</code>, one can write <code class="language-plaintext highlighter-rouge">P=? [ phi ]</code> to obtain the actual values rather then obtaining a truth value.</p>
+
+<h3 id="nondeterministic-models">Nondeterministic Models</h3>
+
+<p>For nondeterministic models, the formula can (and sometimes needs to) specify whether it refers to minimal or maximal probabilities. Since there is no information on how the nondeterminism in the models is to be resolved, Storm needs information on whether it should resolve the choices to <em>minimize</em> or <em>maximize</em> the values. That is, you cannot write <code class="language-plaintext highlighter-rouge">P=? [F a]</code>, but have to either write <code class="language-plaintext highlighter-rouge">Pmin=? [F a]</code> or <code class="language-plaintext highlighter-rouge">Pmax=? [F a]</code>. While you can also specify <code class="language-plaintext highlighter-rouge">min</code> and <code class="language-plaintext highlighter-rouge">max</code> when comparing to a probability threshold, it’s not necessary to do it. By default, if the comparison operator <code class="language-plaintext highlighter-rouge">{op}</code> is <code class="language-plaintext highlighter-rouge">&lt;</code> or <code class="language-plaintext highlighter-rouge">&lt;=</code>, then the probability is maximized and otherwise minimized. The reasoning is the following: if the property holds in a state, then no matter which resolution of nondeterminism is taken, the probability will always be below (or equal) to the threshold value.</p>
+
+<h2 id="reward-extensions">Reward extensions</h2>
+
+<p>To measure rewards (or costs) in models, Storm supports extensions of the aforementioned logics. More specifically, there are the following reward formulae, where <code class="language-plaintext highlighter-rouge">a</code> is a <a href="#state-formulae">state formula</a>:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">I=k</code> is the expected reward obtained in time point <code class="language-plaintext highlighter-rouge">k</code>.</li>
+  <li><code class="language-plaintext highlighter-rouge">C&lt;=k</code> is the expected reward obtained up until time point <code class="language-plaintext highlighter-rouge">k</code>.</li>
+  <li><code class="language-plaintext highlighter-rouge">F a</code> is the expected reward obtained up until reaching the set of states characterized by <code class="language-plaintext highlighter-rouge">a</code>.</li>
+  <li><code class="language-plaintext highlighter-rouge">LRA</code> is the long-run average reward.</li>
+</ul>
+
+<p>Just like path formulae, these reward formulae can be embedded in an <code class="language-plaintext highlighter-rouge">R</code> operator to allow for value comparison or value computation:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">R{op}t [ r ]</code> (where <code class="language-plaintext highlighter-rouge">r</code> is a reward formulae) describes the states in which the reward of <code class="language-plaintext highlighter-rouge">r</code> conforms to the comparison <code class="language-plaintext highlighter-rouge">{op} t</code>.</li>
+  <li><code class="language-plaintext highlighter-rouge">R=? [ r ]</code>, <code class="language-plaintext highlighter-rouge">Rmin=? [ r ]</code> and <code class="language-plaintext highlighter-rouge">Rmax=? [ r ]</code> have the straightforward interpretation.</li>
+</ul>
+
+<p>In models with several reward structures, a particular reward structure has to be chosen:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">R{"name"}{op}t [ r ]</code></li>
+  <li><code class="language-plaintext highlighter-rouge">R{"name"}=?</code>, <code class="language-plaintext highlighter-rouge">R{"name"}min=?</code>, <code class="language-plaintext highlighter-rouge">R{"name"}max=?</code></li>
+</ul>
+
+<p>In continuous-time models, rewards in states are based on the sojourn time in that state.
+In particular, a constant reward of <code class="language-plaintext highlighter-rouge">1</code> in every state reflects the sojourn time. This time-reward does not need to be added manually.
+Instead, the following immediately reflects the time operator, analogous to above.</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">T&lt;=t [ r ]</code></li>
+  <li><code class="language-plaintext highlighter-rouge">T=? [ r ]</code>, <code class="language-plaintext highlighter-rouge">Tmin=? [r]</code> and <code class="language-plaintext highlighter-rouge">Tmax=? [ r ]</code>.</li>
+</ul>
+
+<h2 id="conditional-properties">Conditional Properties</h2>
+
+<p>The extension to conditional properties let’s you query the probabilities of an event conditioned on the fact that something else holds. The formula</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">P=? [ F a || F b ]</code></li>
+</ul>
+
+<p>can be used to query the probability that a state satisfying <code class="language-plaintext highlighter-rouge">a</code> is reached provided that a state satisfying <code class="language-plaintext highlighter-rouge">b</code> is also reached.</p>
+
+<h2 id="examples">Examples</h2>
+
+<p>To illustrate how the formulae can be used, we give some examples of syntactically valid properties:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">P&lt;0.5 [ F s=5 ]</code></li>
+  <li><code class="language-plaintext highlighter-rouge">Pmax=? [ Pmin&gt;0.2 [ F&lt;=10 "elected" ] U x+y=10 ]</code></li>
+  <li><code class="language-plaintext highlighter-rouge">LRA&gt;=0.3 [ "up" ]</code></li>
+  <li><code class="language-plaintext highlighter-rouge">R=? [ I=10 ]</code></li>
+  <li><code class="language-plaintext highlighter-rouge">Rmax=? [F "elected" ]</code></li>
+  <li><code class="language-plaintext highlighter-rouge">R=? [ LRA ]</code></li>
+  <li><code class="language-plaintext highlighter-rouge">P=? [ F s&lt;10 || F s&lt;7 ]</code></li>
+  <li><code class="language-plaintext highlighter-rouge">Tmin=? [ F s=3 ]</code></li>
+</ul>
+
+<h2 id="multi-objective-model-checking">Multi-objective Model Checking</h2>
+
+<p>Storm supports multi-objective model checking: In nondeterministic models, different objectives might require different choices of actions in order to satisfy the property.
+This induces trade-offs between different strategies. Multi-objective model checking reveals such trade-offs by computing the Pareto curve, as explained in our <a href="/documentation/usage/running-storm.html#multi-objective-model-checking-of-a-markov-automaton">example</a>.</p>
+
+<p>The simplest way of asking about these trade-offs are achievability queries: They ask whether there exists a strategy which fulfils all thresholds.</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">multi(P&gt;=0.3 [ F "one" ], P&gt;=0.5 [ G "two" ])</code></li>
+</ul>
+
+<p>Instead of fixing all values, we can leave one threshold open and ask for the optimal value for the threshold:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">multi(Pmax=? [ F "one" ], P&gt;=0.5 [ G "two" ])</code></li>
+</ul>
+
+<p>If the other properties together are not achievable, the query returns <code class="language-plaintext highlighter-rouge">False</code>.
+One can also leave multiple thresholds open: Instead of a single value, the model checker returns a Pareto curve.</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">multi(Pmax=? [ F "one" ], Pmax=? [ G "two" ])</code></li>
+</ul>
+
+<h2 id="naming-properties">Naming Properties</h2>
+
+<p>To allow referring to specific properties, they can be equipped with names. To give the name <code class="language-plaintext highlighter-rouge">name</code> to a property <code class="language-plaintext highlighter-rouge">P</code>, you can write <code class="language-plaintext highlighter-rouge">"name" : P</code>.</p>
+
+
+			
+
+        </div>
+    </div>
+
+    <footer class="footer bg-primary">
+    <div class="container">
+        <p class="navbar-text">
+			Storm is a probabilistic model checker available on <a href="https://www.github.com/moves-rwth/storm">GitHub</a>.  <a href="/about.html#people">Contact us</a>.
+        </p>
+    </div>
+</footer>
+
+    <!-- JavaScript -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.2.0/js/tether.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
+
+  </body>
+</html>

@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <title>Storm -- A Modern Probabilistic Model Checker -- Use Docker Container</title>
+    <meta name="description" content="">
+
+    <!-- CSS -->
+    <link rel="shortcut icon" type="image/png" href="/favicon.png" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/flatly/bootstrap.min.css" rel="stylesheet" integrity="sha384-+ENW/yibaokMnme+vBLnHMphUYxHs34h9lpdbSLuAwGkOKFRl4C34WkjazBtb7eT" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/syntax.css">
+    <link rel="stylesheet" href="/fonts/font-mfizz/font-mfizz.css">
+    <link rel="stylesheet" href="/fonts/weather-icons/weather-icons.min.css">
+  </head>
+
+    <body>
+
+    <div class="navbar navbar-default navbar-static-top">
+    <div class="container">
+        <div class="navbar-header">
+            <a href="/index.html" class="navbar-brand"><i class="wi wi-thunderstorm" aria-hidden="true"></i> Storm</a>
+            <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        </div>
+        <div class="navbar-collapse collapse" id="navbar-main">
+            <ul class="nav navbar-nav">
+                
+                
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        <li class="nav-item">
+                            <a href="/news.html" class="nav-link ">
+                            News
+                            </a>
+                        </li>
+                        
+                    
+                
+                    
+                        
+                        <li class="nav-item">
+                            <a href="/about.html" class="nav-link ">
+                            About
+                            </a>
+                        </li>
+                        
+                    
+                
+                    
+                        
+                        <li class="nav-item">
+                            <a href="/getting-started.html" class="nav-link ">
+                            Getting Started
+                            </a>
+                        </li>
+                        
+                    
+                
+                    
+                        
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Documentation<span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                            
+                                <li class="container">Obtain Storm</li>
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/obtain-storm/build.html">Build from Source</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/obtain-storm/homebrew.html">Install via Homebrew</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/obtain-storm/docker.html">Use Docker Container</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/obtain-storm/vm.html">Use Virtual Machine</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/obtain-storm/troubleshooting.html">Troubleshooting</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                
+                                <li class="divider"></li>
+                                
+                            
+                                <li class="container">Background</li>
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/background/models.html">Models</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/background/languages.html">Languages</a></li>
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/background/properties.html">Properties</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/background/engines.html">Engines</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                
+                                <li class="divider"></li>
+                                
+                            
+                                <li class="container">Use Storm</li>
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/usage/running-storm.html">Running Storm</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/usage/running-storm-on-dfts.html">Running Storm on DFTs</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/usage/running-storm-on-parametric-models.html">Running Storm on Parametric Models</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/usage/troubleshooting.html">Troubleshooting</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                
+                                <li class="divider"></li>
+                                
+                            
+                                <li class="container">Develop with Storm</li>
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/api/">C++ API</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/dependencies.html">Dependencies</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                
+                            
+                            </ul>
+                        </li>
+                        
+                    
+                
+                    
+                        
+                        <li class="nav-item">
+                            <a href="/tutorials.html" class="nav-link ">
+                            Tutorials
+                            </a>
+                        </li>
+                        
+                    
+                
+                    
+                        
+                        <li class="nav-item">
+                            <a href="/publications.html" class="nav-link ">
+                            Publications
+                            </a>
+                        </li>
+                        
+                    
+                
+                    
+                        
+                        <li class="nav-item">
+                            <a href="/benchmarks.html" class="nav-link ">
+                            Benchmarks
+                            </a>
+                        </li>
+                        
+                    
+                
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="nav-item">
+                   <a href="https://github.com/moves-rwth/storm" class="nav-link" target="_blank"><i class="fa fa-github" aria-hidden="true"></i> Source</a>
+                </li>
+                <li class="nav-item">
+                    <a href="https://moves-rwth.github.io/stormpy/" class="nav-link" target="_blank"><i class="icon-python"></i> Stormpy</a>
+                </li>
+            </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+        <ul class="breadcrumb">
+            <li><a href="/index.html">Home</a></li>
+            
+            <li>Obtain Storm</li>
+            
+            <li class="active">Use Docker Container</li>
+        </ul>
+
+        <!--
+        <div class="page-header">
+            <h1>Use Docker Container</h1>
+            <hr />
+        </div>
+        -->
+                
+        <div class="content">
+            <h1>Use a Docker Container</h1>
+
+<div class="panel panel-default">
+<div class="panel-heading">Table of contents</div>
+<div class="panel-body">
+<ul id="markdown-toc">
+  <li><a href="#install-docker" id="markdown-toc-install-docker">Install Docker</a></li>
+  <li><a href="#download-docker-image" id="markdown-toc-download-docker-image">Download Docker Image</a></li>
+  <li><a href="#run-the-docker-image-linux-and-macos" id="markdown-toc-run-the-docker-image-linux-and-macos">Run the Docker Image (Linux and macOS)</a></li>
+  <li><a href="#run-the-docker-image-windows" id="markdown-toc-run-the-docker-image-windows">Run the Docker Image (Windows)</a></li>
+  <li><a href="#testing-the-container" id="markdown-toc-testing-the-container">Testing the Container</a></li>
+</ul>
+
+  </div>
+</div>
+
+<p>For easy and fast access to Storm, we provide Docker containers containing Storm in different versions. The Docker containers are similar to the <a href="vm.html">Virtual machine</a> but come with less overhead and offer more recent versions of Storm.</p>
+
+<h2 id="install-docker">Install Docker</h2>
+<p>To use the containers you first have to install <a href="https://docs.docker.com/install/" target="_blank">Docker</a>.
+On macOS you can use <a href="https://brew.sh/" target="_blank">homebrew</a> to install Docker.</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>brew cask <span class="nb">install </span>docker
+</code></pre></div></div>
+
+<p>Next you should start the Docker app and its tray icon should be visible.
+If you are running Windows, you may need to reboot your machine for the Docker installation to be completed and available using the command line.</p>
+
+<h2 id="download-docker-image">Download Docker Image</h2>
+<p>Then you have to download the Docker image you want to use. All available images can be found on <a href="https://hub.docker.com/r/movesrwth/storm/tags/" target="_blank">DockerHub</a>. We offer images for the latest release (tag <code class="language-plaintext highlighter-rouge">stable</code>), all previous releases (tagged with the version number <code class="language-plaintext highlighter-rouge">x.y.z</code>), and a daily version of the most recent development version of Storm (tag <code class="language-plaintext highlighter-rouge">ci-release</code>). Furthermore, we also provide debug builds for each image (indicated by the suffix <code class="language-plaintext highlighter-rouge">-debug</code>).</p>
+
+<p>Download the Storm container you want to use:</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>docker pull movesrwth/storm:stable
+</code></pre></div></div>
+
+<h2 id="run-the-docker-image-linux-and-macos">Run the Docker Image (Linux and macOS)</h2>
+<p>We want to be able to share files between the container and the host system. Therefore you should change the directory to the one you want to share, for example:</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span><span class="nb">cd</span> ~/Desktop/data
+</code></pre></div></div>
+
+<p>The next command starts the previously downloaded image and enables file sharing with the current directory:</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>docker run <span class="nt">--mount</span> <span class="nb">type</span><span class="o">=</span><span class="nb">bind</span>,source<span class="o">=</span><span class="s2">"</span><span class="si">$(</span><span class="nb">pwd</span><span class="si">)</span><span class="s2">"</span>,target<span class="o">=</span>/data <span class="nt">-w</span> /opt/storm/build/bin <span class="nt">--rm</span> <span class="nt">-it</span> <span class="nt">--name</span> storm movesrwth/storm:stable
+</code></pre></div></div>
+
+<p>After executing the command you are now within the Docker container indicated by a different prompt:</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">root@1234xyz:/opt/storm/build/bin#</span><span class="w">
+</span></code></pre></div></div>
+
+<p>The file sharing directory is located at <code class="language-plaintext highlighter-rouge">/data</code> for the example directories above.
+You can now continue with <a href="#testing-the-container">testing the container</a>.</p>
+
+<h2 id="run-the-docker-image-windows">Run the Docker Image (Windows)</h2>
+<p>We want to be able to share files between the container and the host system. For this we need to configure Docker Desktop to enable drive sharing on a drive you want to enable it on.</p>
+
+<p>We will refer to the host directory you want to direct output to as <code class="language-plaintext highlighter-rouge">%hostdir%</code> and to the virtual directory of the container as <code class="language-plaintext highlighter-rouge">%sharedir%</code>.
+Any file written to <code class="language-plaintext highlighter-rouge">%sharedir%</code> within the Storm container will later be located at <code class="language-plaintext highlighter-rouge">%hostdir%</code> on your host machine.
+For this demo we use the following directories, which you can export for testing:</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="go">set hostdir=%HOMEDRIVE%%HOMEPATH%\Desktop\data
+set sharedir=/data
+</span></code></pre></div></div>
+
+<p>First create the directory on the host machine. Then change the current directory to it.</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="go">%HOMEDRIVE%
+mkdir %hostdir%
+cd %hostdir%
+</span></code></pre></div></div>
+
+<p>Head over to the Docker settings panel by right-clicking the Docker icon in your system tray and selecting <em>Settings…</em>.
+In the <em>Shared Drives</em> option tick the drive letters you want to make Storm available (usually <code class="language-plaintext highlighter-rouge">C</code>, as in this example), then hit <em>Apply</em>.</p>
+
+<p>The next command starts the previously downloaded image and enables file sharing with the earlier set directory:</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">&gt;</span><span class="w"> </span>docker run <span class="nt">--mount</span> <span class="nb">type</span><span class="o">=</span><span class="nb">bind</span>,source<span class="o">=</span>%hostdir%,target<span class="o">=</span>%sharedir% <span class="nt">-w</span> /opt/storm/build/bin <span class="nt">--rm</span> <span class="nt">-it</span> <span class="nt">--name</span> storm movesrwth/storm:stable
+</code></pre></div></div>
+
+<p>After executing the command you are now within the Docker container indicated by a different prompt:</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">root@1234xyz:/opt/storm/build/bin#</span><span class="w">
+</span></code></pre></div></div>
+
+<p>The file sharing directory is located at <code class="language-plaintext highlighter-rouge">/data</code> for the example directories above.
+You can now continue with <a href="#testing-the-container">testing the container</a>.</p>
+
+<h2 id="testing-the-container">Testing the Container</h2>
+<p>After running the Docker Image according to the commands above, you can start using Storm within this container:</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>./storm <span class="nt">--version</span>
+</code></pre></div></div>
+
+<p>To try out file sharing execute:</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>./storm <span class="nt">--prism</span> ../../resources/examples/testfiles/dtmc/die.pm <span class="nt">--io</span>:exportexplicit /data/die.drn
+</code></pre></div></div>
+
+<p>Afterwards there should be a file named <code class="language-plaintext highlighter-rouge">die.drn</code> in the shared directory now.</p>
+
+<p>In the end exit the container with:</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span><span class="nb">exit</span>
+</code></pre></div></div>
+
+<p>After exiting, the container is automatically removed.
+If you want to keep the container in a persistent state, remove the flag <code class="language-plaintext highlighter-rouge">--rm</code> when running the Docker container in the first place.</p>
+
+			
+
+        </div>
+    </div>
+
+    <footer class="footer bg-primary">
+    <div class="container">
+        <p class="navbar-text">
+			Storm is a probabilistic model checker available on <a href="https://www.github.com/moves-rwth/storm">GitHub</a>.  <a href="/about.html#people">Contact us</a>.
+        </p>
+    </div>
+</footer>
+
+    <!-- JavaScript -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.2.0/js/tether.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
+
+  </body>
+</html>

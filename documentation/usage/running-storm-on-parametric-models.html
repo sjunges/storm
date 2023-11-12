@@ -1,0 +1,1424 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <title>Storm -- A Modern Probabilistic Model Checker -- Running Storm on Parametric Models</title>
+    <meta name="description" content="">
+
+    <!-- CSS -->
+    <link rel="shortcut icon" type="image/png" href="/favicon.png" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/flatly/bootstrap.min.css" rel="stylesheet" integrity="sha384-+ENW/yibaokMnme+vBLnHMphUYxHs34h9lpdbSLuAwGkOKFRl4C34WkjazBtb7eT" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/syntax.css">
+    <link rel="stylesheet" href="/fonts/font-mfizz/font-mfizz.css">
+    <link rel="stylesheet" href="/fonts/weather-icons/weather-icons.min.css">
+  </head>
+
+    <body>
+
+    <div class="navbar navbar-default navbar-static-top">
+    <div class="container">
+        <div class="navbar-header">
+            <a href="/index.html" class="navbar-brand"><i class="wi wi-thunderstorm" aria-hidden="true"></i> Storm</a>
+            <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        </div>
+        <div class="navbar-collapse collapse" id="navbar-main">
+            <ul class="nav navbar-nav">
+                
+                
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        <li class="nav-item">
+                            <a href="/news.html" class="nav-link ">
+                            News
+                            </a>
+                        </li>
+                        
+                    
+                
+                    
+                        
+                        <li class="nav-item">
+                            <a href="/about.html" class="nav-link ">
+                            About
+                            </a>
+                        </li>
+                        
+                    
+                
+                    
+                        
+                        <li class="nav-item">
+                            <a href="/getting-started.html" class="nav-link ">
+                            Getting Started
+                            </a>
+                        </li>
+                        
+                    
+                
+                    
+                        
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Documentation<span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                            
+                                <li class="container">Obtain Storm</li>
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/obtain-storm/build.html">Build from Source</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/obtain-storm/homebrew.html">Install via Homebrew</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/obtain-storm/docker.html">Use Docker Container</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/obtain-storm/vm.html">Use Virtual Machine</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/obtain-storm/troubleshooting.html">Troubleshooting</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                
+                                <li class="divider"></li>
+                                
+                            
+                                <li class="container">Background</li>
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/background/models.html">Models</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/background/languages.html">Languages</a></li>
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/background/properties.html">Properties</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/background/engines.html">Engines</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                
+                                <li class="divider"></li>
+                                
+                            
+                                <li class="container">Use Storm</li>
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/usage/running-storm.html">Running Storm</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/usage/running-storm-on-dfts.html">Running Storm on DFTs</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/usage/running-storm-on-parametric-models.html">Running Storm on Parametric Models</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/usage/troubleshooting.html">Troubleshooting</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                
+                                <li class="divider"></li>
+                                
+                            
+                                <li class="container">Develop with Storm</li>
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/api/">C++ API</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/dependencies.html">Dependencies</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                
+                            
+                            </ul>
+                        </li>
+                        
+                    
+                
+                    
+                        
+                        <li class="nav-item">
+                            <a href="/tutorials.html" class="nav-link ">
+                            Tutorials
+                            </a>
+                        </li>
+                        
+                    
+                
+                    
+                        
+                        <li class="nav-item">
+                            <a href="/publications.html" class="nav-link ">
+                            Publications
+                            </a>
+                        </li>
+                        
+                    
+                
+                    
+                        
+                        <li class="nav-item">
+                            <a href="/benchmarks.html" class="nav-link ">
+                            Benchmarks
+                            </a>
+                        </li>
+                        
+                    
+                
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="nav-item">
+                   <a href="https://github.com/moves-rwth/storm" class="nav-link" target="_blank"><i class="fa fa-github" aria-hidden="true"></i> Source</a>
+                </li>
+                <li class="nav-item">
+                    <a href="https://moves-rwth.github.io/stormpy/" class="nav-link" target="_blank"><i class="icon-python"></i> Stormpy</a>
+                </li>
+            </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+        <ul class="breadcrumb">
+            <li><a href="/index.html">Home</a></li>
+            
+            <li>Use Storm</li>
+            
+            <li class="active">Running Storm on Parametric Models</li>
+        </ul>
+
+        <!--
+        <div class="page-header">
+            <h1>Running Storm on Parametric Models</h1>
+            <hr />
+        </div>
+        -->
+                
+        <div class="content">
+            <h1>Running Storm on Parametric Models</h1>
+
+<div class="panel panel-default">
+<div class="panel-heading">Table of contents</div>
+<div class="panel-body">
+<ul id="markdown-toc">
+  <li><a href="#feasibility" id="markdown-toc-feasibility">Feasibility</a>    <ul>
+      <li><a href="#feasibility-with-pla" id="markdown-toc-feasibility-with-pla">Feasibility with pla</a></li>
+      <li><a href="#feasibility-with-gd" id="markdown-toc-feasibility-with-gd">Feasibility with gd</a></li>
+    </ul>
+  </li>
+  <li><a href="#verification" id="markdown-toc-verification">Verification</a></li>
+  <li><a href="#parameter-space-partitioning" id="markdown-toc-parameter-space-partitioning">Parameter Space Partitioning</a></li>
+  <li><a href="#computing-the-exact-solution-function" id="markdown-toc-computing-the-exact-solution-function">Computing the exact solution function</a></li>
+  <li><a href="#monotonicity-analysis" id="markdown-toc-monotonicity-analysis">Monotonicity analysis</a></li>
+</ul>
+
+  </div>
+</div>
+
+<p>Many model descriptions contain constants which may be specified only by an interval of possible values. We refer to these constants as parameters. Such parametric models are supported by the binary <code class="language-plaintext highlighter-rouge">storm-pars</code>. A gentle overview is given in <a class="citation" href="#JJK22">[1]</a>.</p>
+
+<p>Overall, for parametric systems, various questions (henceforth: queries) relating to model checking can be asked. These different queries are supported by different engines in <code class="language-plaintext highlighter-rouge">storm-pars</code>: We refer to this as the mode – and the mode must always be specified.</p>
+
+<p>The current support focusses on five modes, of which two are more experimental:</p>
+<ol>
+  <li>Feasibility – Finding parameter values such that a property holds.</li>
+  <li>Verification – Proving that for all parameter values in some region, a property holds.</li>
+  <li>Partitioning – Finding regions for which the verification problem holds.</li>
+  <li>Solution Function computation – Finding a closed-form representation of a solution function, mapping parameter values to, e.g., reachability probabilities.</li>
+  <li>Monotonicity analysis (experimental) – Checking whether the solution function is monotonic in one of the parameters.</li>
+  <li>Sampling (experimental) – Quickly sampling parametric models multiple times.</li>
+</ol>
+
+<p>We outline these modes in more detail below.
+In what follows, Storm typically assumes that all occurring parameters are graph-preserving, that is, they do not influence the topology of the underlying Markov model.</p>
+
+<p>To illustrate the functionality, we use a bounded retransmission protocol. This example is an adaption of the Bounded Retransmission Protocol from the <a href="http://www.prismmodelchecker.org/casestudies/brp.php" target="_blank">PRISM website</a>. Here, we have two channels whose reliabilities are represented by parameters <code class="language-plaintext highlighter-rouge">pL</code> and <code class="language-plaintext highlighter-rouge">pK</code>.</p>
+
+<div>
+  <a href=".parametric_brp" data-toggle="collapse" class="btn btn-primary btn-block">
+    <div class="parametric_brp collapse in">
+      <i class="fa fa-chevron-down fa-pull-right" aria-hidden="true"></i>Show parametric version of the Bounded Retransmission Protocol
+    </div>
+    <div class="parametric_brp collapse">
+      <i class="fa fa-chevron-up fa-pull-right" aria-hidden="true"></i>Hide parametric version of the Bounded Retransmission Protocol
+    </div>
+  </a>
+</div>
+
+<div class="parametric_brp collapse">
+  <p><a href="/resources/input-examples/prism/brp.pm"><i class="fa fa-file-text-o" aria-hidden="true"></i> Download parametric version of the Bounded Retransmission Protocol</a></p>
+  <div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// bounded retransmission protocol [D'AJJL01]
+// gxn/dxp 23/05/2001
+
+dtmc
+
+// number of chunks
+const int N = 2;
+// maximum number of retransmissions
+const int MAX = 4;
+
+// reliability of channels
+const double pL;
+const double pK;
+
+// timeouts
+const double TOMsg = 0.1;
+const double TOAck = 0.1;
+
+module sender
+
+    s : [0..6];
+    // 0 idle
+    // 1 next_frame
+    // 2 wait_ack
+    // 3 retransmit
+    // 4 success
+    // 5 error
+    // 6 wait sync
+    srep : [0..3];
+    // 0 bottom
+    // 1 not ok (nok)
+    // 2 do not know (dk)
+    // 3 ok (ok)
+    nrtr : [0..MAX];
+    i : [0..N];
+    bs : bool;
+    s_ab : bool;
+    fs : bool;
+    ls : bool;
+
+    // idle
+    [NewFile] (s=0) -&gt; (s'=1) &amp; (i'=1) &amp; (srep'=0);
+    // next_frame
+    [aF] (s=1) -&gt; (s'=2) &amp; (fs'=(i=1)) &amp; (ls'=(i=N)) &amp; (bs'=s_ab) &amp; (nrtr'=0);
+    // wait_ack
+    [aB] (s=2) -&gt; (s'=4) &amp; (s_ab'=!s_ab);
+    [TO_Msg] (s=2) -&gt; (s'=3);
+    [TO_Ack] (s=2) -&gt; (s'=3);
+    // retransmit
+    [aF] (s=3) &amp; (nrtr&lt;MAX) -&gt; (s'=2) &amp; (fs'=(i=1)) &amp; (ls'=(i=N)) &amp; (bs'=s_ab) &amp; (nrtr'=nrtr+1);
+    [] (s=3) &amp; (nrtr=MAX) &amp; (i&lt;N) -&gt; (s'=5) &amp; (srep'=1);
+    [] (s=3) &amp; (nrtr=MAX) &amp; (i=N) -&gt; (s'=5) &amp; (srep'=2);
+    // success
+    [] (s=4) &amp; (i&lt;N) -&gt; (s'=1) &amp; (i'=i+1);
+    [] (s=4) &amp; (i=N) -&gt; (s'=0) &amp; (srep'=3);
+    // error
+    [SyncWait] (s=5) -&gt; (s'=6);
+    // wait sync
+    [SyncWait] (s=6) -&gt; (s'=0) &amp; (s_ab'=false);
+
+endmodule
+
+module receiver
+
+    r : [0..5];
+    // 0 new_file
+    // 1 fst_safe
+    // 2 frame_received
+    // 3 frame_reported
+    // 4 idle
+    // 5 resync
+    rrep : [0..4];
+    // 0 bottom
+    // 1 fst
+    // 2 inc
+    // 3 ok
+    // 4 nok
+    fr : bool;
+    lr : bool;
+    br : bool;
+    r_ab : bool;
+    recv : bool;
+
+
+    // new_file
+    [SyncWait] (r=0) -&gt; (r'=0);
+    [aG] (r=0) -&gt; (r'=1) &amp; (fr'=fs) &amp; (lr'=ls) &amp; (br'=bs) &amp; (recv'=Tvar);
+    // fst_safe_frame
+    [] (r=1) -&gt; (r'=2) &amp; (r_ab'=br);
+    // frame_received
+    [] (r=2) &amp; (r_ab=br) &amp; (fr=true) &amp; (lr=false)  -&gt; (r'=3) &amp; (rrep'=1);
+    [] (r=2) &amp; (r_ab=br) &amp; (fr=false) &amp; (lr=false) -&gt; (r'=3) &amp; (rrep'=2);
+    [] (r=2) &amp; (r_ab=br) &amp; (fr=false) &amp; (lr=true)  -&gt; (r'=3) &amp; (rrep'=3);
+    [aA] (r=2) &amp; !(r_ab=br) -&gt; (r'=4);
+    // frame_reported
+    [aA] (r=3) -&gt; (r'=4) &amp; (r_ab'=!r_ab);
+    // idle
+    [aG] (r=4) -&gt; (r'=2) &amp; (fr'=fs) &amp; (lr'=ls) &amp; (br'=bs) &amp; (recv'=Tvar);
+    [SyncWait] (r=4) &amp; (ls=true) -&gt; (r'=5);
+    [SyncWait] (r=4) &amp; (ls=false) -&gt; (r'=5) &amp; (rrep'=4);
+    // resync
+    [SyncWait] (r=5) -&gt; (r'=0) &amp; (rrep'=0);
+
+endmodule
+
+// prevents more than one file being sent
+module tester
+
+    Tvar : bool;
+
+    [NewFile] (Tvar=false) -&gt; (Tvar'=true);
+
+endmodule
+
+module  channelK
+
+    k : [0..2];
+
+    // idle
+    [aF] (k=0) -&gt; pK : (k'=1) + 1-pK : (k'=2);
+    // sending
+    [aG] (k=1) -&gt; (k'=0);
+    // lost
+    [TO_Msg] (k=2) -&gt; (k'=0);
+
+endmodule
+
+module  channelL
+
+    l : [0..2];
+
+    // idle
+    [aA] (l=0) -&gt; pL : (l'=1) + 1-pL : (l'=2);
+    // sending
+    [aB] (l=1) -&gt; (l'=0);
+    // lost
+    [TO_Ack] (l=2) -&gt; (l'=0);
+
+endmodule
+
+label "error" = s=5;
+
+rewards
+	[TO_Msg] true : TOMsg;
+	[TO_Ack] true : TOAck;
+endrewards
+</code></pre></div>  </div>
+</div>
+
+<h2 id="feasibility">Feasibility</h2>
+<p>Storm currently supports two feasibility engines:</p>
+<ol>
+  <li>Parameter lifting, or just pla</li>
+  <li>Gradient Descent, or just gd</li>
+</ol>
+
+<p>While we work towards a unified interface, these support different options.</p>
+
+<h3 id="feasibility-with-pla">Feasibility with pla</h3>
+
+<p>The pla engine is based on work in <a class="citation" href="#JAHJKQV19">[2]</a>. The feasibility computation is partially based on work in <a class="citation" href="#SJK21">[3]</a>.</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>storm-pars  <span class="nt">--mode</span> feasibility <span class="nt">--feasibility</span>:method pla <span class="nt">--prism</span> brp.pm  <span class="nt">--prop</span> <span class="s1">'P&lt;=0.01 [F s=5]'</span> <span class="nt">--region</span> <span class="s2">"0.1 &lt;= pL &lt;= 0.9, 0.1 &lt;= pK &lt;= 0.9"</span>
+</code></pre></div></div>
+<p>We use the <code class="language-plaintext highlighter-rouge">--regions</code> option to set the parameter region. In this case, the equivalent region could have been given using the <code class="language-plaintext highlighter-rouge">--regionbound 0.1</code>, which restricts every parameter to be bounded between <code class="language-plaintext highlighter-rouge">regionbound</code> and 1-<code class="language-plaintext highlighter-rouge">regionbound</code>.</p>
+
+<p>The complete output to be expected is:</p>
+
+<div>
+  <a href=".pla_parametric_models" data-toggle="collapse" class="btn btn-default btn-block">
+    <div class="pla_parametric_models collapse in">
+      <i class="fa fa-chevron-down fa-pull-right" aria-hidden="true"></i>Show output
+    </div>
+    <div class="pla_parametric_models collapse">
+      <i class="fa fa-chevron-up fa-pull-right" aria-hidden="true"></i>Hide output
+    </div>
+  </a>
+</div>
+
+<div class="pla_parametric_models collapse">
+  <div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bin/storm-pars  --mode feasibility --feasibility:method pla --prism brp.pm  --prop 'P&lt;=0.01 [F s=5]' --region "0.1 &lt;= pL &lt;= 0.9, 0.1 &lt;= pK &lt;= 0.9"
+Storm-pars 1.8.2 (dev)
+
+Date: Sat Nov 11 20:56:08 2023
+Command line arguments: --mode feasibility '--feasibility:method' pla --prism brp.pm --prop 'P&lt;=0.01 [F s=5]' --region '0.1 &lt;= pL &lt;= 0.9, 0.1 &lt;= pK &lt;= 0.9'
+Current working directory: ~/storm/build
+
+Time for model input parsing: 0.009s.
+
+Time for model construction: 0.063s.
+
+--------------------------------------------------------------
+Model type: 	DTMC (sparse)
+States: 	135
+Transitions: 	175
+Reward Models:  none
+State Labels: 	3 labels
+  * deadlock -&gt; 5 item(s)
+  * init -&gt; 1 item(s)
+  * (s = 5) -&gt; 4 item(s)
+Choice Labels: 	none
+--------------------------------------------------------------
+
+Time for model simplification: 0.003s.
+
+--------------------------------------------------------------
+Model type: 	DTMC (sparse)
+States: 	43
+Transitions: 	83
+Reward Models:  none
+State Labels: 	4 labels
+  * target -&gt; 1 item(s)
+  * init -&gt; 1 item(s)
+  * deadlock -&gt; 1 item(s)
+  * (s = 5) -&gt; 1 item(s)
+Choice Labels: 	none
+--------------------------------------------------------------
+
+Time for model preprocessing: 0.004s.
+
+--------------------------------------------------------------
+Model type: 	DTMC (sparse)
+States: 	43
+Transitions: 	83
+Reward Models:  none
+State Labels: 	4 labels
+  * target -&gt; 1 item(s)
+  * init -&gt; 1 item(s)
+  * deadlock -&gt; 1 item(s)
+  * (s = 5) -&gt; 1 item(s)
+Choice Labels: 	none
+--------------------------------------------------------------
+Find feasible solution for  P=? [F (s = 5)] within region 1/10&lt;=pK&lt;=9/10,1/10&lt;=pL&lt;=9/10;
+Result at initial state: 947822915828163/288230376151711744 ( approx. 0.003288421326) at [pK=17/20, pL=17/20].
+Time for model checking: 0.005s.
+</code></pre></div>  </div>
+</div>
+
+<p>In particular, the output says</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="go">Result at initial state: 947822915828163/288230376151711744 ( approx. 0.003288421326) at [pK=17/20, pL=17/20].
+</span></code></pre></div></div>
+
+<p>which means that setting pK and pL to 17/20 yields a Markov chain such that <code class="language-plaintext highlighter-rouge">P&lt;=0.01 [F s=5]</code> is satisfied.</p>
+
+<p>Instead of giving a bound, pla also support optimization:</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>storm-pars  <span class="nt">--mode</span> feasibility <span class="nt">--feasibility</span>:method pla <span class="nt">--prism</span> brp.pm  <span class="nt">--prop</span> <span class="s1">'P=? [F s=5]'</span> <span class="nt">--direction</span> min <span class="nt">--region</span> <span class="s2">"0.1 &lt;= pL &lt;= 0.9, 0.1 &lt;= pK &lt;= 0.9"</span> <span class="nt">--guarantee</span> 0.0001 abs
+</code></pre></div></div>
+
+<p>In this case, we do not give a bound and specify with <code class="language-plaintext highlighter-rouge">--direction min</code> that we want to minimize.
+Additionally, we give a <code class="language-plaintext highlighter-rouge">--guarantee 0.0001 abs</code>, specifying that we want to be find a solution which is within 0.0001 of the optimal value, where the distance is measured in absolute terms.</p>
+
+<p>The complete output to be expected is:</p>
+
+<div>
+  <a href=".pla_parametric_models" data-toggle="collapse" class="btn btn-default btn-block">
+    <div class="pla_parametric_models collapse in">
+      <i class="fa fa-chevron-down fa-pull-right" aria-hidden="true"></i>Show output
+    </div>
+    <div class="pla_parametric_models collapse">
+      <i class="fa fa-chevron-up fa-pull-right" aria-hidden="true"></i>Hide output
+    </div>
+  </a>
+</div>
+
+<div class="pla_parametric_models collapse">
+  <div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./storm-pars  --mode feasibility --feasibility:method pla --prism brp.pm  --prop 'P=? [F s=5]' --direction min --region "0.1 &lt;= pL &lt;= 0.9, 0.1 &lt;= pK &lt;= 0.9" --guarantee 0.0001 abs
+Storm-pars 1.8.2 (dev)
+
+Date: Sun Nov 12 2023
+Command line arguments: --mode feasibility '--feasibility:method' pla --prism brp.pm --prop 'P=? [F s=5]' --direction min --region '0.1 &lt;= pL &lt;= 0.9, 0.1 &lt;= pK &lt;= 0.9' --guarantee 0.0001 abs
+Current working directory: ~/storm/build/bin
+
+Time for model input parsing: 0.011s.
+
+Time for model construction: 0.065s.
+
+--------------------------------------------------------------
+Model type: 	DTMC (sparse)
+States: 	135
+Transitions: 	175
+Reward Models:  none
+State Labels: 	3 labels
+   * deadlock -&gt; 5 item(s)
+   * init -&gt; 1 item(s)
+   * (s = 5) -&gt; 4 item(s)
+Choice Labels: 	none
+--------------------------------------------------------------
+
+Time for model simplification: 0.005s.
+
+--------------------------------------------------------------
+Model type: 	DTMC (sparse)
+States: 	43
+Transitions: 	83
+Reward Models:  none
+State Labels: 	4 labels
+   * target -&gt; 1 item(s)
+   * init -&gt; 1 item(s)
+   * deadlock -&gt; 1 item(s)
+   * (s = 5) -&gt; 1 item(s)
+Choice Labels: 	none
+--------------------------------------------------------------
+
+Time for model preprocessing: 0.005s.
+
+--------------------------------------------------------------
+Model type: 	DTMC (sparse)
+States: 	43
+Transitions: 	83
+Reward Models:  none
+State Labels: 	4 labels
+   * target -&gt; 1 item(s)
+   * init -&gt; 1 item(s)
+   * deadlock -&gt; 1 item(s)
+   * (s = 5) -&gt; 1 item(s)
+Choice Labels: 	none
+--------------------------------------------------------------
+Find feasible solution for  P=? [F (s = 5)] within region 1/10&lt;=pK&lt;=9/10,1/10&lt;=pL&lt;=9/10;
+Result at initial state: 5282881788238101/9223372036854775808 ( approx. 0.0005727711912) at [pK=287/320, pL=287/320].
+Time for model checking: 0.008s.
+</code></pre></div>  </div>
+</div>
+
+<p>In particular, the output says</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="go">Result at initial state: 5282881788238101/9223372036854775808 ( approx. 0.0005727711912) at [pK=287/320, pL=287/320].
+</span></code></pre></div></div>
+
+<p>This output indicates not only how to instantiate pK and pL to obtain <code class="language-plaintext highlighter-rouge">P=? [F s=5] = approx. 0.0005727711912</code>, but also that this value is within 0.0001 from the absolute lower boudn (within the given region).</p>
+
+<h3 id="feasibility-with-gd">Feasibility with gd</h3>
+
+<p>The gd engine is based on work in <a class="citation" href="#HSJMK22">[4]</a></p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>storm-pars  <span class="nt">--mode</span> feasibility <span class="nt">--feasibility</span>:method gd <span class="nt">--prism</span> brp.pm  <span class="nt">--prop</span> <span class="s1">'P&lt;=0.01 [F s=5]'</span>
+</code></pre></div></div>
+<p>In this case, the region for searching cannot be given.</p>
+
+<p>The complete output to be expected is:</p>
+
+<div>
+  <a href=".pla_parametric_models" data-toggle="collapse" class="btn btn-default btn-block">
+    <div class="pla_parametric_models collapse in">
+      <i class="fa fa-chevron-down fa-pull-right" aria-hidden="true"></i>Show output
+    </div>
+    <div class="pla_parametric_models collapse">
+      <i class="fa fa-chevron-up fa-pull-right" aria-hidden="true"></i>Hide output
+    </div>
+  </a>
+</div>
+
+<div class="pla_parametric_models collapse">
+  <div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bin/storm-pars  --mode feasibility --feasibility:method pla --prism brp.pm  --prop 'P&lt;=0.01 [F s=5]' --region "0.1 &lt;= pL &lt;= 0.9, 0.1 &lt;= pK &lt;= 0.9"
+Storm-pars 1.8.2 (dev)
+
+Date: Sat Nov 11 20:56:08 2023
+Command line arguments: --mode feasibility '--feasibility:method' pla --prism brp.pm --prop 'P&lt;=0.01 [F s=5]' --region '0.1 &lt;= pL &lt;= 0.9, 0.1 &lt;= pK &lt;= 0.9'
+Current working directory: ~/storm/build
+
+Time for model input parsing: 0.009s.
+
+Time for model construction: 0.063s.
+
+--------------------------------------------------------------
+Model type: 	DTMC (sparse)
+States: 	135
+Transitions: 	175
+Reward Models:  none
+State Labels: 	3 labels
+  * deadlock -&gt; 5 item(s)
+  * init -&gt; 1 item(s)
+  * (s = 5) -&gt; 4 item(s)
+Choice Labels: 	none
+--------------------------------------------------------------
+
+Time for model simplification: 0.003s.
+
+--------------------------------------------------------------
+Model type: 	DTMC (sparse)
+States: 	43
+Transitions: 	83
+Reward Models:  none
+State Labels: 	4 labels
+  * target -&gt; 1 item(s)
+  * init -&gt; 1 item(s)
+  * deadlock -&gt; 1 item(s)
+  * (s = 5) -&gt; 1 item(s)
+Choice Labels: 	none
+--------------------------------------------------------------
+
+Time for model preprocessing: 0.004s.
+
+--------------------------------------------------------------
+Model type: 	DTMC (sparse)
+States: 	43
+Transitions: 	83
+Reward Models:  none
+State Labels: 	4 labels
+  * target -&gt; 1 item(s)
+  * init -&gt; 1 item(s)
+  * deadlock -&gt; 1 item(s)
+  * (s = 5) -&gt; 1 item(s)
+Choice Labels: 	none
+--------------------------------------------------------------
+Find feasible solution for  P=? [F (s = 5)] within region 1/10&lt;=pK&lt;=9/10,1/10&lt;=pL&lt;=9/10;
+Result at initial state: 947822915828163/288230376151711744 ( approx. 0.003288421326) at [pK=17/20, pL=17/20].
+Time for model checking: 0.005s.
+</code></pre></div>  </div>
+</div>
+
+<p>In particular, the output says</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="go">Result at initial state: 0.001706273496 ( approx. 0.001706273496) at [pK=62679533432486317/72057594037927936, pL=62679533432486317/72057594037927936].
+</span></code></pre></div></div>
+
+<p>which gives values for pK and pL such that <code class="language-plaintext highlighter-rouge">P&lt;=0.01 [F s=5]</code>  is satisfied.</p>
+
+<h2 id="verification">Verification</h2>
+<p>To prove the absence of a solution, we can use parameter lifting. A comprehensive overview on the theoretical backgrounds is given in <a class="citation" href="#JAHJKQV19">[2]</a>.</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>storm-pars  <span class="nt">--mode</span> verification <span class="nt">--prism</span> brp.pm  <span class="nt">--prop</span> <span class="s1">'P&lt;=0.9999 [F s=5]'</span> <span class="nt">--region</span> <span class="s2">"0.1 &lt;= pL &lt;= 0.9, 0.1 &lt;= pK &lt;= 0.9"</span>
+</code></pre></div></div>
+<p>will provide output</p>
+
+<div>
+  <a href=".pla_parametric_models" data-toggle="collapse" class="btn btn-default btn-block">
+    <div class="pla_parametric_models collapse in">
+      <i class="fa fa-chevron-down fa-pull-right" aria-hidden="true"></i>Show output
+    </div>
+    <div class="pla_parametric_models collapse">
+      <i class="fa fa-chevron-up fa-pull-right" aria-hidden="true"></i>Hide output
+    </div>
+  </a>
+</div>
+
+<div class="pla_parametric_models collapse">
+  <div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./storm-pars  --mode verification  --prism brp.pm  --prop 'P&lt;=0.9999 [F s=5]' --region "0.1 &lt;= pL &lt;= 0.9, 0.1 &lt;= pK &lt;= 0.9"
+Storm-pars 1.8.2 (dev)
+
+Date: Sun Nov 12 2023
+Command line arguments: --mode verification --prism brp.pm --prop 'P&lt;=0.9999 [F s=5]' --region '0.1 &lt;= pL &lt;= 0.9, 0.1 &lt;= pK &lt;= 0.9'
+Current working directory: ~/storm/build/bin
+
+Time for model input parsing: 0.001s.
+
+Time for model construction: 0.013s.
+
+--------------------------------------------------------------
+Model type: 	DTMC (sparse)
+States: 	135
+Transitions: 	175
+Reward Models:  none
+State Labels: 	3 labels
+   * deadlock -&gt; 5 item(s)
+   * init -&gt; 1 item(s)
+   * (s = 5) -&gt; 4 item(s)
+Choice Labels: 	none
+--------------------------------------------------------------
+Formula is satisfied by all parameter instantiations.
+Time for model checking: 0.007s.
+➜  bin git:(pars-cli) ✗ ./storm-pars  --mode verification  --prism brp.pm  --prop 'P&lt;=0.9999 [F s=5]' --region "0.1 &lt;= pL &lt;= 0.9, 0.1 &lt;= pK &lt;= 0.9"
+</code></pre></div>  </div>
+</div>
+
+<p>In contrast, running</p>
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>storm-pars  <span class="nt">--mode</span> verification <span class="nt">--prism</span> brp.pm  <span class="nt">--prop</span> <span class="s1">'P&lt;=0.99 [F s=5]'</span> <span class="nt">--region</span> <span class="s2">"0.1 &lt;= pL &lt;= 0.9, 0.1 &lt;= pK &lt;= 0.9"</span>
+</code></pre></div></div>
+<p>will yield output that says that the statement is <em>not</em> true:</p>
+
+<div>
+  <a href=".pla_parametric_models" data-toggle="collapse" class="btn btn-default btn-block">
+    <div class="pla_parametric_models collapse in">
+      <i class="fa fa-chevron-down fa-pull-right" aria-hidden="true"></i>Show output
+    </div>
+    <div class="pla_parametric_models collapse">
+      <i class="fa fa-chevron-up fa-pull-right" aria-hidden="true"></i>Hide output
+    </div>
+  </a>
+</div>
+
+<div class="pla_parametric_models collapse">
+  <div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./storm-pars  --mode verification  --prism brp.pm  --prop 'P&lt;=0.99 [F s=5]' --region "0.1 &lt;= pL &lt;= 0.9, 0.1 &lt;= pK &lt;= 0.9"
+Storm-pars 1.8.2 (dev)
+
+Date: Sun Nov 12  2023
+Command line arguments: --mode verification --prism brp.pm --prop 'P&lt;=0.99 [F s=5]' --region '0.1 &lt;= pL &lt;= 0.9, 0.1 &lt;= pK &lt;= 0.9'
+Current working directory: ~/storm/build/bin
+
+Time for model input parsing: 0.008s.
+
+Time for model construction: 0.049s.
+
+--------------------------------------------------------------
+Model type: 	DTMC (sparse)
+States: 	135
+Transitions: 	175
+Reward Models:  none
+State Labels: 	3 labels
+   * deadlock -&gt; 5 item(s)
+   * init -&gt; 1 item(s)
+   * (s = 5) -&gt; 4 item(s)
+Choice Labels: 	none
+--------------------------------------------------------------
+Formula is not satisfied by all parameter instantiations.
+Time for model checking: 0.011s.
+</code></pre></div>  </div>
+</div>
+
+<h2 id="parameter-space-partitioning">Parameter Space Partitioning</h2>
+
+<p>The verification result may be too coarse: Potentially, we do want to find subregions that satisfy the property.
+While we generally advocate to use our (Python) API for flexible support of such scenarios, the Storm command-line interface does yield some support:</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>storm-pars  <span class="nt">--mode</span> partitioning <span class="nt">--prism</span> brp.pm  <span class="nt">--prop</span> <span class="s1">'P&lt;=0.99 [F s=5]'</span> <span class="nt">--region</span> <span class="s2">"0.1 &lt;= pL &lt;= 0.9, 0.1 &lt;= pK &lt;= 0.9"</span>
+</code></pre></div></div>
+
+<p>This produces the following output:</p>
+
+<div>
+  <a href=".pla_parametric_models" data-toggle="collapse" class="btn btn-default btn-block">
+    <div class="pla_parametric_models collapse in">
+      <i class="fa fa-chevron-down fa-pull-right" aria-hidden="true"></i>Show output
+    </div>
+    <div class="pla_parametric_models collapse">
+      <i class="fa fa-chevron-up fa-pull-right" aria-hidden="true"></i>Hide output
+    </div>
+  </a>
+</div>
+
+<div class="pla_parametric_models collapse">
+  <div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./storm-pars  --mode partitioning  --prism brp.pm  --prop 'P&lt;=0.99 [F s=5]' --region "0.1 &lt;= pL &lt;= 0.9, 0.1 &lt;= pK &lt;= 0.9"
+Storm-pars 1.8.2 (dev)
+
+Date: Sun Nov 12  2023
+Command line arguments: --mode partitioning --prism brp.pm --prop 'P&lt;=0.99 [F s=5]' --region '0.1 &lt;= pL &lt;= 0.9, 0.1 &lt;= pK &lt;= 0.9'
+Current working directory: ~/storm/build/bin
+
+Time for model input parsing: 0.009s.
+
+Time for model construction: 0.048s.
+
+--------------------------------------------------------------
+Model type: 	DTMC (sparse)
+States: 	135
+Transitions: 	175
+Reward Models:  none
+State Labels: 	3 labels
+  * deadlock -&gt; 5 item(s)
+  * init -&gt; 1 item(s)
+  * (s = 5) -&gt; 4 item(s)
+Choice Labels: 	none
+--------------------------------------------------------------
+
+Analyzing parameter region 1/10&lt;=pK&lt;=9/10,1/10&lt;=pL&lt;=9/10; using Parameter Lifting with iterative refinement until 95% is covered.
+
+Model checking property "1": P&lt;=99/100 [F (s = 5)] ...
+Result (initial states):   Fraction of satisfied area: 95.3125%
+Fraction of unsatisfied area: 0%
+           Unknown fraction: 4.6875%
+    Total number of regions: 19
+                    Unknown: 12
+                     AllSat: 7
+
+Region refinement Check result (visualization):
+  x-axis: pK  	 y-axis: pL  	 S=safe, [ ]=unsafe, -=ambiguous
+##################################################################################################################################
+#SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS#
+#SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS#
+#SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS#
+#SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS#
+#SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS#
+#SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS#
+#SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS#
+#SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS#
+#SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS#
+#SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS#
+#SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS#
+#SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS#
+#SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS#
+#SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS#
+#SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS#
+#SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS#
+#SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS#
+#SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS#
+#SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS#
+#SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS#
+#SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS#
+#SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS#
+#SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS#
+#SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS#
+#SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS#
+#SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS#
+#SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS#
+#SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS#
+#SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS#
+#SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS#
+#SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS#
+#SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS#
+#SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS#
+#SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS#
+#SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS#
+#SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS#
+#SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS#
+#SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS#
+#SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS#
+#SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS#
+#SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS#
+#SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS#
+#SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS#
+#SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS#
+#SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS#
+#SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS#
+#SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS#
+#SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS#
+#----------------SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS#
+#----------------SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS#
+#----------------SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS#
+#----------------SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS#
+#----------------SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS#
+#----------------SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS#
+#----------------SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS#
+#----------------SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS#
+#--------------------------------SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS#
+#--------------------------------SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS#
+#--------------------------------SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS#
+#--------------------------------SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS#
+#--------------------------------SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS#
+#--------------------------------SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS#
+#--------------------------------SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS#
+#--------------------------------SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS#
+##################################################################################################################################
+
+Time for model checking: 0.009s.
+</code></pre></div>  </div>
+</div>
+
+<p>We can see that for two parameters, Storm even visulalizes the acquired data to give an initial understanding of the region partition.</p>
+
+<h2 id="computing-the-exact-solution-function">Computing the exact solution function</h2>
+
+<p>We can run storm to obtain closed-form solutions, i.e. a rational function that represents, e.g., the probability with which the given property is satisfied for certain parameter valuations.  A comprehensive overview on the theoretical backgrounds is given in <a class="citation" href="#JAHJKQV19">[2]</a>.</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>storm-pars <span class="nt">--mode</span> solutionfunction  <span class="nt">--prism</span> brp.pm  <span class="nt">--prop</span> <span class="s1">'P=? [F s=5]'</span>  
+</code></pre></div></div>
+
+<p>The result is an expression over the parameter pL and pK:</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="go">(-1 * (pK^10*pL^10+(-120)*pK^7*pL^7+(-10)*pK^9*pL^9+45*pK^8*pL^8+210*pK^6*pL^6+(-250)*pK^5*pL^5+(-100)*pK^3*pL^3+25*pK^2*pL^2+200*pK^4*pL^4+(-1)))/(1)
+</span></code></pre></div></div>
+
+<div>
+  <a href=".closed_form_parametric_models" data-toggle="collapse" class="btn btn-default btn-block">
+    <div class="closed_form_parametric_models collapse in">
+      <i class="fa fa-chevron-down fa-pull-right" aria-hidden="true"></i>Show output
+    </div>
+    <div class="closed_form_parametric_models collapse">
+      <i class="fa fa-chevron-up fa-pull-right" aria-hidden="true"></i>Hide output
+    </div>
+  </a>
+</div>
+
+<div class="closed_form_parametric_models collapse">
+  <div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./storm-pars  --mode solutionfunction  --prism brp.pm  --prop 'P=? [F s=5]'
+Storm-pars 1.8.2 (dev)
+
+Date: Sun Nov 12 2023
+Command line arguments: --mode solutionfunction --prism brp.pm --prop 'P=? [F s=5]'
+Current working directory: ~/storm/build/bin
+
+Time for model input parsing: 0.009s.
+
+Time for model construction: 0.052s.
+
+--------------------------------------------------------------
+Model type: 	DTMC (sparse)
+States: 	135
+Transitions: 	175
+Reward Models:  none
+State Labels: 	3 labels
+   * deadlock -&gt; 5 item(s)
+   * init -&gt; 1 item(s)
+   * (s = 5) -&gt; 4 item(s)
+Choice Labels: 	none
+--------------------------------------------------------------
+
+Model checking property "1": P=? [F (s = 5)] ...
+Result (initial states): (-1 * (pK^10*pL^10+(-120)*pK^7*pL^7+(-10)*pK^9*pL^9+45*pK^8*pL^8+210*pK^6*pL^6+(-250)*pK^5*pL^5+(-100)*pK^3*pL^3+25*pK^2*pL^2+200*pK^4*pL^4+(-1)))/(1)
+Time for model checking: 0.006s.
+</code></pre></div>  </div>
+</div>
+
+<h2 id="monotonicity-analysis">Monotonicity analysis</h2>
+
+<p>Storm can also check if the parameters of a model are monotonic in regard to a certain property <a class="citation" href="#SJK19">[5], [3]</a>. For this, we use the <code class="language-plaintext highlighter-rouge">monotonicity</code> mode.</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>./storm-pars  <span class="nt">--mode</span> monotonicity  <span class="nt">--prism</span> brp.pm  <span class="nt">--prop</span> <span class="s1">'P=? [F s=5]'</span> <span class="nt">--bisimulation</span>
+</code></pre></div></div>
+
+<p>We use <code class="language-plaintext highlighter-rouge">--bisimulation</code> to apply further model simplification and significantly reduce the workload of the model checker.
+This results in the following output:</p>
+
+<div>
+  <a href=".mon_parametric_models" data-toggle="collapse" class="btn btn-default btn-block">
+    <div class="mon_parametric_models collapse in">
+      <i class="fa fa-chevron-down fa-pull-right" aria-hidden="true"></i>Show output
+    </div>
+    <div class="mon_parametric_models collapse">
+      <i class="fa fa-chevron-up fa-pull-right" aria-hidden="true"></i>Hide output
+    </div>
+  </a>
+</div>
+
+<div class="mon_parametric_models collapse">
+  <div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./storm-pars  --mode monotonicity  --prism brp.pm  --prop 'P=? [F s=5]' --bisimulation
+Storm-pars 1.8.2 (dev)
+
+Date: Sun Nov 12 2023
+Command line arguments: --mode monotonicity --prism brp.pm --prop 'P=? [F s=5]' --bisimulation
+Current working directory: ~/storm/build/bin
+
+Time for model input parsing: 0.002s.
+
+Time for model construction: 0.018s.
+
+--------------------------------------------------------------
+Model type: 	DTMC (sparse)
+States: 	135
+Transitions: 	175
+Reward Models:  none
+State Labels: 	3 labels
+   * deadlock -&gt; 5 item(s)
+   * init -&gt; 1 item(s)
+   * (s = 5) -&gt; 4 item(s)
+Choice Labels: 	none
+--------------------------------------------------------------
+
+Time for model simplification: 0.000s.
+
+--------------------------------------------------------------
+Model type: 	DTMC (sparse)
+States: 	43
+Transitions: 	83
+Reward Models:  none
+State Labels: 	4 labels
+   * target -&gt; 1 item(s)
+   * init -&gt; 1 item(s)
+   * deadlock -&gt; 1 item(s)
+   * (s = 5) -&gt; 1 item(s)
+Choice Labels: 	none
+--------------------------------------------------------------
+
+Time for model preprocessing: 0.001s.
+
+--------------------------------------------------------------
+Model type: 	DTMC (sparse)
+States: 	23
+Transitions: 	43
+Reward Models:  none
+State Labels: 	2 labels
+   * init -&gt; 1 item(s)
+   * (s = 5) -&gt; 1 item(s)
+Choice Labels: 	none
+--------------------------------------------------------------
+Number of done states: 23
+No Assumptions
+Monotonicity Result:
+    #Incr: 0 #Decr: 2
+pK MonDecr; pL MonDecr;
+
+
+Total time for monotonicity checking: 0.000s.
+</code></pre></div>  </div>
+</div>
+
+<p>In particular, the output specifies that both pL and pK are monotonically decreasing.</p>
+
+<p>If we want to take a look at the reachability order that is built during monotonicity checking, we can add the option <code class="language-plaintext highlighter-rouge">--mon:dotOutput</code> followed by an optional filename. Storm will then write a dot output of the order into the file which can then be processed using, e.g., <a href="https://graphviz.org/">Graphviz</a>. In this case, it results in the following graph:</p>
+
+<p><img src="/pics/parametric-brp-mon-dot.png" alt="Reachability Order" title="Reachability Order" class="center-image" width="300" /></p>
+
+			
+
+<h2>References</h2>
+<ul class="bibliography"><li><span id="JJK22">Nils Jansen, Sebastian Junges, and Joost-Pieter Katoen, “Parameter Synthesis in Markov Models: A Gentle Survey,” in <i>Principles of Systems Design</i>, 2022.</span>
+
+<br>
+	
+
+
+<a href="https://arxiv.org/abs/2207.06801" target="_blank">
+	<img alt="arXiv: 2207.06801" src="https://img.shields.io/static/v1?label=&message=arXiv&color=A42C25">
+</a>
+
+
+</li>
+<li><span id="JAHJKQV19">Sebastian Junges <i>et al.</i>, “Parameter Synthesis for Markov Models,” <i>CoRR</i>, 2019.</span>
+
+<br>
+	
+
+
+<a href="https://arxiv.org/abs/1903.07993" target="_blank">
+	<img alt="arXiv: 1903.07993" src="https://img.shields.io/static/v1?label=&message=arXiv&color=A42C25">
+</a>
+
+
+
+<a href="https://moves-rwth.github.io/prophesy/" target="_blank">
+	<img alt="further information" src="https://img.shields.io/static/v1?label=&message=website&color=009999">
+</a>
+</li>
+<li><span id="SJK21">Jip Spel, Sebastian Junges, and Joost-Pieter Katoen, “Finding Provably Optimal Markov Chains,” in <i>TACAS</i>, 2021.</span>
+
+<br>
+	
+
+
+
+</li>
+<li><span id="HSJMK22">Linus Heck, Jip Spel, Sebastian Junges, Joshua Moerman, and Joost-Pieter Katoen, “Gradient-Descent for Randomized Controllers Under Partial Observability,” in <i>VMCAI</i>, 2022.</span>
+
+<br>
+	
+
+<a href="http://dx.doi.org/10.1007/978-3-030-94583-1_7" target="_blank">
+	<img alt="DOI: 10.1007/978-3-030-94583-1_7" src="https://img.shields.io/static/v1?label=&message=DOI&color=blue">
+</a>
+
+
+<a href="https://arxiv.org/abs/2111.04407" target="_blank">
+	<img alt="arXiv: 2111.04407" src="https://img.shields.io/static/v1?label=&message=arXiv&color=A42C25">
+</a>
+
+
+</li>
+<li><span id="SJK19">Jip Spel, Sebastian Junges, and Joost-Pieter Katoen, “Are Parametric Markov Chains Monotonic?,” in <i>ATVA</i>, 2019.</span>
+
+<br>
+	
+
+
+
+</li></ul>
+
+        </div>
+    </div>
+
+    <footer class="footer bg-primary">
+    <div class="container">
+        <p class="navbar-text">
+			Storm is a probabilistic model checker available on <a href="https://www.github.com/moves-rwth/storm">GitHub</a>.  <a href="/about.html#people">Contact us</a>.
+        </p>
+    </div>
+</footer>
+
+    <!-- JavaScript -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.2.0/js/tether.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
+
+  </body>
+</html>

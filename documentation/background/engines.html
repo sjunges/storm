@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <title>Storm -- A Modern Probabilistic Model Checker -- Engines</title>
+    <meta name="description" content="">
+
+    <!-- CSS -->
+    <link rel="shortcut icon" type="image/png" href="/favicon.png" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/flatly/bootstrap.min.css" rel="stylesheet" integrity="sha384-+ENW/yibaokMnme+vBLnHMphUYxHs34h9lpdbSLuAwGkOKFRl4C34WkjazBtb7eT" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/syntax.css">
+    <link rel="stylesheet" href="/fonts/font-mfizz/font-mfizz.css">
+    <link rel="stylesheet" href="/fonts/weather-icons/weather-icons.min.css">
+  </head>
+
+    <body>
+
+    <div class="navbar navbar-default navbar-static-top">
+    <div class="container">
+        <div class="navbar-header">
+            <a href="/index.html" class="navbar-brand"><i class="wi wi-thunderstorm" aria-hidden="true"></i> Storm</a>
+            <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        </div>
+        <div class="navbar-collapse collapse" id="navbar-main">
+            <ul class="nav navbar-nav">
+                
+                
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        <li class="nav-item">
+                            <a href="/news.html" class="nav-link ">
+                            News
+                            </a>
+                        </li>
+                        
+                    
+                
+                    
+                        
+                        <li class="nav-item">
+                            <a href="/about.html" class="nav-link ">
+                            About
+                            </a>
+                        </li>
+                        
+                    
+                
+                    
+                        
+                        <li class="nav-item">
+                            <a href="/getting-started.html" class="nav-link ">
+                            Getting Started
+                            </a>
+                        </li>
+                        
+                    
+                
+                    
+                        
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Documentation<span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                            
+                                <li class="container">Obtain Storm</li>
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/obtain-storm/build.html">Build from Source</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/obtain-storm/homebrew.html">Install via Homebrew</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/obtain-storm/docker.html">Use Docker Container</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/obtain-storm/vm.html">Use Virtual Machine</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/obtain-storm/troubleshooting.html">Troubleshooting</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                
+                                <li class="divider"></li>
+                                
+                            
+                                <li class="container">Background</li>
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/background/models.html">Models</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/background/languages.html">Languages</a></li>
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/background/properties.html">Properties</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/background/engines.html">Engines</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                
+                                <li class="divider"></li>
+                                
+                            
+                                <li class="container">Use Storm</li>
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/usage/running-storm.html">Running Storm</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/usage/running-storm-on-dfts.html">Running Storm on DFTs</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/usage/running-storm-on-parametric-models.html">Running Storm on Parametric Models</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/usage/troubleshooting.html">Troubleshooting</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                
+                                <li class="divider"></li>
+                                
+                            
+                                <li class="container">Develop with Storm</li>
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/api/">C++ API</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/dependencies.html">Dependencies</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                
+                            
+                            </ul>
+                        </li>
+                        
+                    
+                
+                    
+                        
+                        <li class="nav-item">
+                            <a href="/tutorials.html" class="nav-link ">
+                            Tutorials
+                            </a>
+                        </li>
+                        
+                    
+                
+                    
+                        
+                        <li class="nav-item">
+                            <a href="/publications.html" class="nav-link ">
+                            Publications
+                            </a>
+                        </li>
+                        
+                    
+                
+                    
+                        
+                        <li class="nav-item">
+                            <a href="/benchmarks.html" class="nav-link ">
+                            Benchmarks
+                            </a>
+                        </li>
+                        
+                    
+                
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="nav-item">
+                   <a href="https://github.com/moves-rwth/storm" class="nav-link" target="_blank"><i class="fa fa-github" aria-hidden="true"></i> Source</a>
+                </li>
+                <li class="nav-item">
+                    <a href="https://moves-rwth.github.io/stormpy/" class="nav-link" target="_blank"><i class="icon-python"></i> Stormpy</a>
+                </li>
+            </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+        <ul class="breadcrumb">
+            <li><a href="/index.html">Home</a></li>
+            
+            <li>Background</li>
+            
+            <li class="active">Engines</li>
+        </ul>
+
+        <!--
+        <div class="page-header">
+            <h1>Engines</h1>
+            <hr />
+        </div>
+        -->
+                
+        <div class="content">
+            <h1>Engines</h1>
+
+<div class="panel panel-default">
+<div class="panel-heading">Table of contents</div>
+<div class="panel-body">
+<ul id="markdown-toc">
+  <li><a href="#sparse" id="markdown-toc-sparse">Sparse</a></li>
+  <li><a href="#dd" id="markdown-toc-dd">DD</a></li>
+  <li><a href="#hybrid" id="markdown-toc-hybrid">Hybrid</a></li>
+  <li><a href="#exploration" id="markdown-toc-exploration">Exploration</a></li>
+  <li><a href="#abstraction-refinement" id="markdown-toc-abstraction-refinement">Abstraction-Refinement</a></li>
+</ul>
+
+  </div>
+</div>
+
+<p>As with so many things, there is no one-size-fits-all in probabilistic model checking. Generally, it depends on the characteristics of the input model, which of the model checking approaches works best (for example in terms of time or memory requirements). Therefore, established model checkers provide a range of different <em>engines</em> that pursue different approaches to solve the same problem. In practice, the functionality of the engines is typically incomparable, that is there may be features that an engine can solve that another one cannot and vice versa. In the following, we give a brief intuitive overview on the engines provided by Storm. We also indicate how to select them, in which cases certain engines are well-suited and which major restrictions exist.</p>
+
+<h2 id="sparse">Sparse</h2>
+
+<p>Storm’s main engine is the sparse engine in the sense that it tends to have the most features. It takes the model description and directly builds a representation based on <em>explicit data structures</em>, mainly <a href="https://en.wikipedia.org/wiki/Bit_array" target="_blank">bit vectors</a> and <a href="https://en.wikipedia.org/wiki/Sparse_matrix" target="_blank">sparse matrices</a>. Then, model checking is performed using these data structures. Since these permit easy access to single elements, they are standard representations for many tasks involved in the solution procedure (like solving linear equations). This enables the use of off-the-shelf libraries, for instance <a href="http://eigen.tuxfamily.org" target="_blank">Eigen</a> or <a href="http://getfem.org/gmm.html" target="_blank">gmm++</a>, that implement sophisticated solution methods.</p>
+
+<p><strong>Select</strong>: <code class="language-plaintext highlighter-rouge">--engine sparse</code> or <code class="language-plaintext highlighter-rouge">-e sparse</code></p>
+
+<p><strong>Characteristics</strong>:</p>
+<ul>
+  <li>model building is rather memory- and time-consuming</li>
+  <li>numerical computations tend to be fast</li>
+</ul>
+
+<p><strong>Advisable if</strong>:</p>
+<ul>
+  <li>model is moderately sized</li>
+  <li>model is asymmetrical</li>
+  <li>model checking needs heavy numerical computations (i.e. many iterations, etc.)</li>
+</ul>
+
+<p><strong>Major restrictions</strong>:</p>
+<ul>
+  <li>none</li>
+</ul>
+
+<h2 id="dd">DD</h2>
+
+<p><a href="https://en.wikipedia.org/wiki/Binary_decision_diagram" target="_blank">Binary decision diagrams</a> (BDDs) are a data structure to represent switching functions. They have proven to enable the verification of gigantic hardware circuits. Multi-terminal BDDs (MTBDDs) extend BDDs to allow representing functions that map to numbers rather than just true or false. The dd engine builds a representation of the model in terms of BDDs (state sets) and MTBDDs (matrices, vectors), which is often referred to as a <em>symbolic</em> representation (rather than an <em>explicit</em> representation as in the <a href="#sparse">sparse</a> engine). As MTBDDs support certain arithmetical operations, they are also used in the quantitative model checking step. However, DDs do not allow for (efficient) random access, which limits the numerical solution techniques that are applicable.</p>
+
+<p><strong>Select</strong>: <code class="language-plaintext highlighter-rouge">--engine dd</code> or <code class="language-plaintext highlighter-rouge">-e dd</code></p>
+
+<p><strong>Characteristics</strong>:</p>
+<ul>
+  <li>model building is fast and memory-efficient if the model is structured in some way</li>
+  <li>numerical computations tend to be slower</li>
+</ul>
+
+<p><strong>Advisable if</strong>:</p>
+<ul>
+  <li>model is large</li>
+  <li>model is structured (for example symmetrical)</li>
+  <li>target query does not involve heavy numerical computations (for example qualitative queries)</li>
+</ul>
+
+<p><strong>Major restrictions</strong>:</p>
+<ul>
+  <li>only supports <a href="models.html">discrete-time models</a></li>
+</ul>
+
+<h2 id="hybrid">Hybrid</h2>
+
+<p>The hybrid engine tries to combine the <a href="#sparse">sparse</a> and <a href="#dd">dd</a> engines. It first builds a DD-based representation of the system. Then, however, the model checking is performed in a hybrid manner. That is, operations that are deemed to be more efficient on DDs (qualitative computations) are carried out in this realm, while the heavy numerical computations are performed on an explicit representation derived from the systems’ DDs.</p>
+
+<p><strong>Select</strong>: <code class="language-plaintext highlighter-rouge">--engine hybrid</code> or <code class="language-plaintext highlighter-rouge">-e hybrid</code></p>
+
+<p><strong>Characteristics</strong>:</p>
+<ul>
+  <li>model building is fast and memory-efficient if the model is structured in some way</li>
+  <li>translation from DDs to sparse matrices requires the sparse matrix to fit into memory</li>
+  <li>numerical computations tend to be fast</li>
+</ul>
+
+<p><strong>Advisable if</strong>:</p>
+<ul>
+  <li>model is not too large</li>
+  <li>model is structured (for example symmetrical)</li>
+</ul>
+
+<h2 id="exploration">Exploration</h2>
+
+<p>All engines so far have the requirement that a representation of the model needs to be built prior to model checking. This can be prohibitive for some models and may be unnecessary as fragments of the model may already allow for an answer (within a given precision) to a query. The exploration engine is based on the ideas of applying techniques from <em>machine learning</em> <a class="citation" href="#BCCFKKPU14">[1]</a>. Intuitively, it tries to explore the parts of the system on-the-fly that contribute most to the model checking result.</p>
+
+<p><strong>Select</strong>: <code class="language-plaintext highlighter-rouge">--engine expl</code> or <code class="language-plaintext highlighter-rouge">-e expl</code></p>
+
+<p><strong>Advisable if</strong>:</p>
+<ul>
+  <li>large but finite models</li>
+  <li>small parts of the system potentially influence the model checking result significantly</li>
+  <li>low target precision</li>
+</ul>
+
+<p><strong>Major restrictions</strong>:</p>
+<ul>
+  <li>only supports <a href="models.html">discrete-time models</a></li>
+  <li>only supports reachability objectives</li>
+</ul>
+
+<h2 id="abstraction-refinement">Abstraction-Refinement</h2>
+
+<p>All other engines are not suited for models with an infinite state space. The approach of the abstraction-refinement engine is to start with a coarse over-approximation of the concrete model. This <em>abstract model</em> is then analyzed. Based on the result, one of two things happen: either the result carries over to the concrete model and and an answer can be returned or the abstraction needs to be refined. In the latter case, the abstraction is analyzed again and the loop is repeated until a conclusive answer can be given.</p>
+
+<p class="alert alert-danger">This engine relies heavily on SMT solving (more concretely an enumeration of all satisfying assignments of a formula) and Craig interpolation. Therefore, this engine needs <a href="http://mathsat.fbk.eu/" target="_blank" class="alert-link">MathSAT</a> and Storm has to be built with MathSAT support, which requires a <a href="/documentation/obtain-storm/manual-configuration.html#mathsat" class="alert-link">manual setup</a>.</p>
+
+<p><strong>Select</strong>: <code class="language-plaintext highlighter-rouge">--engine abs</code> or <code class="language-plaintext highlighter-rouge">-e abs</code></p>
+
+<p><strong>Advisable if</strong>:</p>
+<ul>
+  <li>model is gigantic or infinite</li>
+  <li>model is well structured</li>
+</ul>
+
+<p><strong>Major restrictions</strong>:</p>
+<ul>
+  <li>only supports <a href="models.html">discrete-time models</a></li>
+  <li>only supports reachability objectives</li>
+</ul>
+
+			
+
+<h2>References</h2>
+<ul class="bibliography"><li><span id="BCCFKKPU14">Tomás Brázdil <i>et al.</i>, “Verification of Markov Decision Processes Using Learning Algorithms,” in <i>ATVA</i>, 2014.</span>
+
+<br>
+	
+
+<a href="http://dx.doi.org/10.1007/978-3-319-11936-6_8" target="_blank">
+	<img alt="DOI: 10.1007/978-3-319-11936-6_8" src="https://img.shields.io/static/v1?label=&message=DOI&color=blue">
+</a>
+
+
+<a href="https://arxiv.org/abs/1402.2967" target="_blank">
+	<img alt="arXiv: 1402.2967" src="https://img.shields.io/static/v1?label=&message=arXiv&color=A42C25">
+</a>
+
+
+</li></ul>
+
+        </div>
+    </div>
+
+    <footer class="footer bg-primary">
+    <div class="container">
+        <p class="navbar-text">
+			Storm is a probabilistic model checker available on <a href="https://www.github.com/moves-rwth/storm">GitHub</a>.  <a href="/about.html#people">Contact us</a>.
+        </p>
+    </div>
+</footer>
+
+    <!-- JavaScript -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.2.0/js/tether.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
+
+  </body>
+</html>

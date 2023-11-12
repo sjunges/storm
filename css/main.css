@@ -1,0 +1,61 @@
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 60px;
+}
+
+.footer a {
+  color: #fff;
+  text-decoration: underline;
+  font-weight: bold;
+}
+
+.publication_table > table > tbody > tr > td {
+    padding-bottom: 10px;
+}
+
+.publication_table > table > tbody > tr > td:nth-of-type(2n+1) {
+    padding-right: 10px;
+    padding-left: 10px;
+}
+
+.bg-front {
+  position: relative;
+  z-index: 1;
+}
+
+.bg-symbol {
+  position: absolute;
+  font-size: 220px;
+  opacity: 0.25;
+  top: 50%;
+  left: 80%;
+  transform: translate(-80%, -50%);
+  z-index: -1;
+}
+
+.symbol-storm {
+  top: 0%;
+  transform: translate(-80%, -0%);
+}
+
+.center-image {
+  margin: 0 auto;
+  display: block;
+}
+
+.embed-video {
+  max-width: 1024px;
+}

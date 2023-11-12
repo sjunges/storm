@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <title>Storm -- A Modern Probabilistic Model Checker -- Manual Configuration</title>
+    <meta name="description" content="">
+
+    <!-- CSS -->
+    <link rel="shortcut icon" type="image/png" href="/favicon.png" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/flatly/bootstrap.min.css" rel="stylesheet" integrity="sha384-+ENW/yibaokMnme+vBLnHMphUYxHs34h9lpdbSLuAwGkOKFRl4C34WkjazBtb7eT" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/syntax.css">
+    <link rel="stylesheet" href="/fonts/font-mfizz/font-mfizz.css">
+    <link rel="stylesheet" href="/fonts/weather-icons/weather-icons.min.css">
+  </head>
+
+    <body>
+
+    <div class="navbar navbar-default navbar-static-top">
+    <div class="container">
+        <div class="navbar-header">
+            <a href="/index.html" class="navbar-brand"><i class="wi wi-thunderstorm" aria-hidden="true"></i> Storm</a>
+            <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        </div>
+        <div class="navbar-collapse collapse" id="navbar-main">
+            <ul class="nav navbar-nav">
+                
+                
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        <li class="nav-item">
+                            <a href="/news.html" class="nav-link ">
+                            News
+                            </a>
+                        </li>
+                        
+                    
+                
+                    
+                        
+                        <li class="nav-item">
+                            <a href="/about.html" class="nav-link ">
+                            About
+                            </a>
+                        </li>
+                        
+                    
+                
+                    
+                        
+                        <li class="nav-item">
+                            <a href="/getting-started.html" class="nav-link ">
+                            Getting Started
+                            </a>
+                        </li>
+                        
+                    
+                
+                    
+                        
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Documentation<span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                            
+                                <li class="container">Obtain Storm</li>
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/obtain-storm/build.html">Build from Source</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/obtain-storm/homebrew.html">Install via Homebrew</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/obtain-storm/docker.html">Use Docker Container</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/obtain-storm/vm.html">Use Virtual Machine</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/obtain-storm/troubleshooting.html">Troubleshooting</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                
+                                <li class="divider"></li>
+                                
+                            
+                                <li class="container">Background</li>
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/background/models.html">Models</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/background/languages.html">Languages</a></li>
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/background/properties.html">Properties</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/background/engines.html">Engines</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                
+                                <li class="divider"></li>
+                                
+                            
+                                <li class="container">Use Storm</li>
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/usage/running-storm.html">Running Storm</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/usage/running-storm-on-dfts.html">Running Storm on DFTs</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/usage/running-storm-on-parametric-models.html">Running Storm on Parametric Models</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/usage/troubleshooting.html">Troubleshooting</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                
+                                <li class="divider"></li>
+                                
+                            
+                                <li class="container">Develop with Storm</li>
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/api/">C++ API</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/dependencies.html">Dependencies</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                
+                            
+                            </ul>
+                        </li>
+                        
+                    
+                
+                    
+                        
+                        <li class="nav-item">
+                            <a href="/tutorials.html" class="nav-link ">
+                            Tutorials
+                            </a>
+                        </li>
+                        
+                    
+                
+                    
+                        
+                        <li class="nav-item">
+                            <a href="/publications.html" class="nav-link ">
+                            Publications
+                            </a>
+                        </li>
+                        
+                    
+                
+                    
+                        
+                        <li class="nav-item">
+                            <a href="/benchmarks.html" class="nav-link ">
+                            Benchmarks
+                            </a>
+                        </li>
+                        
+                    
+                
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="nav-item">
+                   <a href="https://github.com/moves-rwth/storm" class="nav-link" target="_blank"><i class="fa fa-github" aria-hidden="true"></i> Source</a>
+                </li>
+                <li class="nav-item">
+                    <a href="https://moves-rwth.github.io/stormpy/" class="nav-link" target="_blank"><i class="icon-python"></i> Stormpy</a>
+                </li>
+            </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+        <ul class="breadcrumb">
+            <li><a href="/index.html">Home</a></li>
+            
+            <li class="active">Manual Configuration</li>
+        </ul>
+
+        <!--
+        <div class="page-header">
+            <h1>Manual Configuration</h1>
+            <hr />
+        </div>
+        -->
+                
+        <div class="content">
+            <h1>Manual Configuration</h1>
+
+<div class="panel panel-default">
+<div class="panel-heading">Table of contents</div>
+<div class="panel-body">
+<ul id="markdown-toc">
+  <li><a href="#developer" id="markdown-toc-developer">Developer</a></li>
+  <li><a href="#link-time-optimization" id="markdown-toc-link-time-optimization">Link-time optimization</a></li>
+  <li><a href="#portability" id="markdown-toc-portability">Portability</a></li>
+  <li><a href="#intel-threading-building-blocks-tbb" id="markdown-toc-intel-threading-building-blocks-tbb">Intel Threading Building Blocks (TBB)</a></li>
+  <li><a href="#gurobi" id="markdown-toc-gurobi">Gurobi</a></li>
+  <li><a href="#mathsat" id="markdown-toc-mathsat">MathSAT</a></li>
+</ul>
+
+  </div>
+</div>
+
+<p>Designed for users that need particular features and people developing under Storm, this guide will detail how to perform a manual configuration of the build process.</p>
+
+<p>There are a number of <strong>cmake options</strong> that modify how Storm is built.
+All of them can be set in the <a href="compile.html#configuration-step">configuration step</a> by providing them to <code class="language-plaintext highlighter-rouge">cmake</code>.
+To modify the options after the configuration step, you may run <code class="language-plaintext highlighter-rouge">ccmake ..</code> (assuming that you currently are in <code class="language-plaintext highlighter-rouge">STORM_DIR/build</code>). After changing these options you need to rebuild Storm using <code class="language-plaintext highlighter-rouge">make</code>.</p>
+
+<p>We don’t detail all options here, but only selected ones.</p>
+
+<h2 id="developer">Developer</h2>
+
+<p>For developers, we offer the option <code class="language-plaintext highlighter-rouge">-DSTORM_DEVELOPER=ON</code>. This enables</p>
+
+<ul>
+  <li>more cmake output</li>
+  <li>more warnings</li>
+  <li>debug and trace log levels (they are not always printed and may need to be enabled; in the Storm main binary, this can be done by providing <code class="language-plaintext highlighter-rouge">--debug</code> or <code class="language-plaintext highlighter-rouge">--trace</code>)</li>
+</ul>
+
+<h2 id="link-time-optimization">Link-time optimization</h2>
+
+<p>By default, Storm uses link-time optimization (LTO) to enable even more optimizations that are done at link time. This, however, comes at a penalty for building in terms of both time and memory, as the linking step becomes very resource-intensive. Disabling LTO via <code class="language-plaintext highlighter-rouge">-DSTORM_USE_LTO=OFF</code> avoids this at the price of producing slower binaries.</p>
+
+<h2 id="portability">Portability</h2>
+
+<p>By default, the binaries will be built specifically for your machine, because this enables a wider range of optimizations to be enabled. If you need your binaries to be portable (in the sense that they could run on another machine that has all required dependencies in their right version), you can set <code class="language-plaintext highlighter-rouge">-DSTORM_PORTABLE=ON</code> at the cost of producing slower binaries.</p>
+
+<h2 id="intel-threading-building-blocks-tbb">Intel Threading Building Blocks (TBB)</h2>
+
+<p><a href="https://www.threadingbuildingblocks.org/" target="_blank">Intel’s Threading Building Blocks</a> is a framework for parallelism. If available, Storm can use it to parallelize some operations like (some but not all) matrix-vector multiplications. If TBB is installed, you can enable it by setting the cmake option <code class="language-plaintext highlighter-rouge">-DSTORM_USE_INTELTBB=ON</code> and adding the command line argument <code class="language-plaintext highlighter-rouge">--enable-tbb</code> to Storm.</p>
+
+<h2 id="gurobi">Gurobi</h2>
+
+<p><a href="http://www.gurobi.com/" target="_blank">Gurobi</a> is a commercial high-performance solver for (mixed-integer) linear programs (and similar problems). A free license can be obtained for academic purposes. Storm provides an implementation of its (MI)LP solver interface that uses Gurobi (provided Storm has been compiled with support for it). To enable Gurobi, specify the option <code class="language-plaintext highlighter-rouge">-DSTORM_USE_GUROBI=ON</code> and set a hint at where to find Gurobi via <code class="language-plaintext highlighter-rouge">-DGUROBI_ROOT=/path/to/gurobi</code>.</p>
+
+<h2 id="mathsat">MathSAT</h2>
+
+<p><a href="http://mathsat.fbk.eu/" target="_blank">MathSAT</a> is a high-performance SMT solver that can be used as an alternative to <a href="https://github.com/Z3Prover/z3" target="_blank">Z3</a>. In contrast to Z3, it provides native support for AllSat (enumeration of all satisfying models of a formula) and may generate Craig interpolants. This makes MathSAT particularly useful in the <a href="/documentation/background/engines.html#abstraction-refinement">abstraction-refinement engine</a>. To enable MathSAT, you need to set <code class="language-plaintext highlighter-rouge">-DMSAT_ROOT=/path/to/mathsat/root</code> where MathSAT’s root directory is required to contain the <code class="language-plaintext highlighter-rouge">include</code> and <code class="language-plaintext highlighter-rouge">lib</code> folders with the appropriate files (if you download and unpack it, its the directory into which you unpacked it).</p>
+
+			
+
+        </div>
+    </div>
+
+    <footer class="footer bg-primary">
+    <div class="container">
+        <p class="navbar-text">
+			Storm is a probabilistic model checker available on <a href="https://www.github.com/moves-rwth/storm">GitHub</a>.  <a href="/about.html#people">Contact us</a>.
+        </p>
+    </div>
+</footer>
+
+    <!-- JavaScript -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.2.0/js/tether.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
+
+  </body>
+</html>

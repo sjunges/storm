@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <title>Storm -- A Modern Probabilistic Model Checker -- News</title>
+    <meta name="description" content="">
+
+    <!-- CSS -->
+    <link rel="shortcut icon" type="image/png" href="/favicon.png" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/flatly/bootstrap.min.css" rel="stylesheet" integrity="sha384-+ENW/yibaokMnme+vBLnHMphUYxHs34h9lpdbSLuAwGkOKFRl4C34WkjazBtb7eT" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/syntax.css">
+    <link rel="stylesheet" href="/fonts/font-mfizz/font-mfizz.css">
+    <link rel="stylesheet" href="/fonts/weather-icons/weather-icons.min.css">
+  </head>
+
+    <body>
+
+    <div class="navbar navbar-default navbar-static-top">
+    <div class="container">
+        <div class="navbar-header">
+            <a href="/index.html" class="navbar-brand"><i class="wi wi-thunderstorm" aria-hidden="true"></i> Storm</a>
+            <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        </div>
+        <div class="navbar-collapse collapse" id="navbar-main">
+            <ul class="nav navbar-nav">
+                
+                
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        <li class="nav-item">
+                            <a href="/news.html" class="nav-link active">
+                            News
+                            </a>
+                        </li>
+                        
+                    
+                
+                    
+                        
+                        <li class="nav-item">
+                            <a href="/about.html" class="nav-link ">
+                            About
+                            </a>
+                        </li>
+                        
+                    
+                
+                    
+                        
+                        <li class="nav-item">
+                            <a href="/getting-started.html" class="nav-link ">
+                            Getting Started
+                            </a>
+                        </li>
+                        
+                    
+                
+                    
+                        
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Documentation<span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                            
+                                <li class="container">Obtain Storm</li>
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/obtain-storm/build.html">Build from Source</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/obtain-storm/homebrew.html">Install via Homebrew</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/obtain-storm/docker.html">Use Docker Container</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/obtain-storm/vm.html">Use Virtual Machine</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/obtain-storm/troubleshooting.html">Troubleshooting</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                
+                                <li class="divider"></li>
+                                
+                            
+                                <li class="container">Background</li>
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/background/models.html">Models</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/background/languages.html">Languages</a></li>
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/background/properties.html">Properties</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/background/engines.html">Engines</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                
+                                <li class="divider"></li>
+                                
+                            
+                                <li class="container">Use Storm</li>
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/usage/running-storm.html">Running Storm</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/usage/running-storm-on-dfts.html">Running Storm on DFTs</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/usage/running-storm-on-parametric-models.html">Running Storm on Parametric Models</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/usage/troubleshooting.html">Troubleshooting</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                
+                                <li class="divider"></li>
+                                
+                            
+                                <li class="container">Develop with Storm</li>
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/api/">C++ API</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/dependencies.html">Dependencies</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                
+                            
+                            </ul>
+                        </li>
+                        
+                    
+                
+                    
+                        
+                        <li class="nav-item">
+                            <a href="/tutorials.html" class="nav-link ">
+                            Tutorials
+                            </a>
+                        </li>
+                        
+                    
+                
+                    
+                        
+                        <li class="nav-item">
+                            <a href="/publications.html" class="nav-link ">
+                            Publications
+                            </a>
+                        </li>
+                        
+                    
+                
+                    
+                        
+                        <li class="nav-item">
+                            <a href="/benchmarks.html" class="nav-link ">
+                            Benchmarks
+                            </a>
+                        </li>
+                        
+                    
+                
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="nav-item">
+                   <a href="https://github.com/moves-rwth/storm" class="nav-link" target="_blank"><i class="fa fa-github" aria-hidden="true"></i> Source</a>
+                </li>
+                <li class="nav-item">
+                    <a href="https://moves-rwth.github.io/stormpy/" class="nav-link" target="_blank"><i class="icon-python"></i> Stormpy</a>
+                </li>
+            </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+        <ul class="breadcrumb">
+            <li><a href="/index.html">Home</a></li>
+            
+            <li class="active">News</li>
+        </ul>
+
+        <!--
+        <div class="page-header">
+            <h1>News</h1>
+            <hr />
+        </div>
+        -->
+                
+        <div class="content">
+            
+<div class="panel panel-default">
+    <div class="panel-heading">New version 1.8.0
+        <div class="pull-right">13 June 2023</div>
+    </div>
+    <div class="panel-body">
+        <p>We are happy to announce the next stable releases of Storm and stormpy in version 1.8.0.</p>
+
+        <a href="/2023/06/13/version.1.8.0.html">Read more</a>
+    </div>
+    
+    <div class="panel-footer">
+        
+        <span class="badge badge-primary">new version</span>
+        
+    </div>
+    
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">SAFEST tool for fault tree analysis based on Storm
+        <div class="pull-right">21 March 2023</div>
+    </div>
+    <div class="panel-body">
+        <p>The <a href="https://www.safest.dgbtek.com">SAFEST tool</a> for modeling and analysing static and dynamic fault trees has been released.
+SAFEST is based on the Storm model checker.</p>
+
+
+        <a href="/2023/03/21/safest_tool.html">Read more</a>
+    </div>
+    
+    <div class="panel-footer">
+        
+        <span class="badge badge-primary">tool</span>
+        
+    </div>
+    
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">Storm featured in UAI Tutorial
+        <div class="pull-right">02 August 2022</div>
+    </div>
+    <div class="panel-body">
+        <p>Storm has recently been featured in a tutorial on probabilistic verification at <a href="https://www.auai.org/uai2022/">UAI 2022</a>.</p>
+
+        <a href="/2022/08/02/uaitutorial.html">Read more</a>
+    </div>
+    
+    <div class="panel-footer">
+        
+        <span class="badge badge-primary">tutorial</span>
+        
+    </div>
+    
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">New version 1.7.0
+        <div class="pull-right">31 July 2022</div>
+    </div>
+    <div class="panel-body">
+        <p>We are happy to announce the next stable releases of Storm and stormpy in version 1.7.0.</p>
+
+        <a href="/2022/07/31/version.1.7.0.html">Read more</a>
+    </div>
+    
+    <div class="panel-footer">
+        
+        <span class="badge badge-primary">new version</span>
+        
+    </div>
+    
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">10 years of Storm
+        <div class="pull-right">11 June 2022</div>
+    </div>
+    <div class="panel-body">
+        <p>We celebrate the 10th anniversary of Storm.</p>
+
+        <a href="/2022/06/11/10_years.html">Read more</a>
+    </div>
+    
+    <div class="panel-footer">
+        
+        <span class="badge badge-primary"></span>
+        
+    </div>
+    
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">QComp 2020 Results
+        <div class="pull-right">28 October 2021</div>
+    </div>
+    <div class="panel-body">
+        <p>Storm successfully participated in the second edition of the <a href="http://qcomp.org/competition/2020/" target="_blank">Comparison of Tools for the Analysis of Quantitative Formal Models (QComp 2020)</a>. The competition report is available <a href="https://doi.org/10.1007/978-3-030-83723-5_15" target="_blank">here</a>.</p>
+
+
+        <a href="/2021/10/28/qcomp2020.html">Read more</a>
+    </div>
+    
+    <div class="panel-footer">
+        
+        <span class="badge badge-primary">publication</span>
+        
+        <span class="badge badge-primary">benchmarks</span>
+        
+    </div>
+    
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">Storm in Aachener Nachrichten
+        <div class="pull-right">15 May 2021</div>
+    </div>
+    <div class="panel-body">
+        <p>The newspaper <em>Aachener Nachrichten</em> published the article <a href="https://www.aachener-nachrichten.de/wirtschaft/storm-findet-sicherheitskritische-softwarefehler_aid-57974823">Storm findet sicherheitskritische Softwarefehler</a>.</p>
+
+        <a href="/2021/05/15/aachener-nachrichten.html">Read more</a>
+    </div>
+    
+    <div class="panel-footer">
+        
+        <span class="badge badge-primary">article</span>
+        
+    </div>
+    
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">2nd place at RWTH Innovation Award 2020
+        <div class="pull-right">05 March 2021</div>
+    </div>
+    <div class="panel-body">
+        <p>The Storm model checker has received the second place at the <a href="https://www.rwth-aachen.de/cms/root/Die-RWTH/Aktuell/Pressemitteilungen/Maerz-2021/~mzsyp/Ausgezeichnete-Ideen-fuer-eine-starke-Aa/?lidx=1">RWTH Innovation Award 2020</a>.
+The annual awards honours ideas and technologies developed by researchers and inventors at RWTH Aachen University.</p>
+
+        <a href="/2021/03/05/innovation_award.html">Read more</a>
+    </div>
+    
+    <div class="panel-footer">
+        
+        <span class="badge badge-primary">award</span>
+        
+    </div>
+    
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">Videos of Storm tutorial
+        <div class="pull-right">18 June 2020</div>
+    </div>
+    <div class="panel-body">
+        <p>The videos of our Storm tutorial are available as <a href="/tutorials.html">videos</a>.</p>
+
+        <a href="/2020/06/18/discotec.html">Read more</a>
+    </div>
+    
+    <div class="panel-footer">
+        
+        <span class="badge badge-primary">video</span>
+        
+    </div>
+    
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">Storm tutorial at DisCoTec 2020
+        <div class="pull-right">15 June 2020</div>
+    </div>
+    <div class="panel-body">
+        <p>We are giving an (online) tutorial on Storm at <a href="https://www.discotec.org/2020/">DisCoTec 2020</a>.</p>
+
+        <a href="/2020/06/15/discotec.html">Read more</a>
+    </div>
+    
+    <div class="panel-footer">
+        
+        <span class="badge badge-primary">publication</span>
+        
+    </div>
+    
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">New version 1.6.0
+        <div class="pull-right">08 June 2020</div>
+    </div>
+    <div class="panel-body">
+        <p>We are happy to announce the next stable releases of Storm and stormpy in version 1.6.0.</p>
+
+        <a href="/2020/06/08/version.1.6.0.html">Read more</a>
+    </div>
+    
+    <div class="panel-footer">
+        
+        <span class="badge badge-primary">new version</span>
+        
+    </div>
+    
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">New version 1.5.0
+        <div class="pull-right">12 March 2020</div>
+    </div>
+    <div class="panel-body">
+        <p>We are happy to announce the next stable release of Storm in version 1.5.0.</p>
+
+        <a href="/2020/03/12/version.1.5.0.html">Read more</a>
+    </div>
+    
+    <div class="panel-footer">
+        
+        <span class="badge badge-primary">new version</span>
+        
+    </div>
+    
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">EAPLS PhD Dissertation Award 2018
+        <div class="pull-right">12 December 2019</div>
+    </div>
+    <div class="panel-body">
+        <p>We are excited to announce that Christian Hensel has won the EAPLS (European Association of Programming Language and Systems) <a href="https://eapls.org/items/3382/">PhD Dissertation Award 2018</a>. 
+His dissertation on “The Probabilistic Model Checker Storm” has been selected by an international jury among all nominated dissertations.</p>
+
+        <a href="/2019/12/12/award.html">Read more</a>
+    </div>
+    
+    <div class="panel-footer">
+        
+        <span class="badge badge-primary">award</span>
+        
+    </div>
+    
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">New version 1.4.0
+        <div class="pull-right">15 November 2019</div>
+    </div>
+    <div class="panel-body">
+        <p>We are happy to announce the next stable release of Storm in version 1.4.0.</p>
+
+        <a href="/2019/11/15/version.1.4.0.html">Read more</a>
+    </div>
+    
+    <div class="panel-footer">
+        
+        <span class="badge badge-primary">new version</span>
+        
+    </div>
+    
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">Storm participated in QComp 2019
+        <div class="pull-right">11 April 2019</div>
+    </div>
+    <div class="panel-body">
+        <p>Storm participated in the first edition of the <a href="http://qcomp.org/competition/2019/index.html">Comparison of Tools for the Analysis of Quantitative Formal Models (QComp 2019)</a> as part of the <a href="https://tacas.info/toolympics.php">TACAS TOOLympics</a>.</p>
+
+
+        <a href="/2019/04/11/qcomp2019.html">Read more</a>
+    </div>
+    
+    <div class="panel-footer">
+        
+        <span class="badge badge-primary">publication</span>
+        
+        <span class="badge badge-primary">benchmarks</span>
+        
+    </div>
+    
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">New version 1.3.0
+        <div class="pull-right">15 December 2018</div>
+    </div>
+    <div class="panel-body">
+        <p>We are happy to announce the next stable release of Storm in version 1.3.0.</p>
+
+        <a href="/2018/12/15/version.1.3.0.html">Read more</a>
+    </div>
+    
+    <div class="panel-footer">
+        
+        <span class="badge badge-primary">new version</span>
+        
+    </div>
+    
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">New version 1.2.0
+        <div class="pull-right">12 December 2017</div>
+    </div>
+    <div class="panel-body">
+        <p>We are happy to announce the next stable release of Storm in version 1.2.0.</p>
+
+        <a href="/2017/12/12/version.1.2.0.html">Read more</a>
+    </div>
+    
+    <div class="panel-footer">
+        
+        <span class="badge badge-primary">new version</span>
+        
+    </div>
+    
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">New version 1.1.0
+        <div class="pull-right">10 August 2017</div>
+    </div>
+    <div class="panel-body">
+        <p>As Storm has quite some new features and its dependencies (noticably, carl) moved forward as well, we are happy to announce Storm version 1.1.0.</p>
+
+        <a href="/2017/08/10/version.1.1.0.html">Read more</a>
+    </div>
+    
+    <div class="panel-footer">
+        
+        <span class="badge badge-primary">new version</span>
+        
+    </div>
+    
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">Storm at CAV 2017
+        <div class="pull-right">12 April 2017</div>
+    </div>
+    <div class="panel-body">
+        <p>We are delighted that a tool-paper describing Storm has been accepted for presentation at <a href="http://cavconference.org/2017/accepted-papers/">Computer Aided Verification 2017</a> in Heidelberg, Germany.</p>
+
+
+        <a href="/2017/04/12/cav.html">Read more</a>
+    </div>
+    
+    <div class="panel-footer">
+        
+        <span class="badge badge-primary">publication</span>
+        
+    </div>
+    
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">New version 1.0.0
+        <div class="pull-right">11 March 2017</div>
+    </div>
+    <div class="panel-body">
+        <p>As Storm is becoming more stable, we decided to take a leap and move Storm’s version to 1.0.0.</p>
+
+        <a href="/2017/03/11/version-1.0.0.html">Read more</a>
+    </div>
+    
+    <div class="panel-footer">
+        
+        <span class="badge badge-primary">new version</span>
+        
+    </div>
+    
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">Homebrew formula
+        <div class="pull-right">07 February 2017</div>
+    </div>
+    <div class="panel-body">
+        <p>To ease the installation of Storm, we now provide a <a href="https://brew.sh/" target="_blank">Homebrew</a> formula.</p>
+
+        <a href="/2017/02/07/homebrew.html">Read more</a>
+    </div>
+    
+    <div class="panel-footer">
+        
+        <span class="badge badge-primary"></span>
+        
+    </div>
+    
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">Storm source code released
+        <div class="pull-right">20 January 2017</div>
+    </div>
+    <div class="panel-body">
+        <p>We proudly announce the release of the source code on <a href="https://github.com/moves-rwth/storm">GitHub</a>.</p>
+
+        <a href="/2017/01/20/release.html">Read more</a>
+    </div>
+    
+    <div class="panel-footer">
+        
+        <span class="badge badge-primary">new version</span>
+        
+    </div>
+    
+</div>
+
+
+			
+
+        </div>
+    </div>
+
+    <footer class="footer bg-primary">
+    <div class="container">
+        <p class="navbar-text">
+			Storm is a probabilistic model checker available on <a href="https://www.github.com/moves-rwth/storm">GitHub</a>.  <a href="/about.html#people">Contact us</a>.
+        </p>
+    </div>
+</footer>
+
+    <!-- JavaScript -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.2.0/js/tether.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
+
+  </body>
+</html>

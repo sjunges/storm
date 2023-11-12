@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <title>Storm -- A Modern Probabilistic Model Checker -- Building for Apple Silicon</title>
+    <meta name="description" content="">
+
+    <!-- CSS -->
+    <link rel="shortcut icon" type="image/png" href="/favicon.png" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/flatly/bootstrap.min.css" rel="stylesheet" integrity="sha384-+ENW/yibaokMnme+vBLnHMphUYxHs34h9lpdbSLuAwGkOKFRl4C34WkjazBtb7eT" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/syntax.css">
+    <link rel="stylesheet" href="/fonts/font-mfizz/font-mfizz.css">
+    <link rel="stylesheet" href="/fonts/weather-icons/weather-icons.min.css">
+  </head>
+
+    <body>
+
+    <div class="navbar navbar-default navbar-static-top">
+    <div class="container">
+        <div class="navbar-header">
+            <a href="/index.html" class="navbar-brand"><i class="wi wi-thunderstorm" aria-hidden="true"></i> Storm</a>
+            <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        </div>
+        <div class="navbar-collapse collapse" id="navbar-main">
+            <ul class="nav navbar-nav">
+                
+                
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        <li class="nav-item">
+                            <a href="/news.html" class="nav-link ">
+                            News
+                            </a>
+                        </li>
+                        
+                    
+                
+                    
+                        
+                        <li class="nav-item">
+                            <a href="/about.html" class="nav-link ">
+                            About
+                            </a>
+                        </li>
+                        
+                    
+                
+                    
+                        
+                        <li class="nav-item">
+                            <a href="/getting-started.html" class="nav-link ">
+                            Getting Started
+                            </a>
+                        </li>
+                        
+                    
+                
+                    
+                        
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Documentation<span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                            
+                                <li class="container">Obtain Storm</li>
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/obtain-storm/build.html">Build from Source</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/obtain-storm/homebrew.html">Install via Homebrew</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/obtain-storm/docker.html">Use Docker Container</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/obtain-storm/vm.html">Use Virtual Machine</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/obtain-storm/troubleshooting.html">Troubleshooting</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                
+                                <li class="divider"></li>
+                                
+                            
+                                <li class="container">Background</li>
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/background/models.html">Models</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/background/languages.html">Languages</a></li>
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/background/properties.html">Properties</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/background/engines.html">Engines</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                
+                                <li class="divider"></li>
+                                
+                            
+                                <li class="container">Use Storm</li>
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/usage/running-storm.html">Running Storm</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/usage/running-storm-on-dfts.html">Running Storm on DFTs</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/usage/running-storm-on-parametric-models.html">Running Storm on Parametric Models</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/usage/troubleshooting.html">Troubleshooting</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                
+                                <li class="divider"></li>
+                                
+                            
+                                <li class="container">Develop with Storm</li>
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/api/">C++ API</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/dependencies.html">Dependencies</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                
+                            
+                            </ul>
+                        </li>
+                        
+                    
+                
+                    
+                        
+                        <li class="nav-item">
+                            <a href="/tutorials.html" class="nav-link ">
+                            Tutorials
+                            </a>
+                        </li>
+                        
+                    
+                
+                    
+                        
+                        <li class="nav-item">
+                            <a href="/publications.html" class="nav-link ">
+                            Publications
+                            </a>
+                        </li>
+                        
+                    
+                
+                    
+                        
+                        <li class="nav-item">
+                            <a href="/benchmarks.html" class="nav-link ">
+                            Benchmarks
+                            </a>
+                        </li>
+                        
+                    
+                
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="nav-item">
+                   <a href="https://github.com/moves-rwth/storm" class="nav-link" target="_blank"><i class="fa fa-github" aria-hidden="true"></i> Source</a>
+                </li>
+                <li class="nav-item">
+                    <a href="https://moves-rwth.github.io/stormpy/" class="nav-link" target="_blank"><i class="icon-python"></i> Stormpy</a>
+                </li>
+            </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+        <ul class="breadcrumb">
+            <li><a href="/index.html">Home</a></li>
+            
+            <li class="active">Building for Apple Silicon</li>
+        </ul>
+
+        <!--
+        <div class="page-header">
+            <h1>Building for Apple Silicon</h1>
+            <hr />
+        </div>
+        -->
+                
+        <div class="content">
+            <h1>Building for ARM-based Apple Silicon Systems </h1>
+
+<h2 id="native-compilation-to-an-arm-binary-recommended">Native Compilation to an ARM binary (recommended)</h2>
+
+<p>Storm compiles natively on ARM-based Apple Silicon processors. 
+However, there are a few points to consider for troubleshooting.</p>
+
+<ul>
+  <li>Make sure you have the latest version of Storm (Version 1.8.0 or later)</li>
+  <li>Make sure that you use an ARM compiled <code class="language-plaintext highlighter-rouge">cmake</code> binary (check with <code class="language-plaintext highlighter-rouge">where cmake</code> and <code class="language-plaintext highlighter-rouge">file path/to/cmake</code>)</li>
+  <li>Dependencies need to be installed using the <em>ARM</em> version of homebrew. Skip <code class="language-plaintext highlighter-rouge">cln</code> and <code class="language-plaintext highlighter-rouge">ginac</code> since (at the time of writing) they do not have an ARM version supported by homebrew</li>
+  <li>Carl also needs to be build without <code class="language-plaintext highlighter-rouge">cln</code> and <code class="language-plaintext highlighter-rouge">ginac</code>.</li>
+  <li>If you previously had an x86 version installed, you need to re-build Storm (and carl, if installed manually) from scratch. For this, remove the corresponding <code class="language-plaintext highlighter-rouge">build</code> folders and invoke the building steps again.</li>
+  <li>Examine the <code class="language-plaintext highlighter-rouge">cmake</code> output. It might have found an <code class="language-plaintext highlighter-rouge">x86</code> version of carl or another dependency. Homebrew dependencies should normally be found in <code class="language-plaintext highlighter-rouge">/opt/homebrew</code>, <em>not</em> in <code class="language-plaintext highlighter-rouge">/usr/local/</code>.</li>
+  <li>Contact us at <a href="mailto:support@stormchecker.org">support@stormchecker.org</a> or on <a href="https://github.com/moves-rwth/storm">GitHub</a> in case of issues.</li>
+</ul>
+
+<h2 id="compiling-with-x86-emulation">Compiling with x86 Emulation</h2>
+
+<p>In some cases, e.g. when an older Storm version needs to be used, it might be necessary to compile an x86 version of Storm that can be run on Apple Silicon systems using Emulation via Rosetta 2.</p>
+
+<h3 id="x86-emulation-and-development-tools">x86 Emulation and Development Tools</h3>
+<p>Install Rosetta 2 and either the command line tools (CLT) or Xcode. Installing Rosetta 2 and the CLT can be done using the terminal by executing</p>
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>softwareupdate <span class="nt">--install-rosetta</span>
+<span class="gp">$</span><span class="w"> </span>xcode-select <span class="nt">--install</span>
+</code></pre></div></div>
+
+<p>The following steps should be performed inside a x86 shell so that universal binaries are invoked correctly.
+If you are using <code class="language-plaintext highlighter-rouge">zsh</code> (which is the default shell on macOS), this can be done by executing <code class="language-plaintext highlighter-rouge">arch -x86_64 zsh</code>.
+To easily see that your shell runs in x86 mode, you can add the following lines to your <code class="language-plaintext highlighter-rouge">~/.zshrc</code> file:</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">#</span><span class="w"> </span>modify the prompt <span class="k">if in </span>x86 mode
+<span class="gp">if [[ $</span><span class="o">(</span><span class="nb">uname</span> <span class="nt">-m</span><span class="o">)</span> <span class="o">==</span> <span class="s1">'x86_64'</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
+<span class="gp">	expot PROMPT="%F{cyan}x86%f:$</span>PROMPT<span class="s2">"
+</span><span class="go">fi
+</span></code></pre></div></div>
+
+<h3 id="homebrew">Homebrew</h3>
+
+<p>You need a homebrew installation for x86 compilation, preferably in <code class="language-plaintext highlighter-rouge">/usr/local/</code>. This can be done via</p>
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span><span class="nb">arch</span> <span class="nt">-x86_64</span> /bin/bash <span class="nt">-c</span> <span class="s2">"</span><span class="si">$(</span>curl <span class="nt">-fsSL</span> https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh<span class="si">)</span><span class="s2">"</span>
+</code></pre></div></div>
+
+<p class="alert alert-info">You can have <a href="https://docs.brew.sh/Installation#multiple-installations" target="_blank" class="alert-link">seperate homebrew installations</a> that use default paths for x86 and ARM, respectively. One valid configuration would be to have one homebrew installation for x86 compilation in <code class="language-plaintext highlighter-rouge">/usr/local/</code> and one for ARM compilation in <code class="language-plaintext highlighter-rouge">/opt/homebrew/</code>.</p>
+
+<p>We set an alias <code class="language-plaintext highlighter-rouge">brew86</code> to ensure that the x86 homebrew installation is invoked.</p>
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span><span class="nb">alias </span><span class="nv">brew86</span><span class="o">=</span><span class="nb">arch</span> <span class="nt">-x86_64</span> /usr/local/bin/brew  <span class="c"># change path if necessary.</span>
+</code></pre></div></div>
+
+<p>Confirm that homebrew recognizes CLT <em>or</em> Xcode by querying</p>
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>brew86 config | <span class="nb">grep</span> <span class="s1">'CLT\|Xcode'</span>
+</code></pre></div></div>
+<p>If the output provides no information for <em>both</em> entries, like so:</p>
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="go">CLT: N/A
+Xcode: N/A
+</span></code></pre></div></div>
+<p>you need to reinstall either suites. Downloading CLT <a href="https://developer.apple.com/downloads/more/" target="_blank">directly from Apples website</a> fixes this issue for some users.</p>
+
+<p>Finally, check that Rosetta 2 can be detected by Homebrew:</p>
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>brew86 config | <span class="nb">grep</span> <span class="s1">'Rosetta 2'</span>
+</code></pre></div></div>
+<p>If you have never run any application using Rosetta 2, a popup will appear asking you to install it. If the above command yields</p>
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="go">Rosetta 2: true
+</span></code></pre></div></div>
+<p>you are ready to continue.</p>
+
+<h3 id="general-dependencies">General Dependencies</h3>
+<p>Install the x86 version of the <a href="dependencies.html#general-dependencies">general dependencies</a> of Storm using homebrew. You need to enable x86 emulation (through Rosetta 2) by prefixing the <code class="language-plaintext highlighter-rouge">brew</code> command with <code class="language-plaintext highlighter-rouge">arch -x86_64</code>, e.g. by using the <code class="language-plaintext highlighter-rouge">brew86</code> alias that we set above.</p>
+
+<p class="alert alert-info">If the wrong homebrew installation is specified, the installations are done to paths used for ARM binaries which will not work for x86 emulation.</p>
+
+<h3 id="cmake">CMake</h3>
+<p>ARM versions of CMake do often not play nicely with the compilation of dependencies Storm is using, which is why we recommend to use a x86 version of cmake. Check which architecture your cmake executable is targeting by executing:</p>
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>file <span class="si">$(</span>which cmake<span class="si">)</span>
+</code></pre></div></div>
+<p>Ensure that the output is <code class="language-plaintext highlighter-rouge">Mach-O 64-bit executable x86_64</code> or <code class="language-plaintext highlighter-rouge">Mach-O universal binary with 2 architectures: [x86_64:Mach-O 64-bit executable x86_64] [arm64]</code>. If instead <code class="language-plaintext highlighter-rouge">Mach-O 64-bit executable arm64</code> is prompted, you need to locate a cmake executable that is either targeting x86 architectures or an universal binary with x86 support. The following command iterates over registered cmake installations and displays those that are compatible:</p>
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>where cmake | <span class="nb">sort</span> | <span class="nb">uniq</span> | <span class="k">while </span><span class="nb">read </span>l<span class="p">;</span> <span class="k">do if</span> <span class="o">[[</span> <span class="si">$(</span>file <span class="nv">$line</span><span class="si">)</span> <span class="o">==</span> <span class="k">*</span><span class="s2">"x86"</span><span class="k">*</span> <span class="o">]]</span> <span class="k">then </span><span class="nb">echo</span> <span class="s2">"x86 compatible CMake at: </span><span class="nv">$l</span><span class="s2">"</span><span class="p">;</span> <span class="k">fi</span><span class="p">;</span> <span class="k">done</span>
+</code></pre></div></div>
+<p>If you have used Homebrew to install cmake, you can also find the installation using this command instead:</p>
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>file <span class="si">$(</span><span class="nb">arch</span> <span class="nt">-x86_64</span> <span class="nv">$X86_BREW</span> <span class="nt">--prefix</span> cmake<span class="si">)</span>/bin/cmake
+</code></pre></div></div>
+<p>where <code class="language-plaintext highlighter-rouge">$X86_BREW</code> is as explained <a href="apple-silicon.html#homebrew">above</a>.</p>
+
+<p class="alert alert-danger">There are known issues when compiling Storm using older versions of CMake.
+These issues seem to have been fixed with cmake version <code class="language-plaintext highlighter-rouge">3.19.5</code>. Make sure to use the latest version of CMake.</p>
+
+<h3 id="building-storm-from-source">Building Storm from Source.</h3>
+
+<p>You can now obtain, configure, and build Storm as outlined <a href="build.html#obtaining-the-source-code">here</a>.</p>
+
+			
+
+        </div>
+    </div>
+
+    <footer class="footer bg-primary">
+    <div class="container">
+        <p class="navbar-text">
+			Storm is a probabilistic model checker available on <a href="https://www.github.com/moves-rwth/storm">GitHub</a>.  <a href="/about.html#people">Contact us</a>.
+        </p>
+    </div>
+</footer>
+
+    <!-- JavaScript -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.2.0/js/tether.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
+
+  </body>
+</html>

@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <title>Storm -- A Modern Probabilistic Model Checker -- Running Storm on DFTs</title>
+    <meta name="description" content="">
+
+    <!-- CSS -->
+    <link rel="shortcut icon" type="image/png" href="/favicon.png" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/flatly/bootstrap.min.css" rel="stylesheet" integrity="sha384-+ENW/yibaokMnme+vBLnHMphUYxHs34h9lpdbSLuAwGkOKFRl4C34WkjazBtb7eT" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/syntax.css">
+    <link rel="stylesheet" href="/fonts/font-mfizz/font-mfizz.css">
+    <link rel="stylesheet" href="/fonts/weather-icons/weather-icons.min.css">
+  </head>
+
+    <body>
+
+    <div class="navbar navbar-default navbar-static-top">
+    <div class="container">
+        <div class="navbar-header">
+            <a href="/index.html" class="navbar-brand"><i class="wi wi-thunderstorm" aria-hidden="true"></i> Storm</a>
+            <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        </div>
+        <div class="navbar-collapse collapse" id="navbar-main">
+            <ul class="nav navbar-nav">
+                
+                
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        <li class="nav-item">
+                            <a href="/news.html" class="nav-link ">
+                            News
+                            </a>
+                        </li>
+                        
+                    
+                
+                    
+                        
+                        <li class="nav-item">
+                            <a href="/about.html" class="nav-link ">
+                            About
+                            </a>
+                        </li>
+                        
+                    
+                
+                    
+                        
+                        <li class="nav-item">
+                            <a href="/getting-started.html" class="nav-link ">
+                            Getting Started
+                            </a>
+                        </li>
+                        
+                    
+                
+                    
+                        
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Documentation<span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                            
+                                <li class="container">Obtain Storm</li>
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/obtain-storm/build.html">Build from Source</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/obtain-storm/homebrew.html">Install via Homebrew</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/obtain-storm/docker.html">Use Docker Container</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/obtain-storm/vm.html">Use Virtual Machine</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/obtain-storm/troubleshooting.html">Troubleshooting</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                
+                                <li class="divider"></li>
+                                
+                            
+                                <li class="container">Background</li>
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/background/models.html">Models</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/background/languages.html">Languages</a></li>
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/background/properties.html">Properties</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/background/engines.html">Engines</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                
+                                <li class="divider"></li>
+                                
+                            
+                                <li class="container">Use Storm</li>
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/usage/running-storm.html">Running Storm</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/usage/running-storm-on-dfts.html">Running Storm on DFTs</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/usage/running-storm-on-parametric-models.html">Running Storm on Parametric Models</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/usage/troubleshooting.html">Troubleshooting</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                
+                                <li class="divider"></li>
+                                
+                            
+                                <li class="container">Develop with Storm</li>
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/api/">C++ API</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                        <li><a href="/documentation/dependencies.html">Dependencies</a></li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                
+                            
+                            </ul>
+                        </li>
+                        
+                    
+                
+                    
+                        
+                        <li class="nav-item">
+                            <a href="/tutorials.html" class="nav-link ">
+                            Tutorials
+                            </a>
+                        </li>
+                        
+                    
+                
+                    
+                        
+                        <li class="nav-item">
+                            <a href="/publications.html" class="nav-link ">
+                            Publications
+                            </a>
+                        </li>
+                        
+                    
+                
+                    
+                        
+                        <li class="nav-item">
+                            <a href="/benchmarks.html" class="nav-link ">
+                            Benchmarks
+                            </a>
+                        </li>
+                        
+                    
+                
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="nav-item">
+                   <a href="https://github.com/moves-rwth/storm" class="nav-link" target="_blank"><i class="fa fa-github" aria-hidden="true"></i> Source</a>
+                </li>
+                <li class="nav-item">
+                    <a href="https://moves-rwth.github.io/stormpy/" class="nav-link" target="_blank"><i class="icon-python"></i> Stormpy</a>
+                </li>
+            </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+        <ul class="breadcrumb">
+            <li><a href="/index.html">Home</a></li>
+            
+            <li>Use Storm</li>
+            
+            <li class="active">Running Storm on DFTs</li>
+        </ul>
+
+        <!--
+        <div class="page-header">
+            <h1>Running Storm on DFTs</h1>
+            <hr />
+        </div>
+        -->
+                
+        <div class="content">
+            <h1>Running Storm on DFTs</h1>
+
+<div class="panel panel-default">
+<div class="panel-heading">Table of contents</div>
+<div class="panel-body">
+<ul id="markdown-toc">
+  <li><a href="#analyzing-dfts" id="markdown-toc-analyzing-dfts">Analyzing DFTs</a>    <ul>
+      <li><a href="#example-1-fault-tree-analysis-of-a-motorbike" id="markdown-toc-example-1-fault-tree-analysis-of-a-motorbike">Example 1 (Fault tree analysis of a motorbike)</a></li>
+      <li><a href="#example-2-fault-tree-analysis-of-the-hypothetical-example-computer-system-hecs" id="markdown-toc-example-2-fault-tree-analysis-of-the-hypothetical-example-computer-system-hecs">Example 2 (Fault tree analysis of the Hypothetical Example Computer System (HECS))</a></li>
+    </ul>
+  </li>
+</ul>
+
+  </div>
+</div>
+
+<h2 id="analyzing-dfts">Analyzing DFTs</h2>
+
+<p>The support for fault tree analysis is bundled in the <code class="language-plaintext highlighter-rouge">storm-dft</code> binary which should be created during the <a href="/documentation/obtain-storm/build.html#build-step">build</a>. The input of Dynamic fault trees (DFTs) is given in the <a href="/documentation/background/languages.html#dfts">Galileo format</a>.</p>
+
+<h4 id="example-1-fault-tree-analysis-of-a-motorbike">Example 1 (Fault tree analysis of a motorbike)</h4>
+
+<p>We consider the example of a motorbike with a front wheel and a rear wheel. When one of the wheels fails, the spare wheel can be used as a replacement. If more than one wheel fails, the whole motorbike fails. The fault tree for the motor bike is given in the following.</p>
+
+<div>
+  <a href=".dft_motorbike" data-toggle="collapse" class="btn btn-primary btn-block">
+    <div class="dft_motorbike collapse in">
+      <i class="fa fa-chevron-down fa-pull-right" aria-hidden="true"></i>Show DFT file of motorbike
+    </div>
+    <div class="dft_motorbike collapse">
+      <i class="fa fa-chevron-up fa-pull-right" aria-hidden="true"></i>Hide DFT file of motorbike
+    </div>
+  </a>
+</div>
+
+<div class="dft_motorbike collapse">
+  <p><a href="/resources/input-examples/dft/motorbike.dft"><i class="fa fa-file-text-o" aria-hidden="true"></i> Download DFT file of motorbike</a></p>
+  <div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>toplevel "Bike";
+"Bike" or "Front" "Back";
+"Front" wsp "FrontWheel" "SpareWheel";
+"Back" wsp "RearWheel" "SpareWheel";
+"FrontWheel" lambda=0.5 dorm=0.0;
+"RearWheel" lambda=0.5 dorm=0.0;
+"SpareWheel" lambda=1.0 dorm=0.1;
+</code></pre></div>  </div>
+</div>
+
+<p>For the fault tree analysis two measures are of importance: <em>reliability</em> and <em>mean-time-to-failure (MTTF)</em>. The reliability at time t=1 can be computed with the following call:</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>storm-dft <span class="nt">-dft</span> motorbike.dft <span class="nt">--timebound</span> 1
+</code></pre></div></div>
+
+<div>
+  <a href=".dft_motorbike_timebound" data-toggle="collapse" class="btn btn-default btn-block">
+    <div class="dft_motorbike_timebound collapse in">
+      <i class="fa fa-chevron-down fa-pull-right" aria-hidden="true"></i>Show output
+    </div>
+    <div class="dft_motorbike_timebound collapse">
+      <i class="fa fa-chevron-up fa-pull-right" aria-hidden="true"></i>Hide output
+    </div>
+  </a>
+</div>
+
+<div class="dft_motorbike_timebound collapse">
+  <div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Storm-DyFTeE 1.0.0
+
+Command line arguments: -dft motorbike.dft --timebound 1
+Current working directory: ~/storm/storm/build/bin
+
+Loading DFT from file motorbike.dft
+--------------------------------------------------------------
+Model type: 	CTMC (sparse)
+States: 	10
+Transitions: 	15
+Reward Models:  none
+Labels: 	2
+   * init -&gt; 1 state(s)
+   * failed -&gt; 6 state(s)
+choice labels: 	no
+--------------------------------------------------------------
+Model checking property Pmin=? [true U&lt;=1 "failed"] ...
+Result (initial states): 0.3577681657
+Time for model checking: 0.000s.
+Times:
+Exploration:	0.001s
+Building:	0.000s
+Bisimulation:	0.000s
+Modelchecking:	0.000s
+Total:		0.001s
+Result: [0.3577681657]
+</code></pre></div>  </div>
+</div>
+
+<p>At time t=1 the probability of having a failure of the motorbike is 35.78%.</p>
+
+<p>For a better indication of the reliability over time multiple time points can be computed at once:</p>
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>storm-dft <span class="nt">-dft</span> motorbike.dft <span class="nt">--timepoints</span> 1 5 0.1
+</code></pre></div></div>
+
+<div>
+  <a href=".dft_motorbike_timepoints" data-toggle="collapse" class="btn btn-default btn-block">
+    <div class="dft_motorbike_timepoints collapse in">
+      <i class="fa fa-chevron-down fa-pull-right" aria-hidden="true"></i>Show output
+    </div>
+    <div class="dft_motorbike_timepoints collapse">
+      <i class="fa fa-chevron-up fa-pull-right" aria-hidden="true"></i>Hide output
+    </div>
+  </a>
+</div>
+
+<div class="dft_motorbike_timepoints collapse">
+  <div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Storm-DyFTeE 1.0.0
+
+Command line arguments: -dft motorbike.dft --timepoints 1 5 0.1
+Current working directory: ~/storm/build/bin
+
+Loading DFT from file motorbike.dft
+--------------------------------------------------------------
+Model type: 	CTMC (sparse)
+States: 	10
+Transitions: 	15
+Reward Models:  none
+Labels: 	2
+   * init -&gt; 1 state(s)
+   * failed -&gt; 6 state(s)
+choice labels: 	no
+--------------------------------------------------------------
+Model checking property Pmin=? [true U&lt;=1 "failed"] ...
+Result (initial states): 0.3577681657
+Time for model checking: 0.000s.
+Model checking property Pmin=? [true U&lt;=11/10 "failed"] ...
+Result (initial states): 0.4017604598
+Time for model checking: 0.000s.
+Model checking property Pmin=? [true U&lt;=6/5 "failed"] ...
+Result (initial states): 0.4442146745
+Time for model checking: 0.000s.
+Model checking property Pmin=? [true U&lt;=13/10 "failed"] ...
+Result (initial states): 0.4848810529
+Time for model checking: 0.000s.
+Model checking property Pmin=? [true U&lt;=7/5 "failed"] ...
+Result (initial states): 0.523591286
+Time for model checking: 0.000s.
+Model checking property Pmin=? [true U&lt;=3/2 "failed"] ...
+Result (initial states): 0.5602431065
+Time for model checking: 0.000s.
+Model checking property Pmin=? [true U&lt;=8/5 "failed"] ...
+Result (initial states): 0.5947861527
+Time for model checking: 0.000s.
+Model checking property Pmin=? [true U&lt;=17/10 "failed"] ...
+Result (initial states): 0.6272113724
+Time for model checking: 0.000s.
+Model checking property Pmin=? [true U&lt;=9/5 "failed"] ...
+Result (initial states): 0.6575417607
+Time for model checking: 0.000s.
+Model checking property Pmin=? [true U&lt;=19/10 "failed"] ...
+Result (initial states): 0.6858242617
+Time for model checking: 0.000s.
+Model checking property Pmin=? [true U&lt;=2 "failed"] ...
+Result (initial states): 0.7121244631
+Time for model checking: 0.000s.
+Model checking property Pmin=? [true U&lt;=21/10 "failed"] ...
+Result (initial states): 0.7365207031
+Time for model checking: 0.000s.
+Model checking property Pmin=? [true U&lt;=11/5 "failed"] ...
+Result (initial states): 0.7591006077
+Time for model checking: 0.000s.
+Model checking property Pmin=? [true U&lt;=23/10 "failed"] ...
+Result (initial states): 0.7799576577
+Time for model checking: 0.000s.
+Model checking property Pmin=? [true U&lt;=12/5 "failed"] ...
+Result (initial states): 0.7991881066
+Time for model checking: 0.000s.
+Model checking property Pmin=? [true U&lt;=5/2 "failed"] ...
+Result (initial states): 0.816889687
+Time for model checking: 0.000s.
+Model checking property Pmin=? [true U&lt;=13/5 "failed"] ...
+Result (initial states): 0.8331592523
+Time for model checking: 0.000s.
+Model checking property Pmin=? [true U&lt;=27/10 "failed"] ...
+Result (initial states): 0.8480920639
+Time for model checking: 0.000s.
+Model checking property Pmin=? [true U&lt;=14/5 "failed"] ...
+Result (initial states): 0.861780707
+Time for model checking: 0.000s.
+Model checking property Pmin=? [true U&lt;=29/10 "failed"] ...
+Result (initial states): 0.8743140803
+Time for model checking: 0.000s.
+Model checking property Pmin=? [true U&lt;=3 "failed"] ...
+Result (initial states): 0.8857774128
+Time for model checking: 0.000s.
+Model checking property Pmin=? [true U&lt;=31/10 "failed"] ...
+Result (initial states): 0.8962517674
+Time for model checking: 0.000s.
+Model checking property Pmin=? [true U&lt;=16/5 "failed"] ...
+Result (initial states): 0.9058135182
+Time for model checking: 0.000s.
+Model checking property Pmin=? [true U&lt;=33/10 "failed"] ...
+Result (initial states): 0.9145347989
+Time for model checking: 0.000s.
+Model checking property Pmin=? [true U&lt;=17/5 "failed"] ...
+Result (initial states): 0.9224833027
+Time for model checking: 0.000s.
+Model checking property Pmin=? [true U&lt;=7/2 "failed"] ...
+Result (initial states): 0.9297220126
+Time for model checking: 0.000s.
+Model checking property Pmin=? [true U&lt;=18/5 "failed"] ...
+Result (initial states): 0.9363098495
+Time for model checking: 0.000s.
+Model checking property Pmin=? [true U&lt;=37/10 "failed"] ...
+Result (initial states): 0.942301609
+Time for model checking: 0.000s.
+Model checking property Pmin=? [true U&lt;=19/5 "failed"] ...
+Result (initial states): 0.9477478148
+Time for model checking: 0.000s.
+Model checking property Pmin=? [true U&lt;=39/10 "failed"] ...
+Result (initial states): 0.9526954318
+Time for model checking: 0.000s.
+Model checking property Pmin=? [true U&lt;=4 "failed"] ...
+Result (initial states): 0.9571878562
+Time for model checking: 0.000s.
+Model checking property Pmin=? [true U&lt;=41/10 "failed"] ...
+Result (initial states): 0.9612648229
+Time for model checking: 0.000s.
+Model checking property Pmin=? [true U&lt;=21/5 "failed"] ...
+Result (initial states): 0.964963109
+Time for model checking: 0.000s.
+Model checking property Pmin=? [true U&lt;=43/10 "failed"] ...
+Result (initial states): 0.9683165348
+Time for model checking: 0.000s.
+Model checking property Pmin=? [true U&lt;=22/5 "failed"] ...
+Result (initial states): 0.9713558929
+Time for model checking: 0.000s.
+Model checking property Pmin=? [true U&lt;=9/2 "failed"] ...
+Result (initial states): 0.974109601
+Time for model checking: 0.000s.
+Model checking property Pmin=? [true U&lt;=23/5 "failed"] ...
+Result (initial states): 0.9766036105
+Time for model checking: 0.000s.
+Model checking property Pmin=? [true U&lt;=47/10 "failed"] ...
+Result (initial states): 0.9788617753
+Time for model checking: 0.000s.
+Model checking property Pmin=? [true U&lt;=24/5 "failed"] ...
+Result (initial states): 0.9809055689
+Time for model checking: 0.000s.
+Model checking property Pmin=? [true U&lt;=49/10 "failed"] ...
+Result (initial states): 0.9827548586
+Time for model checking: 0.000s.
+Model checking property Pmin=? [true U&lt;=5 "failed"] ...
+Result (initial states): 0.9844277921
+Time for model checking: 0.000s.
+Times:
+Exploration:	0.001s
+Building:	0.000s
+Bisimulation:	0.000s
+Modelchecking:	0.006s
+Total:		0.007s
+Result: [0.3577681657, 0.4017604598, 0.4442146745, 0.4848810529, 0.523591286, 0.5602431065, 0.5947861527, 0.6272113724, 0.6575417607, 0.6858242617, 0.7121244631, 0.7365207031, 0.7591006077, 0.7799576577, 0.7991881066, 0.816889687, 0.8331592523, 0.8480920639, 0.861780707, 0.8743140803, 0.8857774128, 0.8962517674, 0.9058135182, 0.9145347989, 0.9224833027, 0.9297220126, 0.9363098495, 0.942301609, 0.9477478148, 0.9526954318, 0.9571878562, 0.9612648229, 0.964963109, 0.9683165348, 0.9713558929, 0.974109601, 0.9766036105, 0.9788617753, 0.9809055689, 0.9827548586, 0.9844277921]
+</code></pre></div>  </div>
+</div>
+
+<p>Here the reliability for all time points \(1+i\cdot0.1, i \in \{0, ..., 40\}\) is computed.</p>
+
+<p>The second measure MTTF computes the expected time of the failure of the motorbike.</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>storm-dft <span class="nt">-dft</span> motorbike.dft <span class="nt">-mttf</span>
+</code></pre></div></div>
+
+<div>
+  <a href=".dft_motorbike_mttf" data-toggle="collapse" class="btn btn-default btn-block">
+    <div class="dft_motorbike_mttf collapse in">
+      <i class="fa fa-chevron-down fa-pull-right" aria-hidden="true"></i>Show output
+    </div>
+    <div class="dft_motorbike_mttf collapse">
+      <i class="fa fa-chevron-up fa-pull-right" aria-hidden="true"></i>Hide output
+    </div>
+  </a>
+</div>
+
+<div class="dft_motorbike_mttf collapse">
+  <div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Storm-DyFTeE 1.0.0
+
+Command line arguments: -dft motorbike.dft -mttf
+Current working directory: ~/storm/build/bin
+
+Loading DFT from file motorbike.dft
+--------------------------------------------------------------
+Model type: 	CTMC (sparse)
+States: 	10
+Transitions: 	15
+Reward Models:  none
+Labels: 	2
+   * init -&gt; 1 state(s)
+   * failed -&gt; 6 state(s)
+choice labels: 	no
+--------------------------------------------------------------
+Model checking property T[exp]min=? [F "failed"] ...
+Result (initial states): 1.606060606
+Time for model checking: 0.000s.
+Times:
+Exploration:	0.001s
+Building:	0.000s
+Bisimulation:	0.000s
+Modelchecking:	0.000s
+Total:		0.002s
+Result: [1.606060606]
+</code></pre></div>  </div>
+</div>
+
+<p>The motorbike has an expected lifetime of 1.61.</p>
+
+<h4 id="example-2-fault-tree-analysis-of-the-hypothetical-example-computer-system-hecs">Example 2 (Fault tree analysis of the Hypothetical Example Computer System (HECS))</h4>
+
+<p>In this example we consider the <em>Hypothetical Example Computer System (HECS)</em> from the NASA handbook on fault trees. It models a computer system consisting of a processor unit with two processors and a spare processor, a memory unit with 5 memory slots, an operator interface consisting of hardware and software, and a 2-redundant bus.</p>
+
+<div>
+  <a href=".dft_hecs" data-toggle="collapse" class="btn btn-primary btn-block">
+    <div class="dft_hecs collapse in">
+      <i class="fa fa-chevron-down fa-pull-right" aria-hidden="true"></i>Show DFT file of HECS
+    </div>
+    <div class="dft_hecs collapse">
+      <i class="fa fa-chevron-up fa-pull-right" aria-hidden="true"></i>Hide DFT file of HECS
+    </div>
+  </a>
+</div>
+
+<div class="dft_hecs collapse">
+  <p><a href="/resources/input-examples/dft/hecs.dft"><i class="fa fa-file-text-o" aria-hidden="true"></i> Download DFT file of HECS</a></p>
+  <div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>toplevel "System";
+"System" or "PSF" "MSF" "BSF" "IF";
+"PSF" and "P_1" "P_2";
+"P_1" wsp "A_1" "A_S";
+"P_2" wsp "A_2" "A_S";
+"A_1" lambda=1.0e-3 dorm=0;
+"A_2" lambda=1.0e-3 dorm=0;
+"A_S" lambda=1.0e-3 dorm=0;
+"MSF" 3of5 "M_1" "M_2" "M_3" "M_4" "M_5";
+"M_1" lambda=6.0e-4 dorm=0;
+"M_2" lambda=6.0e-4 dorm=0;
+"M_3" lambda=6.0e-4 dorm=0;
+"M_4" lambda=6.0e-4 dorm=0;
+"M_5" lambda=6.0e-4 dorm=0;
+"BSF" and "BUS_1" "BUS_2";
+"BUS_1" lambda=1.0e-5 dorm=0;
+"BUS_2" lambda=1.0e-5 dorm=0;
+"IF" or "HW" "SW";
+"HW" lambda=5.0e-4 dorm=0;
+"SW" lambda=6.0e-4 dorm=0;
+</code></pre></div>  </div>
+</div>
+
+<p>We compute the MTTF again.</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>storm-dft <span class="nt">-dft</span> hecs.dft <span class="nt">-mttf</span>
+</code></pre></div></div>
+
+<div>
+  <a href=".dft_hecs_mttf" data-toggle="collapse" class="btn btn-default btn-block">
+    <div class="dft_hecs_mttf collapse in">
+      <i class="fa fa-chevron-down fa-pull-right" aria-hidden="true"></i>Show output
+    </div>
+    <div class="dft_hecs_mttf collapse">
+      <i class="fa fa-chevron-up fa-pull-right" aria-hidden="true"></i>Hide output
+    </div>
+  </a>
+</div>
+
+<div class="dft_hecs_mttf collapse">
+  <div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Storm-DyFTeE 1.0.0
+
+Command line arguments: -dft hecs.dft -mttf
+Current working directory: ~/storm/build/bin
+
+Loading DFT from file hecs.dft
+--------------------------------------------------------------
+Model type: 	CTMC (sparse)
+States: 	1426
+Transitions: 	3845
+Reward Models:  none
+Labels: 	2
+   * init -&gt; 1 state(s)
+   * failed -&gt; 1090 state(s)
+choice labels: 	no
+--------------------------------------------------------------
+Model checking property T[exp]min=? [F "failed"] ...
+Result (initial states): 573.7440971
+Time for model checking: 0.003s.
+Times:
+Exploration:	0.015s
+Building:	0.000s
+Bisimulation:	0.000s
+Modelchecking:	0.003s
+Total:		0.019s
+Result: [573.7440971]
+</code></pre></div>  </div>
+</div>
+
+<p>As the system is larger, it makes sense to use <em>symmetry reduction</em> as an optimization.
+This is enabled by default for all analyses and exploits symmetries in the system, for example stemming from redundant components.
+Symmetry reduction reduces the model size drastically which improves the analysis time.</p>
+
+<p>For reliability another optimization can be enabled: <em>modularisation</em> via <code class="language-plaintext highlighter-rouge">--modularisation</code>.</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>storm-dft <span class="nt">-dft</span> hecs.dft <span class="nt">--timebound</span> 500 <span class="nt">--modularisation</span>
+</code></pre></div></div>
+
+<div>
+  <a href=".dft_hecs_timebound_mod" data-toggle="collapse" class="btn btn-default btn-block">
+    <div class="dft_hecs_timebound_mod collapse in">
+      <i class="fa fa-chevron-down fa-pull-right" aria-hidden="true"></i>Show output
+    </div>
+    <div class="dft_hecs_timebound_mod collapse">
+      <i class="fa fa-chevron-up fa-pull-right" aria-hidden="true"></i>Hide output
+    </div>
+  </a>
+</div>
+
+<div class="dft_hecs_timebound_mod collapse">
+  <div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Storm-DyFTeE 1.0.0
+
+Command line arguments: -dft hecs.dft --timebound 500 -symred --modularisation
+Current working directory: ~/storm/build/bin
+
+Loading DFT from file hecs.dft
+--------------------------------------------------------------
+Model type: 	CTMC (sparse)
+States: 	5
+Transitions: 	6
+Reward Models:  none
+Labels: 	2
+   * init -&gt; 1 state(s)
+   * failed -&gt; 1 state(s)
+choice labels: 	no
+--------------------------------------------------------------
+Model checking property Pmin=? [true U&lt;=500 "failed"] ...
+Result (initial states): 0.0453951136
+Time for model checking: 0.000s.
+--------------------------------------------------------------
+Model type: 	CTMC (sparse)
+States: 	2
+Transitions: 	2
+Reward Models:  none
+Labels: 	2
+   * init -&gt; 1 state(s)
+   * failed -&gt; 1 state(s)
+choice labels: 	no
+--------------------------------------------------------------
+Model checking property Pmin=? [true U&lt;=500 "failed"] ...
+Result (initial states): 0.2591817412
+Time for model checking: 0.000s.
+--------------------------------------------------------------
+Model type: 	CTMC (sparse)
+States: 	2
+Transitions: 	2
+Reward Models:  none
+Labels: 	2
+   * init -&gt; 1 state(s)
+   * failed -&gt; 1 state(s)
+choice labels: 	no
+--------------------------------------------------------------
+Model checking property Pmin=? [true U&lt;=500 "failed"] ...
+Result (initial states): 0.2591817412
+Time for model checking: 0.000s.
+--------------------------------------------------------------
+Model type: 	CTMC (sparse)
+States: 	2
+Transitions: 	2
+Reward Models:  none
+Labels: 	2
+   * init -&gt; 1 state(s)
+   * failed -&gt; 1 state(s)
+choice labels: 	no
+--------------------------------------------------------------
+Model checking property Pmin=? [true U&lt;=500 "failed"] ...
+Result (initial states): 0.2591817412
+Time for model checking: 0.000s.
+--------------------------------------------------------------
+Model type: 	CTMC (sparse)
+States: 	2
+Transitions: 	2
+Reward Models:  none
+Labels: 	2
+   * init -&gt; 1 state(s)
+   * failed -&gt; 1 state(s)
+choice labels: 	no
+--------------------------------------------------------------
+Model checking property Pmin=? [true U&lt;=500 "failed"] ...
+Result (initial states): 0.2591817412
+Time for model checking: 0.000s.
+--------------------------------------------------------------
+Model type: 	CTMC (sparse)
+States: 	2
+Transitions: 	2
+Reward Models:  none
+Labels: 	2
+   * init -&gt; 1 state(s)
+   * failed -&gt; 1 state(s)
+choice labels: 	no
+--------------------------------------------------------------
+Model checking property Pmin=? [true U&lt;=500 "failed"] ...
+Result (initial states): 0.2591817412
+Time for model checking: 0.000s.
+--------------------------------------------------------------
+Model type: 	CTMC (sparse)
+States: 	2
+Transitions: 	2
+Reward Models:  none
+Labels: 	2
+   * init -&gt; 1 state(s)
+   * failed -&gt; 1 state(s)
+choice labels: 	no
+--------------------------------------------------------------
+Model checking property Pmin=? [true U&lt;=500 "failed"] ...
+Result (initial states): 0.004987498783
+Time for model checking: 0.000s.
+--------------------------------------------------------------
+Model type: 	CTMC (sparse)
+States: 	2
+Transitions: 	2
+Reward Models:  none
+Labels: 	2
+   * init -&gt; 1 state(s)
+   * failed -&gt; 1 state(s)
+choice labels: 	no
+--------------------------------------------------------------
+Model checking property Pmin=? [true U&lt;=500 "failed"] ...
+Result (initial states): 0.004987498783
+Time for model checking: 0.000s.
+--------------------------------------------------------------
+Model type: 	CTMC (sparse)
+States: 	2
+Transitions: 	2
+Reward Models:  none
+Labels: 	2
+   * init -&gt; 1 state(s)
+   * failed -&gt; 1 state(s)
+choice labels: 	no
+--------------------------------------------------------------
+Model checking property Pmin=? [true U&lt;=500 "failed"] ...
+Result (initial states): 0.2211992058
+Time for model checking: 0.000s.
+--------------------------------------------------------------
+Model type: 	CTMC (sparse)
+States: 	2
+Transitions: 	2
+Reward Models:  none
+Labels: 	2
+   * init -&gt; 1 state(s)
+   * failed -&gt; 1 state(s)
+choice labels: 	no
+--------------------------------------------------------------
+Model checking property Pmin=? [true U&lt;=500 "failed"] ...
+Result (initial states): 0.2591817412
+Time for model checking: 0.000s.
+Times:
+Exploration:	0.006s
+Building:	0.000s
+Bisimulation:	0.000s
+Modelchecking:	0.001s
+Total:		0.009s
+Result: [0.5117286837]
+</code></pre></div>  </div>
+</div>
+
+<p>Here independent subtrees are analyzed separately and the results are combined yielding the total reliability.</p>
+
+			
+
+        </div>
+    </div>
+
+    <footer class="footer bg-primary">
+    <div class="container">
+        <p class="navbar-text">
+			Storm is a probabilistic model checker available on <a href="https://www.github.com/moves-rwth/storm">GitHub</a>.  <a href="/about.html#people">Contact us</a>.
+        </p>
+    </div>
+</footer>
+
+    <!-- JavaScript -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.2.0/js/tether.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
+
+  </body>
+</html>
