@@ -17,11 +17,11 @@ namespace storm {
 namespace pomdp {
 template<typename ValueType>
 ObservationTraceUnfolder<ValueType>::ObservationTraceUnfolder(storm::models::sparse::Pomdp<ValueType> const& model, std::vector<ValueType> const& risk,
-                                                              std::shared_ptr<storm::expressions::ExpressionManager>& exprManager,
+                                                              std::shared_ptr<storm::expressions::ExpressionManager> exprManager,
                                                               ObservationTraceUnfolderOptions const& options)
-    : model(model), risk(risk), exprManager(exprManager), options(options) {
-    svvar = exprManager->declareFreshIntegerVariable(false, "_s");
-    tsvar = exprManager->declareFreshIntegerVariable(false, "_t");
+    : model(model), risk(risk), exprManager(std::move(exprManager)), options(options) {
+    svvar = this->exprManager->declareFreshIntegerVariable(false, "_s");
+    tsvar = this->exprManager->declareFreshIntegerVariable(false, "_t");
 }
 
 template<typename ValueType>
