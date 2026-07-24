@@ -40,12 +40,7 @@ TEST(ObservationTraceUnfolder, Simple) {
 }
 
 TEST(ObservationTraceUnfolder, ExpressionManagerOutlivesConstructorArgument) {
-    // ObservationTraceUnfolder stores its own shared_ptr<ExpressionManager> (copied from the constructor
-    // argument), so the caller's shared_ptr is free to go out of scope right after construction. This used
-    // to not be the case: the class stored a *reference* to the caller's shared_ptr, which dangled as soon as
-    // that shared_ptr was destroyed -- observable e.g. through the stormpy bindings, where the temporary
-    // shared_ptr produced while casting the Python argument is destroyed as soon as the constructor call
-    // returns, so any later transform() call crashed on a dangling reference.
+    // This test captures an earlier bug where observationTraceUnfolder stores a reference to shared_ptr<ExpressionManager> 
 #ifndef STORM_HAVE_Z3
     GTEST_SKIP() << "Z3 not available.";
 #endif
