@@ -40,7 +40,7 @@ TEST(ObservationTraceUnfolder, Simple) {
 }
 
 TEST(ObservationTraceUnfolder, ExpressionManagerOutlivesConstructorArgument) {
-    // This test captures an earlier bug where observationTraceUnfolder stores a reference to shared_ptr<ExpressionManager> 
+    // This test captures an earlier bug where observationTraceUnfolder stores a reference to shared_ptr<ExpressionManager>
 #ifndef STORM_HAVE_Z3
     GTEST_SKIP() << "Z3 not available.";
 #endif
