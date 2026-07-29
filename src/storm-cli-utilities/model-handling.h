@@ -25,7 +25,6 @@
 #include "storm/settings/modules/AbstractionSettings.h"
 #include "storm/settings/modules/BuildSettings.h"
 #include "storm/settings/modules/CoreSettings.h"
-#include "storm/settings/modules/DebugSettings.h"
 #include "storm/settings/modules/HintSettings.h"
 #include "storm/settings/modules/IOSettings.h"
 #include "storm/settings/modules/ModelCheckerSettings.h"
@@ -663,12 +662,11 @@ template<typename ValueType>
 std::shared_ptr<storm::models::sparse::Model<ValueType>> preprocessSparseMarkovAutomaton(
     std::shared_ptr<storm::models::sparse::MarkovAutomaton<ValueType>> const& model) {
     auto transformationSettings = storm::settings::getModule<storm::settings::modules::TransformationSettings>();
-    auto debugSettings = storm::settings::getModule<storm::settings::modules::DebugSettings>();
+    auto buildSettings = storm::settings::getModule<storm::settings::modules::BuildSettings>();
 
     std::shared_ptr<storm::models::sparse::Model<ValueType>> result = model;
     model->close();
-    STORM_LOG_WARN_COND(!debugSettings.isAdditionalChecksSet() || !model->containsZenoCycle(),
-                        "MA contains a Zeno cycle. Model checking results cannot be trusted.");
+    STORM_LOG_WARN_COND(!buildSettings.isCheckZenoSet() || !model->containsZenoCycle(), "MA contains a Zeno cycle. Model checking results cannot be trusted.");
 
     if (model->isConvertibleToCtmc()) {
         STORM_LOG_WARN_COND(false, "MA is convertible to a CTMC, consider using a CTMC instead.");
