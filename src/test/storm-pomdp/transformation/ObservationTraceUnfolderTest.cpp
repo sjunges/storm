@@ -10,6 +10,7 @@
 #include "storm/models/sparse/StandardRewardModel.h"
 #include "storm/storage/expressions/ExpressionManager.h"
 #include "storm/utility/constants.h"
+#include "storm/utility/prism.h"
 
 TEST(ObservationTraceUnfolder, Simple) {
 #ifndef STORM_HAVE_Z3
