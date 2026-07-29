@@ -1752,8 +1752,8 @@ void GameBasedMdpModelChecker<Type, ModelType>::printStatistics(storm::gbar::abs
 
     oss << '\n';
     oss << "Statistics:\n";
-    oss << "    * size of final game: " << game.getReachableStates().getNonZeroCount() << " player 1 states, "
-        << game.getTransitionMatrix().getNonZeroCount() << " transitions\n";
+    oss << "    * size of final game: " << game.getReachableStates().getNonZeroCount() << " player 1 states, " << game.getTransitionMatrix().getNonZeroCount()
+        << " transitions\n";
     oss << "    * peak size of game: " << peakPlayer1States << " player 1 states, " << peakTransitions << " transitions\n";
     oss << "    * refinements: " << refinements << '\n';
     oss << "    * predicates: " << abstractionInformation.getNumberOfPredicates() << "\n\n";
@@ -1768,11 +1768,10 @@ void GameBasedMdpModelChecker<Type, ModelType>::printStatistics(storm::gbar::abs
 
     oss << "Time breakdown:\n";
     oss << "    * setup: " << setupTime << "ms (" << 100 * static_cast<double>(setupTime) / totalTimeMillis << "%)\n";
-    oss << "    * abstraction: " << totalAbstractionTimeMillis << "ms (" << 100 * static_cast<double>(totalAbstractionTimeMillis) / totalTimeMillis
-        << "%)\n";
+    oss << "    * abstraction: " << totalAbstractionTimeMillis << "ms (" << 100 * static_cast<double>(totalAbstractionTimeMillis) / totalTimeMillis << "%)\n";
     if (this->solveMode == storm::settings::modules::AbstractionSettings::SolveMode::Sparse) {
-        oss << "    * translation: " << totalTranslationTimeMillis << "ms ("
-            << 100 * static_cast<double>(totalTranslationTimeMillis) / totalTimeMillis << "%)\n";
+        oss << "    * translation: " << totalTranslationTimeMillis << "ms (" << 100 * static_cast<double>(totalTranslationTimeMillis) / totalTimeMillis
+            << "%)\n";
         if (fixPlayer1Strategy || fixPlayer2Strategy) {
             oss << "    * strategy processing: " << totalStrategyProcessingTimeMillis << "ms ("
                 << 100 * static_cast<double>(totalStrategyProcessingTimeMillis) / totalTimeMillis << "%)\n";
