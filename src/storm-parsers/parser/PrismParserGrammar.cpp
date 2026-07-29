@@ -381,8 +381,8 @@ PrismParserGrammar::PrismParserGrammar(std::string const& filename, Iterator fir
     start =
         (qi::eps[phoenix::bind(&PrismParserGrammar::removeInitialConstruct, phoenix::ref(*this), phoenix::ref(globalProgramInformation))] >
          modelTypeDefinition[phoenix::bind(&PrismParserGrammar::setModelType, phoenix::ref(*this), phoenix::ref(globalProgramInformation), qi::_1)] >
-         -observablesConstruct >
-         *(definedConstantDefinition[phoenix::push_back(phoenix::bind(&GlobalProgramInformation::constants, phoenix::ref(globalProgramInformation)), qi::_1)] |
+         *(observablesConstruct |
+           definedConstantDefinition[phoenix::push_back(phoenix::bind(&GlobalProgramInformation::constants, phoenix::ref(globalProgramInformation)), qi::_1)] |
            undefinedConstantDefinition[phoenix::push_back(phoenix::bind(&GlobalProgramInformation::constants, phoenix::ref(globalProgramInformation)),
                                                           qi::_1)] |
            formulaDefinition[phoenix::push_back(phoenix::bind(&GlobalProgramInformation::formulas, phoenix::ref(globalProgramInformation)), qi::_1)] |
