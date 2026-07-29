@@ -4,7 +4,6 @@
 #include "storm/utility/logging.h"
 
 #include <cassert>
-#include <iosfwd>
 
 // Define STORM_LOG_ASSERT which is only checked when NDEBUG is not set.
 #ifndef NDEBUG
@@ -54,21 +53,6 @@
         if (!(cond)) {                      \
             STORM_LOG_ERROR(message);       \
         }                                   \
-    } while (false)
-
-/*!
- * Define the macros that print information and optionally also log it.
- */
-#define STORM_PRINT(message)  \
-    do {                      \
-        std::cout << message; \
-        std::cout.flush();    \
-    } while (false)
-
-#define STORM_PRINT_AND_LOG(message) \
-    do {                             \
-        STORM_LOG_INFO(message);     \
-        STORM_PRINT(message);        \
     } while (false)
 
 #endif /* STORM_UTILITY_MACROS_H_ */

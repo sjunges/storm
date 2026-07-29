@@ -11,7 +11,6 @@
 #include "storm/modelchecker/results/ExplicitQualitativeCheckResult.h"
 #include "storm/modelchecker/results/ExplicitQuantitativeCheckResult.h"
 #include "storm/settings/SettingsManager.h"
-#include "storm/settings/modules/CoreSettings.h"
 #include "storm/settings/modules/EliminationSettings.h"
 #include "storm/solver/stateelimination/ConditionalStateEliminator.h"
 #include "storm/solver/stateelimination/DynamicStatePriorityQueue.h"
@@ -308,7 +307,7 @@ SparseDtmcEliminationModelChecker<SparseDtmcModelType>::computeLongRunValues(sto
     std::chrono::high_resolution_clock::time_point modelCheckingEnd = std::chrono::high_resolution_clock::now();
     std::chrono::high_resolution_clock::time_point totalTimeEnd = std::chrono::high_resolution_clock::now();
 
-    if (storm::settings::getModule<storm::settings::modules::CoreSettings>().isShowStatisticsSet()) {
+    {
         std::chrono::high_resolution_clock::duration sccDecompositionTime = sccDecompositionEnd - sccDecompositionStart;
         std::chrono::milliseconds sccDecompositionTimeInMilliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(sccDecompositionTime);
         std::chrono::high_resolution_clock::duration conversionTime = conversionEnd - conversionStart;
@@ -318,13 +317,13 @@ SparseDtmcEliminationModelChecker<SparseDtmcModelType>::computeLongRunValues(sto
         std::chrono::high_resolution_clock::duration totalTime = totalTimeEnd - totalTimeStart;
         std::chrono::milliseconds totalTimeInMilliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(totalTime);
 
-        STORM_PRINT_AND_LOG('\n');
-        STORM_PRINT_AND_LOG("Time breakdown:\n");
-        STORM_PRINT_AND_LOG("    * time for SCC decomposition: " << sccDecompositionTimeInMilliseconds.count() << "ms\n");
-        STORM_PRINT_AND_LOG("    * time for conversion: " << conversionTimeInMilliseconds.count() << "ms\n");
-        STORM_PRINT_AND_LOG("    * time for checking: " << modelCheckingTimeInMilliseconds.count() << "ms\n");
-        STORM_PRINT_AND_LOG("------------------------------------------\n");
-        STORM_PRINT_AND_LOG("    * total time: " << totalTimeInMilliseconds.count() << "ms\n");
+        STORM_LOG_STATISTICS('\n');
+        STORM_LOG_STATISTICS("Time breakdown:\n");
+        STORM_LOG_STATISTICS("    * time for SCC decomposition: " << sccDecompositionTimeInMilliseconds.count() << "ms\n");
+        STORM_LOG_STATISTICS("    * time for conversion: " << conversionTimeInMilliseconds.count() << "ms\n");
+        STORM_LOG_STATISTICS("    * time for checking: " << modelCheckingTimeInMilliseconds.count() << "ms\n");
+        STORM_LOG_STATISTICS("------------------------------------------\n");
+        STORM_LOG_STATISTICS("    * total time: " << totalTimeInMilliseconds.count() << "ms\n");
     }
 
     // Now, we return the value for the only initial state.

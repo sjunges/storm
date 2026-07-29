@@ -24,3 +24,16 @@ using carl::operator<<;
 #define STORM_LOG_INFO(message) L3PP_LOG_INFO(l3pp::Logger::getRootLogger(), message)
 #define STORM_LOG_WARN(message) L3PP_LOG_WARN(l3pp::Logger::getRootLogger(), message)
 #define STORM_LOG_ERROR(message) L3PP_LOG_ERROR(l3pp::Logger::getRootLogger(), message)
+
+namespace storm {
+namespace utility {
+// Named log channels whose level can be toggled independently of the root logger's level.
+constexpr const char* STATISTICS_LOG_CHANNEL = "storm.statistics";
+constexpr const char* PROGRESS_LOG_CHANNEL = "storm.progress";
+}  // namespace utility
+}  // namespace storm
+
+// STORM_LOG_STATISTICS and STORM_LOG_PROGRESS log at INFO level on their own channel, so their
+// visibility can be enabled/disabled independently of general INFO-level verbosity.
+#define STORM_LOG_STATISTICS(message) L3PP_LOG_INFO(storm::utility::STATISTICS_LOG_CHANNEL, message)
+#define STORM_LOG_PROGRESS(message) L3PP_LOG_INFO(storm::utility::PROGRESS_LOG_CHANNEL, message)
