@@ -396,7 +396,7 @@ TEST(ValuationTest, ValuationsSelectEntities) {
 
 TEST(ValuationTest, RejectsNonCompliantDoubleOrStringSize) {
     // Double and String fields must always be exactly their default size (64 bits) per the UMB spec
-    // (see storm::umb::validation::validateTypeDeclaration). 
+    // (see storm::umb::validation::validateTypeDeclaration).
     auto manager = std::make_shared<storm::expressions::ExpressionManager>();
     auto const d = manager->declareRationalVariable("d");
     storm::storage::sparse::ValuationDescriptionBuilder doubleBuilder(manager);
