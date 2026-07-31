@@ -44,9 +44,6 @@ TEST_F(OrderExtenderTest, Brp_with_bisimulation_on_model) {
 
     // Apply bisimulation
     storm::storage::BisimulationType bisimType = storm::storage::BisimulationType::Strong;
-    if (storm::settings::getModule<storm::settings::modules::BisimulationSettings>().isWeakBisimulationSet()) {
-        bisimType = storm::storage::BisimulationType::Weak;
-    }
 
     model = storm::api::performBisimulationMinimization<storm::RationalFunction>(model, formulas, bisimType)
                 ->as<storm::models::sparse::Dtmc<storm::RationalFunction>>();
@@ -127,9 +124,6 @@ TEST_F(OrderExtenderTest, Brp_with_bisimulation_on_matrix) {
 
     // Apply bisimulation
     storm::storage::BisimulationType bisimType = storm::storage::BisimulationType::Strong;
-    if (storm::settings::getModule<storm::settings::modules::BisimulationSettings>().isWeakBisimulationSet()) {
-        bisimType = storm::storage::BisimulationType::Weak;
-    }
 
     model = storm::api::performBisimulationMinimization<storm::RationalFunction>(model, formulas, bisimType)
                 ->as<storm::models::sparse::Dtmc<storm::RationalFunction>>();

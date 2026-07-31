@@ -88,9 +88,6 @@ TYPED_TEST(SparseDtmcParameterLiftingMonotonicityTest, Brp_Prob_Mon_LEQ) {
 
     // Apply bisimulation
     storm::storage::BisimulationType bisimType = storm::storage::BisimulationType::Strong;
-    if (storm::settings::getModule<storm::settings::modules::BisimulationSettings>().isWeakBisimulationSet()) {
-        bisimType = storm::storage::BisimulationType::Weak;
-    }
     model = storm::api::performBisimulationMinimization<storm::RationalFunction>(model, formulas, bisimType)
                 ->as<storm::models::sparse::Dtmc<storm::RationalFunction>>();
 
@@ -149,9 +146,6 @@ TYPED_TEST(SparseDtmcParameterLiftingMonotonicityTest, Brp_Prob_Mon_GEQ) {
 
     // Apply bisimulation
     storm::storage::BisimulationType bisimType = storm::storage::BisimulationType::Strong;
-    if (storm::settings::getModule<storm::settings::modules::BisimulationSettings>().isWeakBisimulationSet()) {
-        bisimType = storm::storage::BisimulationType::Weak;
-    }
     model = storm::api::performBisimulationMinimization<storm::RationalFunction>(model, formulas, bisimType)
                 ->as<storm::models::sparse::Dtmc<storm::RationalFunction>>();
 
@@ -210,9 +204,6 @@ TYPED_TEST(SparseDtmcParameterLiftingMonotonicityTest, Brp_Prob_Mon_LEQ_Incr) {
 
     // Apply bisimulation
     storm::storage::BisimulationType bisimType = storm::storage::BisimulationType::Strong;
-    if (storm::settings::getModule<storm::settings::modules::BisimulationSettings>().isWeakBisimulationSet()) {
-        bisimType = storm::storage::BisimulationType::Weak;
-    }
     model = storm::api::performBisimulationMinimization<storm::RationalFunction>(model, formulas, bisimType)
                 ->as<storm::models::sparse::Dtmc<storm::RationalFunction>>();
 
@@ -271,9 +262,6 @@ TYPED_TEST(SparseDtmcParameterLiftingMonotonicityTest, Brp_Prob_Mon_GEQ_Incr) {
 
     // Apply bisimulation
     storm::storage::BisimulationType bisimType = storm::storage::BisimulationType::Strong;
-    if (storm::settings::getModule<storm::settings::modules::BisimulationSettings>().isWeakBisimulationSet()) {
-        bisimType = storm::storage::BisimulationType::Weak;
-    }
     model = storm::api::performBisimulationMinimization<storm::RationalFunction>(model, formulas, bisimType)
                 ->as<storm::models::sparse::Dtmc<storm::RationalFunction>>();
 
@@ -337,9 +325,6 @@ TYPED_TEST(SparseDtmcParameterLiftingMonotonicityTest, Parametric_Die_Mon) {
 
     // Apply bisimulation
     storm::storage::BisimulationType bisimType = storm::storage::BisimulationType::Strong;
-    if (storm::settings::getModule<storm::settings::modules::BisimulationSettings>().isWeakBisimulationSet()) {
-        bisimType = storm::storage::BisimulationType::Weak;
-    }
     model = storm::api::performBisimulationMinimization<storm::RationalFunction>(model, formulas, bisimType)
                 ->as<storm::models::sparse::Dtmc<storm::RationalFunction>>();
 

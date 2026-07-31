@@ -54,7 +54,8 @@ BisimulationDecomposition<ModelType, BlockDataType>::Options::Options()
       keepRewards(false),
       type(BisimulationType::Strong),
       bounded(false),
-      discounted(false) {
+      discounted(false),
+      tolerance(storm::NumberTraits<ValueType>::IsExact ? storm::utility::zero<ValueType>() : storm::utility::convertNumber<ValueType>(1e-6)) {
     // Intentionally left empty.
 }
 

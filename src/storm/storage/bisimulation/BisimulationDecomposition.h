@@ -1,9 +1,6 @@
 #pragma once
 
 #include "storm/logic/Formulas.h"
-#include "storm/settings/SettingsManager.h"
-#include "storm/settings/modules/BisimulationSettings.h"
-#include "storm/settings/modules/GeneralSettings.h"
 #include "storm/solver/OptimizationDirection.h"
 #include "storm/storage/Decomposition.h"
 #include "storm/storage/StateBlock.h"
@@ -17,22 +14,6 @@ class Formula;
 }
 
 namespace storage {
-
-inline BisimulationType resolveBisimulationTypeChoice(BisimulationTypeChoice c) {
-    switch (c) {
-        case BisimulationTypeChoice::Strong:
-            return BisimulationType::Strong;
-        case BisimulationTypeChoice::Weak:
-            return BisimulationType::Weak;
-        case BisimulationTypeChoice::FromSettings:
-            if (storm::settings::getModule<storm::settings::modules::BisimulationSettings>().isWeakBisimulationSet()) {
-                return BisimulationType::Weak;
-            } else {
-                return BisimulationType::Strong;
-            }
-    }
-    return BisimulationType::Strong;
-}
 
 /*!
  * This class is the superclass of all decompositions of a sparse model into its bisimulation quotient.
@@ -115,9 +96,11 @@ class BisimulationDecomposition : public Decomposition<StateBlock> {
         }
 
         ValueType getTolerance() const {
-            return storm::NumberTraits<ValueType>::IsExact
-                       ? storm::utility::zero<ValueType>()
-                       : storm::utility::convertNumber<ValueType>(storm::settings::getModule<storm::settings::modules::GeneralSettings>().getPrecision());
+            return storm::NumberTraits<ValueType>::IsExact ? storm::utility::zero<ValueType>() : tolerance;
+        }
+
+        void setTolerance(ValueType value) {
+            tolerance = value;
         }
 
         OptimizationDirection getOptimizationDirection() const {
@@ -156,6 +139,9 @@ class BisimulationDecomposition : public Decomposition<StateBlock> {
         /// A flag that indicates whether discounted properties are to be preserved. This may only be set to true
         /// when computing strong bisimulation equivalence.
         bool discounted;
+
+        /// The tolerance used for comparing constants (irrelevant if ValueType is exact).
+        ValueType tolerance;
 
         /*!
          * Sets the options under the assumption that the given formula is the only one that is to be checked.

@@ -86,9 +86,11 @@ inline std::shared_ptr<storm::models::symbolic::Model<storm::dd::DdType::CUDD, s
  * @return A builder
  */
 template<typename ValueType>
-storm::builder::ExplicitModelBuilder<ValueType> makeExplicitModelBuilder(storm::storage::SymbolicModelDescription const& model,
-                                                                         storm::builder::BuilderOptions const& options,
-                                                                         std::shared_ptr<storm::generator::ActionMask<ValueType>> actionMask = nullptr) {
+storm::builder::ExplicitModelBuilder<ValueType> makeExplicitModelBuilder(
+    storm::storage::SymbolicModelDescription const& model, storm::builder::BuilderOptions const& options,
+    std::shared_ptr<storm::generator::ActionMask<ValueType>> actionMask = nullptr,
+    typename storm::builder::ExplicitModelBuilder<ValueType>::Options const& explorationOptions =
+        typename storm::builder::ExplicitModelBuilder<ValueType>::Options()) {
     std::shared_ptr<storm::generator::NextStateGenerator<ValueType, uint32_t>> generator;
     if (model.isPrismProgram()) {
         generator = std::make_shared<storm::generator::PrismNextStateGenerator<ValueType, uint32_t>>(model.asPrismProgram(), options, actionMask);
@@ -102,13 +104,15 @@ storm::builder::ExplicitModelBuilder<ValueType> makeExplicitModelBuilder(storm::
     } else {
         STORM_LOG_THROW(false, storm::exceptions::NotSupportedException, "Cannot build sparse model from this symbolic model description.");
     }
-    return storm::builder::ExplicitModelBuilder<ValueType>(generator);
+    return storm::builder::ExplicitModelBuilder<ValueType>(generator, explorationOptions);
 }
 
 template<typename ValueType>
-std::shared_ptr<storm::models::sparse::Model<ValueType>> buildSparseModel(storm::storage::SymbolicModelDescription const& model,
-                                                                          storm::builder::BuilderOptions const& options) {
-    storm::builder::ExplicitModelBuilder<ValueType> builder = makeExplicitModelBuilder<ValueType>(model, options);
+std::shared_ptr<storm::models::sparse::Model<ValueType>> buildSparseModel(
+    storm::storage::SymbolicModelDescription const& model, storm::builder::BuilderOptions const& options,
+    typename storm::builder::ExplicitModelBuilder<ValueType>::Options const& explorationOptions =
+        typename storm::builder::ExplicitModelBuilder<ValueType>::Options()) {
+    storm::builder::ExplicitModelBuilder<ValueType> builder = makeExplicitModelBuilder<ValueType>(model, options, nullptr, explorationOptions);
     return builder.build();
 }
 
