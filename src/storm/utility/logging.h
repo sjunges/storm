@@ -45,15 +45,15 @@ constexpr const char* PROGRESS_LOG_CHANNEL = "storm.progress";
 // `callback` must have signature `bool(std::ostream&)`: write into the stream, then return
 // whether it should be logged. A variadic parameter is used so callbacks with commas in their
 // capture list or body (as lambdas typically have) can be passed without extra parentheses.
-#define STORM_LOG_LAZY_ON_CHANNEL(channel, level, ...)                                          \
-    do {                                                                                        \
-        auto storm_log_lazy_channel = l3pp::Logger::getLogger(channel);                         \
-        if (storm_log_lazy_channel->getLevel() <= (level)) {                                    \
-            std::ostringstream storm_log_lazy_stream;                                           \
-            if ((__VA_ARGS__)(storm_log_lazy_stream)) {                                         \
+#define STORM_LOG_LAZY_ON_CHANNEL(channel, level, ...)                                                \
+    do {                                                                                              \
+        auto storm_log_lazy_channel = l3pp::Logger::getLogger(channel);                               \
+        if (storm_log_lazy_channel->getLevel() <= (level)) {                                          \
+            std::ostringstream storm_log_lazy_stream;                                                 \
+            if ((__VA_ARGS__)(storm_log_lazy_stream)) {                                               \
                 storm_log_lazy_channel->log(level, __L3PP_LOG_RECORD) << storm_log_lazy_stream.str(); \
-            }                                                                                    \
-        }                                                                                        \
+            }                                                                                         \
+        }                                                                                             \
     } while (false)
 
 // Same contract as STORM_LOG_LAZY_ON_CHANNEL: `callback` must be `bool(std::ostream&)`, return true to emit.
