@@ -206,15 +206,13 @@ void GlpkLpSolver<ValueType, RawMode>::addConstraint(std::string const& name, Co
     // Determine the type of the constraint and add it properly.
     switch (relationType) {
         case storm::expressions::RelationType::Less:
-            glp_set_row_bnds(this->lp, constraintIndex, GLP_UP, 0,
-                             rhs - this->integerTolerance);
+            glp_set_row_bnds(this->lp, constraintIndex, GLP_UP, 0, rhs - this->integerTolerance);
             break;
         case storm::expressions::RelationType::LessOrEqual:
             glp_set_row_bnds(this->lp, constraintIndex, GLP_UP, 0, rhs);
             break;
         case storm::expressions::RelationType::Greater:
-            glp_set_row_bnds(this->lp, constraintIndex, GLP_LO,
-                             rhs + this->integerTolerance, 0);
+            glp_set_row_bnds(this->lp, constraintIndex, GLP_LO, rhs + this->integerTolerance, 0);
             break;
         case storm::expressions::RelationType::GreaterOrEqual:
             glp_set_row_bnds(this->lp, constraintIndex, GLP_LO, rhs, 0);
@@ -458,12 +456,10 @@ bool GlpkLpSolver<ValueType, RawMode>::getBinaryValue(Variable const& variable) 
     }
 
     if (value > 0.5) {
-        STORM_LOG_ERROR_COND(std::abs(value - 1.0) <= this->integerTolerance,
-                             "Illegal value for binary variable in GLPK solution (" << value << ").");
+        STORM_LOG_ERROR_COND(std::abs(value - 1.0) <= this->integerTolerance, "Illegal value for binary variable in GLPK solution (" << value << ").");
         return true;
     } else {
-        STORM_LOG_ERROR_COND(std::abs(value) <= this->integerTolerance,
-                             "Illegal value for binary variable in GLPK solution (" << value << ").");
+        STORM_LOG_ERROR_COND(std::abs(value) <= this->integerTolerance, "Illegal value for binary variable in GLPK solution (" << value << ").");
         return false;
     }
 

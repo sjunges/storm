@@ -25,7 +25,7 @@ std::unique_ptr<storm::solver::LpSolver<ValueType>> GlpkLpSolverFactory<ValueTyp
 
 template<typename ValueType>
 std::unique_ptr<storm::solver::LpSolver<ValueType, true>> GlpkLpSolverFactory<ValueType>::createRaw(storm::Environment const& env,
-                                                                                                     std::string const& name) const {
+                                                                                                    std::string const& name) const {
     return std::unique_ptr<storm::solver::LpSolver<ValueType, true>>(
         new storm::solver::GlpkLpSolver<ValueType, true>(env.solver().glpk(), env.solver().isDebugSet(), name));
 }
@@ -42,7 +42,7 @@ std::unique_ptr<storm::solver::LpSolver<ValueType>> SoplexLpSolverFactory<ValueT
 
 template<typename ValueType>
 std::unique_ptr<storm::solver::LpSolver<ValueType, true>> SoplexLpSolverFactory<ValueType>::createRaw(storm::Environment const&,
-                                                                                                       std::string const& name) const {
+                                                                                                      std::string const& name) const {
     return std::unique_ptr<storm::solver::LpSolver<ValueType, true>>(new storm::solver::SoplexLpSolver<ValueType, true>(name));
 }
 
@@ -52,8 +52,7 @@ std::unique_ptr<LpSolverFactory<ValueType>> SoplexLpSolverFactory<ValueType>::cl
 }
 
 template<typename ValueType>
-std::shared_ptr<storm::solver::GurobiEnvironment> const& GurobiLpSolverFactory<ValueType>::getOrCreateGurobiEnvironment(
-    storm::Environment const& env) const {
+std::shared_ptr<storm::solver::GurobiEnvironment> const& GurobiLpSolverFactory<ValueType>::getOrCreateGurobiEnvironment(storm::Environment const& env) const {
     if (!environment) {
         environment = std::make_shared<storm::solver::GurobiEnvironment>();
         environment->initialize(env.solver().gurobi(), env.solver().isDebugSet());
@@ -68,7 +67,7 @@ std::unique_ptr<storm::solver::LpSolver<ValueType>> GurobiLpSolverFactory<ValueT
 
 template<typename ValueType>
 std::unique_ptr<storm::solver::LpSolver<ValueType, true>> GurobiLpSolverFactory<ValueType>::createRaw(storm::Environment const& env,
-                                                                                                       std::string const& name) const {
+                                                                                                      std::string const& name) const {
     return std::unique_ptr<storm::solver::LpSolver<ValueType, true>>(
         new storm::solver::GurobiLpSolver<ValueType, true>(getOrCreateGurobiEnvironment(env), name));
 }
@@ -84,8 +83,7 @@ std::unique_ptr<storm::solver::LpSolver<ValueType>> Z3LpSolverFactory<ValueType>
 }
 
 template<typename ValueType>
-std::unique_ptr<storm::solver::LpSolver<ValueType, true>> Z3LpSolverFactory<ValueType>::createRaw(storm::Environment const&,
-                                                                                                   std::string const& name) const {
+std::unique_ptr<storm::solver::LpSolver<ValueType, true>> Z3LpSolverFactory<ValueType>::createRaw(storm::Environment const&, std::string const& name) const {
     return std::unique_ptr<storm::solver::LpSolver<ValueType, true>>(new storm::solver::Z3LpSolver<ValueType, true>(name));
 }
 
@@ -121,7 +119,7 @@ std::unique_ptr<LpSolverFactory<ValueType>> getLpSolverFactory(storm::Environmen
 
 template<typename ValueType>
 std::unique_ptr<storm::solver::LpSolver<ValueType>> getLpSolver(storm::Environment const& env, std::string const& name,
-                                                                 storm::solver::LpSolverTypeSelection solvType) {
+                                                                storm::solver::LpSolverTypeSelection solvType) {
     std::unique_ptr<storm::utility::solver::LpSolverFactory<ValueType>> factory = getLpSolverFactory<ValueType>(env, solvType);
     return factory->create(env, name);
 }

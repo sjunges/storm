@@ -1316,9 +1316,9 @@ void BeliefExplorationPomdpModelChecker<PomdpModelType, BeliefValueType, BeliefM
             if (!added) {
                 // The successor is not in the explored space. Clip it
                 statistics.nrClippingAttempts = statistics.nrClippingAttempts.value() + 1;
-                auto clipping = beliefManager->clipBeliefToGrid(
-                    env, successor.first, options.clippingGridRes,
-                    computeRewards ? beliefExplorer->getStateExtremeBoundIsInfinite() : storm::storage::BitVector());
+                auto clipping =
+                    beliefManager->clipBeliefToGrid(env, successor.first, options.clippingGridRes,
+                                                    computeRewards ? beliefExplorer->getStateExtremeBoundIsInfinite() : storm::storage::BitVector());
                 if (clipping.isClippable) {
                     // The belief is not on the grid and there is a candidate with finite reward
                     statistics.nrClippedStates = statistics.nrClippedStates.value() + 1;

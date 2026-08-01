@@ -580,9 +580,8 @@ void DeterministicSchedsLpChecker<ModelType, GeometryValueType>::initializeLpMod
     uint64_t initialState = *model.getInitialStates().begin();
     auto backwardTransitions = model.getBackwardTransitions();
     auto backwardChoices = model.getTransitionMatrix().transpose();
-    STORM_LOG_WARN_COND(
-        !env.solver().isLpSolverTypeSetFromDefaultValue() || env.solver().getLpSolverType() == storm::solver::LpSolverType::Gurobi,
-        "The selected MILP solver might not perform well. Consider installing / using Gurobi.");
+    STORM_LOG_WARN_COND(!env.solver().isLpSolverTypeSetFromDefaultValue() || env.solver().getLpSolverType() == storm::solver::LpSolverType::Gurobi,
+                        "The selected MILP solver might not perform well. Consider installing / using Gurobi.");
     lpModel = storm::utility::solver::getLpSolver<ValueType>(env, "model");
 
     lpModel->setOptimizationDirection(storm::solver::OptimizationDirection::Maximize);

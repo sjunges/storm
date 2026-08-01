@@ -472,8 +472,7 @@ bool GurobiLpSolver<ValueType, RawMode>::getBinaryValue(Variable const& variable
                              "Illegal value for binary variable in Gurobi solution (" << value << ").");
         return true;
     } else {
-        STORM_LOG_ERROR_COND(std::abs(value) <= environment->getIntegerTolerance(),
-                             "Illegal value for binary variable in Gurobi solution (" << value << ").");
+        STORM_LOG_ERROR_COND(std::abs(value) <= environment->getIntegerTolerance(), "Illegal value for binary variable in Gurobi solution (" << value << ").");
         return false;
     }
 }
@@ -675,8 +674,7 @@ bool GurobiLpSolver<ValueType, RawMode>::getBinaryValue(Variable const& variable
                              "Illegal value for integer variable in Gurobi solution (" << value << ").");
         return true;
     } else {
-        STORM_LOG_ERROR_COND(std::abs(value) <= environment->getIntegerTolerance(),
-                             "Illegal value for integer variable in Gurobi solution (" << value << ").");
+        STORM_LOG_ERROR_COND(std::abs(value) <= environment->getIntegerTolerance(), "Illegal value for integer variable in Gurobi solution (" << value << ").");
         return false;
     }
 }

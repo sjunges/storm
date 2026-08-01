@@ -82,13 +82,11 @@ std::unique_ptr<LpSolverFactory<ValueType>> getLpSolverFactory(
 
 template<typename ValueType>
 std::unique_ptr<storm::solver::LpSolver<ValueType, false>> getLpSolver(
-    storm::Environment const& env, std::string const& name,
-    storm::solver::LpSolverTypeSelection solvType = storm::solver::LpSolverTypeSelection::FROMSETTINGS);
+    storm::Environment const& env, std::string const& name, storm::solver::LpSolverTypeSelection solvType = storm::solver::LpSolverTypeSelection::FROMSETTINGS);
 
 template<typename ValueType>
 std::unique_ptr<storm::solver::LpSolver<ValueType, true>> getRawLpSolver(
-    storm::Environment const& env, std::string const& name,
-    storm::solver::LpSolverTypeSelection solvType = storm::solver::LpSolverTypeSelection::FROMSETTINGS);
+    storm::Environment const& env, std::string const& name, storm::solver::LpSolverTypeSelection solvType = storm::solver::LpSolverTypeSelection::FROMSETTINGS);
 
 class SmtSolverFactory {
    public:

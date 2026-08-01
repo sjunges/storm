@@ -105,8 +105,7 @@ class BeliefManager {
 
     std::vector<BeliefValueType> getBeliefAsVector(const BeliefType &belief);
 
-    BeliefClipping clipBeliefToGrid(storm::Environment const &env, BeliefType const &belief, uint64_t resolution,
-                                    const storm::storage::BitVector &isInfinite);
+    BeliefClipping clipBeliefToGrid(storm::Environment const &env, BeliefType const &belief, uint64_t resolution, const storm::storage::BitVector &isInfinite);
 
     template<typename DistributionType>
     void adjustDistribution(DistributionType &distr);
