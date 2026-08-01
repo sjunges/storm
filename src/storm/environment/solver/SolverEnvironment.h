@@ -21,6 +21,8 @@ class MultiplierEnvironment;
 class GameSolverEnvironment;
 class TopologicalSolverEnvironment;
 class OviSolverEnvironment;
+class GurobiSolverEnvironment;
+class GlpkSolverEnvironment;
 
 class SolverEnvironment {
    public:
@@ -47,15 +49,25 @@ class SolverEnvironment {
     GameSolverEnvironment const& game() const;
     TopologicalSolverEnvironment& topological();
     TopologicalSolverEnvironment const& topological() const;
+    GurobiSolverEnvironment& gurobi();
+    GurobiSolverEnvironment const& gurobi() const;
+    GlpkSolverEnvironment& glpk();
+    GlpkSolverEnvironment const& glpk() const;
 
     bool isForceSoundness() const;
     void setForceSoundness(bool value);
     bool isForceExact() const;
     void setForceExact(bool value);
+    bool isDebugSet() const;
+    void setDebug(bool value);
 
     storm::solver::EquationSolverType const& getLinearEquationSolverType() const;
     void setLinearEquationSolverType(storm::solver::EquationSolverType const& value, bool isSetFromDefault = false);
     bool isLinearEquationSolverTypeSetFromDefaultValue() const;
+
+    storm::solver::LpSolverType const& getLpSolverType() const;
+    void setLpSolverType(storm::solver::LpSolverType const& value, bool isSetFromDefault = false);
+    bool isLpSolverTypeSetFromDefaultValue() const;
 
     std::pair<boost::optional<storm::RationalNumber>, boost::optional<bool>> getPrecisionOfLinearEquationSolver(
         storm::solver::EquationSolverType const& solverType) const;
@@ -73,10 +85,15 @@ class SolverEnvironment {
     SubEnvironment<MinMaxSolverEnvironment> minMaxSolverEnvironment;
     SubEnvironment<MultiplierEnvironment> multiplierEnvironment;
     SubEnvironment<OviSolverEnvironment> oviSolverEnvironment;
+    SubEnvironment<GurobiSolverEnvironment> gurobiSolverEnvironment;
+    SubEnvironment<GlpkSolverEnvironment> glpkSolverEnvironment;
 
     storm::solver::EquationSolverType linearEquationSolverType;
     bool linearEquationSolverTypeSetFromDefault;
+    storm::solver::LpSolverType lpSolverType;
+    bool lpSolverTypeSetFromDefault;
     bool forceSoundness;
     bool forceExact;
+    bool debug;
 };
 }  // namespace storm

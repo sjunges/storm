@@ -303,7 +303,7 @@ class BeliefExplorationPomdpModelChecker {
      * @param beliefManager the belief manager used
      * @param beliefExplorer the belief MDP explorer used
      */
-    void clipToGrid(uint64_t clippingStateId, bool computeRewards, bool min, std::shared_ptr<BeliefManagerType>& beliefManager,
+    void clipToGrid(storm::Environment const& env, uint64_t clippingStateId, bool computeRewards, bool min, std::shared_ptr<BeliefManagerType>& beliefManager,
                     std::shared_ptr<ExplorerType>& beliefExplorer);
 
     /**
@@ -315,7 +315,7 @@ class BeliefExplorationPomdpModelChecker {
      * @param beliefManager the belief manager used
      * @param beliefExplorer the belief MDP explorer used
      */
-    bool clipToGridExplicitly(uint64_t clippingStateId, bool computeRewards, std::shared_ptr<BeliefManagerType>& beliefManager,
+    bool clipToGridExplicitly(storm::Environment const& env, uint64_t clippingStateId, bool computeRewards, std::shared_ptr<BeliefManagerType>& beliefManager,
                               std::shared_ptr<ExplorerType>& beliefExplorer, uint64_t localActionIndex);
 
     /**

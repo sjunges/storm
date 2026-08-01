@@ -38,7 +38,6 @@
 #include "storm/settings/modules/NativeEquationSolverSettings.h"
 #include "storm/settings/modules/OviSolverSettings.h"
 #include "storm/settings/modules/ResourceSettings.h"
-#include "storm/settings/modules/Smt2SmtSolverSettings.h"
 #include "storm/settings/modules/SylvanSettings.h"
 #include "storm/settings/modules/TimeBoundedSolverSettings.h"
 #include "storm/settings/modules/TopologicalEquationSolverSettings.h"
@@ -700,7 +699,6 @@ void initializeAll(std::string const& name, std::string const& executableName) {
     storm::settings::addModule<storm::settings::modules::GlpkSettings>();
     storm::settings::addModule<storm::settings::modules::GurobiSettings>();
     storm::settings::addModule<storm::settings::modules::TopologicalEquationSolverSettings>();
-    storm::settings::addModule<storm::settings::modules::Smt2SmtSolverSettings>();
     storm::settings::addModule<storm::settings::modules::ExplorationSettings>();
     storm::settings::addModule<storm::settings::modules::ResourceSettings>();
     storm::settings::addModule<storm::settings::modules::AbstractionSettings>();
