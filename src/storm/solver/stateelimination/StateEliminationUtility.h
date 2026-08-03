@@ -48,8 +48,7 @@ uint_fast64_t computeStatePenaltyRegularExpression(storm::storage::sparse::state
                                                    std::vector<ValueType> const& oneStepProbabilities);
 
 template<typename ValueType>
-std::shared_ptr<StatePriorityQueue> createStatePriorityQueue(EliminationOrder const& order,
-                                                             boost::optional<std::vector<uint_fast64_t>> const& stateDistances,
+std::shared_ptr<StatePriorityQueue> createStatePriorityQueue(EliminationOrder const& order, boost::optional<std::vector<uint_fast64_t>> const& stateDistances,
                                                              storm::storage::FlexibleSparseMatrix<ValueType> const& transitionMatrix,
                                                              storm::storage::FlexibleSparseMatrix<ValueType> const& backwardTransitions,
                                                              std::vector<ValueType> const& oneStepProbabilities, storm::storage::BitVector const& states);

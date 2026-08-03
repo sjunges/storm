@@ -53,8 +53,7 @@ class SparseDtmcEliminationModelChecker : public SparsePropositionalModelChecker
                                                                             CheckTask<storm::logic::StateFormula, SolutionType> const& checkTask) override;
 
     // Static helper methods
-    static std::unique_ptr<CheckResult> computeUntilProbabilities(Environment const& env,
-                                                                  storm::storage::SparseMatrix<ValueType> const& probabilityMatrix,
+    static std::unique_ptr<CheckResult> computeUntilProbabilities(Environment const& env, storm::storage::SparseMatrix<ValueType> const& probabilityMatrix,
                                                                   storm::storage::SparseMatrix<ValueType> const& backwardTransitions,
                                                                   storm::storage::BitVector const& initialStates, storm::storage::BitVector const& phiStates,
                                                                   storm::storage::BitVector const& psiStates, bool computeForInitialStatesOnly);
@@ -80,8 +79,7 @@ class SparseDtmcEliminationModelChecker : public SparsePropositionalModelChecker
         bool computeForInitialStatesOnly);
 
     static std::vector<ValueType> computeReachabilityValues(Environment const& env, storm::storage::SparseMatrix<ValueType> const& transitionMatrix,
-                                                            std::vector<ValueType>& values,
-                                                            storm::storage::SparseMatrix<ValueType> const& backwardTransitions,
+                                                            std::vector<ValueType>& values, storm::storage::SparseMatrix<ValueType> const& backwardTransitions,
                                                             storm::storage::BitVector const& initialStates, bool computeResultsForInitialStatesOnly,
                                                             std::vector<ValueType> const& oneStepProbabilitiesToTarget);
 

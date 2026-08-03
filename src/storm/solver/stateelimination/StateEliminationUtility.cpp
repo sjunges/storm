@@ -116,8 +116,7 @@ std::shared_ptr<StatePriorityQueue> createStatePriorityQueue(EliminationOrder co
         } else if (eliminationOrderIsPenaltyBased(order)) {
             std::vector<std::pair<storm::storage::sparse::state_type, uint_fast64_t>> statePenalties(sortedStates.size());
             typename DynamicStatePriorityQueue<ValueType>::PenaltyFunctionType penaltyFunction =
-                order == EliminationOrder::RegularExpression ? computeStatePenaltyRegularExpression<ValueType>
-                                                                                                            : computeStatePenalty<ValueType>;
+                order == EliminationOrder::RegularExpression ? computeStatePenaltyRegularExpression<ValueType> : computeStatePenalty<ValueType>;
             for (uint_fast64_t index = 0; index < sortedStates.size(); ++index) {
                 statePenalties[index] =
                     std::make_pair(sortedStates[index], penaltyFunction(sortedStates[index], transitionMatrix, backwardTransitions, oneStepProbabilities));
@@ -164,9 +163,8 @@ std::vector<uint_fast64_t> getDistanceBasedPriorities(EliminationOrder const& or
         states[index] = index;
     }
 
-    std::vector<uint_fast64_t> distances =
-        getStateDistances(transitionMatrix, transitionMatrixTransposed, initialStates, oneStepProbabilities,
-                          order == EliminationOrder::Forward || order == EliminationOrder::ForwardReversed);
+    std::vector<uint_fast64_t> distances = getStateDistances(transitionMatrix, transitionMatrixTransposed, initialStates, oneStepProbabilities,
+                                                             order == EliminationOrder::Forward || order == EliminationOrder::ForwardReversed);
 
     // In case of the forward or backward ordering, we can sort the states according to the distances.
     if (forward ^ reverse) {
