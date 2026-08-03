@@ -13,8 +13,7 @@ namespace bisimulation {
 
 template<storm::dd::DdType DdType, typename ValueType>
 PartitionRefiner<DdType, ValueType>::PartitionRefiner(storm::models::symbolic::Model<DdType, ValueType> const& model,
-                                                      Partition<DdType, ValueType> const& initialStatePartition,
-                                                      BisimulationOptions const& bisimulationOptions)
+                                                      Partition<DdType, ValueType> const& initialStatePartition, BisimulationOptions const& bisimulationOptions)
     : status(Status::Initialized),
       refinements(0),
       statePartition(initialStatePartition),

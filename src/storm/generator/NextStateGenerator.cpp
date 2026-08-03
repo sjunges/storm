@@ -42,7 +42,7 @@ NextStateGenerator<ValueType, StateType>::NextStateGenerator(storm::expressions:
       evaluator(nullptr),
       state(nullptr),
       comparator(storm::NumberTraits<ValueType>::IsExact ? storm::utility::zero<ValueType>()
-                                                          : storm::utility::convertNumber<ValueType>(options.getStochasticTolerance())),
+                                                         : storm::utility::convertNumber<ValueType>(options.getStochasticTolerance())),
       actionMask(mask) {
     initializeSpecialStates();
 }
@@ -57,7 +57,7 @@ NextStateGenerator<ValueType, StateType>::NextStateGenerator(storm::expressions:
       evaluator(nullptr),
       state(nullptr),
       comparator(storm::NumberTraits<ValueType>::IsExact ? storm::utility::zero<ValueType>()
-                                                          : storm::utility::convertNumber<ValueType>(options.getStochasticTolerance())),
+                                                         : storm::utility::convertNumber<ValueType>(options.getStochasticTolerance())),
       actionMask(mask) {}
 
 template<typename ValueType, typename StateType>

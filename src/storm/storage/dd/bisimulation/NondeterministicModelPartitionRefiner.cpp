@@ -15,7 +15,7 @@ NondeterministicModelPartitionRefiner<DdType, ValueType>::NondeterministicModelP
       model(model),
       choicePartition(Partition<DdType, ValueType>::createTrivialChoicePartition(model, initialStatePartition.getBlockVariables())),
       stateSignatureRefiner(model.getManager(), this->statePartition.getBlockVariable(), model.getRowVariables(), model.getColumnVariables(), true,
-                           std::set<storm::expressions::Variable>(), bisimulationOptions),
+                            std::set<storm::expressions::Variable>(), bisimulationOptions),
       statePartitonHasBeenRefinedOnce(false) {
     // For Markov automata, we refine the state partition wrt. to their exit rates.
     if (model.isOfType(storm::models::ModelType::MarkovAutomaton)) {

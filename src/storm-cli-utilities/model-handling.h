@@ -521,7 +521,7 @@ std::shared_ptr<storm::models::ModelBase> buildModelDd(SymbolicInput const& inpu
     }
     auto buildSettings = storm::settings::getModule<storm::settings::modules::BuildSettings>();
     return storm::api::buildSymbolicModel<DdType, ValueType>(input.model.get(), createFormulasToRespect(input.properties), buildSettings.isBuildFullModelSet(),
-                                                             !buildSettings.isApplyNoMaximumProgressAssumptionSet());
+                                                             !buildSettings.isApplyNoMaximumProgressAssumptionSet(), !buildSettings.isDontFixDeadlocksSet());
 }
 
 inline storm::builder::BuilderOptions createBuildOptionsSparseFromSettings(SymbolicInput const& input) {

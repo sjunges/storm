@@ -961,7 +961,7 @@ class InternalSparseQuotientExtractor<storm::dd::DdType::Sylvan, ValueType, Expo
 
 template<storm::dd::DdType DdType, typename ValueType, typename ExportValueType>
 QuotientExtractor<DdType, ValueType, ExportValueType>::QuotientExtractor(storm::dd::bisimulation::QuotientFormat const& quotientFormat,
-                                                                        BisimulationOptions const& bisimulationOptions)
+                                                                         BisimulationOptions const& bisimulationOptions)
     : useRepresentatives(bisimulationOptions.useRepresentatives),
       useOriginalVariables(bisimulationOptions.useOriginalVariables),
       quotientFormat(quotientFormat) {

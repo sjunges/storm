@@ -6,6 +6,8 @@
 #include "storm/models/sparse/Ctmc.h"
 #include "storm/models/sparse/Dtmc.h"
 #include "storm/models/sparse/Mdp.h"
+#include "storm/settings/SettingsManager.h"
+#include "storm/settings/modules/GeneralSettings.h"
 #include "storm/storage/bisimulation/DeterministicModelBisimulationDecomposition.h"
 #include "storm/storage/bisimulation/NondeterministicModelBisimulationDecomposition.h"
 #include "storm/storage/dd/DdType.h"
@@ -19,13 +21,19 @@ namespace storm {
 namespace api {
 
 template<typename ModelType>
-std::shared_ptr<ModelType> performDeterministicSparseBisimulationMinimization(
-    std::shared_ptr<ModelType> model, std::vector<std::shared_ptr<storm::logic::Formula const>> const& formulas, storm::storage::BisimulationType type,
-    bool graphPreserving = true, std::optional<double> const& tolerance = std::nullopt) {
-    typename storm::storage::DeterministicModelBisimulationDecomposition<ModelType>::Options options;
-    if (!formulas.empty() && graphPreserving) {
-        options = typename storm::storage::DeterministicModelBisimulationDecomposition<ModelType>::Options(*model, formulas);
-    }
+std::shared_ptr<ModelType> performDeterministicSparseBisimulationMinimization(std::shared_ptr<ModelType> model,
+                                                                              std::vector<std::shared_ptr<storm::logic::Formula const>> const& formulas,
+                                                                              storm::storage::BisimulationType type, bool graphPreserving = true,
+                                                                              std::optional<double> const& tolerance = std::nullopt) {
+    using OptionsType = typename storm::storage::DeterministicModelBisimulationDecomposition<ModelType>::Options;
+    // Falls back to the general precision setting when the caller does not deliberately choose a tolerance;
+    // may be reworked to require an explicit choice throughout the API in the future.
+    typename ModelType::ValueType const resolvedTolerance = storm::NumberTraits<typename ModelType::ValueType>::IsExact
+                                                                ? storm::utility::zero<typename ModelType::ValueType>()
+                                                                : storm::utility::convertNumber<typename ModelType::ValueType>(tolerance.value_or(
+                                                                      storm::settings::getModule<storm::settings::modules::GeneralSettings>().getPrecision()));
+    OptionsType options =
+        (!formulas.empty() && graphPreserving) ? OptionsType(*model, formulas, resolvedTolerance) : OptionsType::preservingAllLabels(resolvedTolerance);
     // If we cannot use formula-based decomposition because of
     // non-graph-preserving regions but there are reward models, we need to
     // preserve those
@@ -34,11 +42,6 @@ std::shared_ptr<ModelType> performDeterministicSparseBisimulationMinimization(
         options.setKeepRewards(true);
     }
     options.setType(type);
-    if constexpr (!storm::NumberTraits<typename ModelType::ValueType>::IsExact) {
-        if (tolerance) {
-            options.setTolerance(storm::utility::convertNumber<typename ModelType::ValueType>(*tolerance));
-        }
-    }
 
     storm::storage::DeterministicModelBisimulationDecomposition<ModelType> bisimulationDecomposition(*model, options);
     bisimulationDecomposition.computeBisimulationDecomposition();
@@ -46,13 +49,19 @@ std::shared_ptr<ModelType> performDeterministicSparseBisimulationMinimization(
 }
 
 template<typename ModelType>
-std::shared_ptr<ModelType> performNondeterministicSparseBisimulationMinimization(
-    std::shared_ptr<ModelType> model, std::vector<std::shared_ptr<storm::logic::Formula const>> const& formulas, storm::storage::BisimulationType type,
-    bool graphPreserving = true, std::optional<double> const& tolerance = std::nullopt) {
-    typename storm::storage::NondeterministicModelBisimulationDecomposition<ModelType>::Options options;
-    if (!formulas.empty() && graphPreserving) {
-        options = typename storm::storage::NondeterministicModelBisimulationDecomposition<ModelType>::Options(*model, formulas);
-    }
+std::shared_ptr<ModelType> performNondeterministicSparseBisimulationMinimization(std::shared_ptr<ModelType> model,
+                                                                                 std::vector<std::shared_ptr<storm::logic::Formula const>> const& formulas,
+                                                                                 storm::storage::BisimulationType type, bool graphPreserving = true,
+                                                                                 std::optional<double> const& tolerance = std::nullopt) {
+    using OptionsType = typename storm::storage::NondeterministicModelBisimulationDecomposition<ModelType>::Options;
+    // Falls back to the general precision setting when the caller does not deliberately choose a tolerance;
+    // may be reworked to require an explicit choice throughout the API in the future.
+    typename ModelType::ValueType const resolvedTolerance = storm::NumberTraits<typename ModelType::ValueType>::IsExact
+                                                                ? storm::utility::zero<typename ModelType::ValueType>()
+                                                                : storm::utility::convertNumber<typename ModelType::ValueType>(tolerance.value_or(
+                                                                      storm::settings::getModule<storm::settings::modules::GeneralSettings>().getPrecision()));
+    OptionsType options =
+        (!formulas.empty() && graphPreserving) ? OptionsType(*model, formulas, resolvedTolerance) : OptionsType::preservingAllLabels(resolvedTolerance);
     // If we cannot use formula-based decomposition because of
     // non-graph-preserving regions but there are reward models, we need to
     // preserve those
@@ -61,11 +70,6 @@ std::shared_ptr<ModelType> performNondeterministicSparseBisimulationMinimization
         options.setKeepRewards(true);
     }
     options.setType(type);
-    if constexpr (!storm::NumberTraits<typename ModelType::ValueType>::IsExact) {
-        if (tolerance) {
-            options.setTolerance(storm::utility::convertNumber<typename ModelType::ValueType>(*tolerance));
-        }
-    }
 
     storm::storage::NondeterministicModelBisimulationDecomposition<ModelType> bisimulationDecomposition(*model, options);
     bisimulationDecomposition.computeBisimulationDecomposition();
