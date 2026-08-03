@@ -222,7 +222,7 @@ class BuilderOptions {
     BuilderOptions& setStochasticTolerance(double newValue);
 
     /**
-     * Should the progress of state space exploration be printed?
+     * Sets whether the progress of state space exploration should be printed.
      * @param newValue The new value (default true)
      * @return this
      */
