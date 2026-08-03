@@ -13,7 +13,7 @@
 #include "storm/modelchecker/results/ExplicitQualitativeCheckResult.h"
 #include "storm/modelchecker/results/ExplicitQuantitativeCheckResult.h"
 #include "storm/settings/SettingsManager.h"
-#include "storm/settings/modules/EliminationSettings.h"
+#include "storm/settings/modules/CoreSettings.h"
 #include "storm/solver/stateelimination/ConditionalStateEliminator.h"
 #include "storm/solver/stateelimination/DynamicStatePriorityQueue.h"
 #include "storm/solver/stateelimination/MultiValueStateEliminator.h"
