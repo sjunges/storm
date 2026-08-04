@@ -311,6 +311,7 @@ class BeliefExplorationPomdpModelChecker {
      * Clips the belief with the given state ID to a belief grid.
      * If a new candidate is added to the belief space, it is expanded. If necessary, its direct successors are added to the exploration queue to be
      * handled by the main exploration routine.
+     * @param env Environment
      * @param clippingStateId the state ID of the clipping belief
      * @param computeRewards true, if rewards are computed
      * @param beliefManager the belief manager used
