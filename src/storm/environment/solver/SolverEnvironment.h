@@ -23,6 +23,7 @@ class TopologicalSolverEnvironment;
 class OviSolverEnvironment;
 class GurobiSolverEnvironment;
 class GlpkSolverEnvironment;
+class EliminationSolverEnvironment;
 
 class SolverEnvironment {
    public:
@@ -53,6 +54,8 @@ class SolverEnvironment {
     GurobiSolverEnvironment const& gurobi() const;
     GlpkSolverEnvironment& glpk();
     GlpkSolverEnvironment const& glpk() const;
+    EliminationSolverEnvironment& elimination();
+    EliminationSolverEnvironment const& elimination() const;
 
     bool isForceSoundness() const;
     void setForceSoundness(bool value);
@@ -87,6 +90,7 @@ class SolverEnvironment {
     SubEnvironment<OviSolverEnvironment> oviSolverEnvironment;
     SubEnvironment<GurobiSolverEnvironment> gurobiSolverEnvironment;
     SubEnvironment<GlpkSolverEnvironment> glpkSolverEnvironment;
+    SubEnvironment<EliminationSolverEnvironment> eliminationSolverEnvironment;
 
     storm::solver::EquationSolverType linearEquationSolverType;
     bool linearEquationSolverTypeSetFromDefault;
