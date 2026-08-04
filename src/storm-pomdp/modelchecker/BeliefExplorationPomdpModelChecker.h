@@ -297,6 +297,7 @@ class BeliefExplorationPomdpModelChecker {
     /**
      * Clips the belief with the given state ID to a belief grid by clipping its direct successor ("grid clipping")
      * Transitions to explored successors and successors on the grid are added, otherwise successors are not generated
+     * @param env Environment
      * @param clippingStateId the state ID of the clipping belief
      * @param computeRewards true, if rewards are computed
      * @param min true, if objective is to minimise
