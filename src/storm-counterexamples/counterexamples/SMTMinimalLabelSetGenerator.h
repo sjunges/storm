@@ -5,7 +5,7 @@
 
 #include "storm-counterexamples/counterexamples/GuaranteedLabelSet.h"
 #include "storm-counterexamples/counterexamples/HighLevelCounterexample.h"
-#include "storm-counterexamples/settings/modules/CounterexampleGeneratorSettings.h"
+#include "storm/settings/modules/CounterexampleGeneratorSettings.h"
 #include "storm/exceptions/NotSupportedException.h"
 #include "storm/modelchecker/prctl/helper/SparseDtmcPrctlHelper.h"
 #include "storm/modelchecker/prctl/helper/SparseMdpPrctlHelper.h"

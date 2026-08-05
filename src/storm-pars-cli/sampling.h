@@ -3,6 +3,7 @@
 #include "storm-cli-utilities/cli.h"
 #include "storm-cli-utilities/model-handling.h"
 
+#include "storm/exceptions/WrongFormatException.h"
 #include "storm-pars-cli/print.h"
 
 #include "storm-pars/api/region.h"
