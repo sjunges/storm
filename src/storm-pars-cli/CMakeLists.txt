@@ -3,6 +3,7 @@ add_executable(storm-pars-cli ${PROJECT_SOURCE_DIR}/src/storm-pars-cli/storm-par
                               ${PROJECT_SOURCE_DIR}/src/storm-pars-cli/print.cpp
                               ${PROJECT_SOURCE_DIR}/src/storm-pars-cli/monotonicity.cpp
                               ${PROJECT_SOURCE_DIR}/src/storm-pars-cli/feasibility.cpp
+                              ${PROJECT_SOURCE_DIR}/src/storm-pars-cli/solutionFunctions.cpp
 )
 target_link_libraries(storm-pars-cli storm-pars storm-cli-utilities)
 target_include_directories(storm-pars-cli PRIVATE "${PROJECT_SOURCE_DIR}/src")
