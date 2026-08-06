@@ -4,7 +4,7 @@ target_link_libraries(storm-cli storm storm-cli-utilities storm-counterexamples 
 target_include_directories(storm-cli PRIVATE "${PROJECT_SOURCE_DIR}/src")
 set_target_properties(storm-cli PROPERTIES OUTPUT_NAME "storm")
 set_target_properties(storm-cli PROPERTIES VERSION ${STORM_VERSION} SOVERSION ${STORM_VERSION})
-target_precompile_headers(storm-cli PRIVATE ${STORM_PRECOMPILED_HEADERS})
+storm_target_precompile_headers(storm-cli PRIVATE ${STORM_PRECOMPILED_HEADERS})
 
 add_dependencies(binaries storm-cli)
 

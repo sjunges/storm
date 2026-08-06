@@ -38,7 +38,6 @@
 #include "storm/settings/modules/NativeEquationSolverSettings.h"
 #include "storm/settings/modules/OviSolverSettings.h"
 #include "storm/settings/modules/ResourceSettings.h"
-#include "storm/settings/modules/Smt2SmtSolverSettings.h"
 #include "storm/settings/modules/SylvanSettings.h"
 #include "storm/settings/modules/TimeBoundedSolverSettings.h"
 #include "storm/settings/modules/TopologicalEquationSolverSettings.h"
@@ -522,7 +521,7 @@ void SettingsManager::setOptionArguments(std::string const& optionName, std::sha
         bool conversionOk = argument.setFromStringValue(argumentCache[i]);
         STORM_LOG_THROW(conversionOk, storm::exceptions::OptionParserException,
                         "Value '" << argumentCache[i] << "' is invalid for argument <" << argument.getName() << "> of option:\n"
-                                  << *option);
+                                  << *option << ".");
     }
 
     // In case there are optional arguments that were not set, we set them to their default value.
@@ -530,7 +529,7 @@ void SettingsManager::setOptionArguments(std::string const& optionName, std::sha
         ArgumentBase& argument = option->getArgument(i);
         STORM_LOG_THROW(argument.getIsOptional(), storm::exceptions::OptionParserException,
                         "Non-optional argument <" << argument.getName() << "> of option:\n"
-                                                  << *option);
+                                                  << *option << ".");
         argument.setFromDefaultValue();
     }
 
@@ -718,7 +717,6 @@ void initializeAll(std::string const& name, std::string const& executableName) {
     storm::settings::addModule<storm::settings::modules::GlpkSettings>();
     storm::settings::addModule<storm::settings::modules::GurobiSettings>();
     storm::settings::addModule<storm::settings::modules::TopologicalEquationSolverSettings>();
-    storm::settings::addModule<storm::settings::modules::Smt2SmtSolverSettings>();
     storm::settings::addModule<storm::settings::modules::ExplorationSettings>();
     storm::settings::addModule<storm::settings::modules::ResourceSettings>();
     storm::settings::addModule<storm::settings::modules::AbstractionSettings>();
