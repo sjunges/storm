@@ -305,10 +305,6 @@ TYPED_TEST(SparseRobustDtmcParameterLiftingTest, Brp_Prob) {
     checkBrpProb(this->env(), this->graphPreserving());
 }
 
-TYPED_TEST(SparseRobustDtmcParameterLiftingTest, Brp_Prob_no_simplification) {
-    checkBrpProb(this->env(), this->graphPreserving());
-}
-
 TYPED_TEST(SparseRobustDtmcParameterLiftingTest, Brp_Rew) {
     checkBrpRew(this->env(), this->graphPreserving());
 }

@@ -13,7 +13,6 @@
 
 #include "storm-pars/modelchecker/region/monotonicity/AssumptionChecker.h"
 #include "storm-pars/utility/ModelInstantiator.h"
-#include "storm/utility/Stopwatch.h"
 
 namespace storm {
 namespace analysis {

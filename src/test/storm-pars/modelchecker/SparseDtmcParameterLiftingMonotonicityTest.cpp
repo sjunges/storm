@@ -107,13 +107,11 @@ template<typename ValueType>
 void checkBrpMonotonicity(storm::Environment const& env, storm::modelchecker::RegionCheckEngine regionEngine, MonotonicityTestData data,
                           std::vector<std::string> const& regionStrings) {
     // Reachability order, as it is already done building we don't need to recreate the order for each region
-    auto monHelper = new storm::analysis::MonotonicityHelper<storm::RationalFunction, ValueType>(data.model, data.formulas, {});
-    auto monRes = monHelper->checkMonotonicityInBuild(std::cout);
+    storm::analysis::MonotonicityHelper<storm::RationalFunction, ValueType> monHelper(data.model, data.formulas, {});
+    auto monRes = monHelper.checkMonotonicityInBuild(std::cout);
     auto order = monRes.begin()->first;
     ASSERT_EQ(order->getNumberOfAddedStates(), data.model->getTransitionMatrix().getColumnCount());
     ASSERT_TRUE(order->getDoneBuilding());
-    auto localMonRes =
-        std::make_shared<storm::analysis::LocalMonotonicityResult<storm::RationalFunctionVariable>>(monRes.begin()->second.first, order->getNumberOfStates());
 
     // Modelcheckers
     auto regionCheckerMon = storm::api::initializeRegionModelChecker<storm::RationalFunction>(
@@ -137,8 +135,8 @@ void checkSimpleMonotonicity(storm::Environment const& env, storm::modelchecker:
     if (printMatrix) {
         data.model->getTransitionMatrix().printAsMatlabMatrix(std::cout);
     }
-    auto monHelper = new storm::analysis::MonotonicityHelper<storm::RationalFunction, ValueType>(data.model, data.formulas, {});
-    auto order = monHelper->checkMonotonicityInBuild(std::cout).begin()->first;
+    storm::analysis::MonotonicityHelper<storm::RationalFunction, ValueType> monHelper(data.model, data.formulas, {});
+    auto order = monHelper.checkMonotonicityInBuild(std::cout).begin()->first;
     if (assertDoneBuilding) {
         ASSERT_TRUE(order->getDoneBuilding());
     }
@@ -154,7 +152,7 @@ void checkSimpleMonotonicity(storm::Environment const& env, storm::modelchecker:
     // Start testing
     for (auto const& regionString : regionStrings) {
         auto region = storm::api::parseRegion<storm::RationalFunction>(regionString, data.modelParameters);
-        auto monRes = monHelper->createLocalMonotonicityResult(order, region);
+        monHelper.createLocalMonotonicityResult(order, region);
         EXPECT_EQ(regionChecker->analyzeRegion(env, region, storm::modelchecker::RegionResultHypothesis::Unknown, true),
                   regionCheckerMon->analyzeRegion(env, region, storm::modelchecker::RegionResultHypothesis::Unknown, true));
     }

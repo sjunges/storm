@@ -7,12 +7,12 @@
 #include "storm/utility/OptionalRef.h"
 #include "storm/utility/macros.h"
 
-namespace storm::pars {
-namespace analysis {
+namespace storm::analysis {
 template<typename ValueType>
 class ConstraintCollector;
 }
 
+namespace storm::pars {
 namespace api {
 template<typename ValueType>
 void exportParametricResultToFile(std::optional<ValueType>, storm::OptionalRef<storm::analysis::ConstraintCollector<ValueType> const> const&,
