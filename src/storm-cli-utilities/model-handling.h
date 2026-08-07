@@ -6,6 +6,7 @@
 #include "storm/api/storm.h"
 
 #include "AutomaticSettings.h"
+#include "storm-cli-utilities/print.h"
 #include "storm-counterexamples/api/counterexamples.h"
 #include "storm-gamebased-ar/api/verification.h"
 #include "storm-parsers/api/storm-parsers.h"
