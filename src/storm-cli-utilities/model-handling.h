@@ -5,7 +5,7 @@
 
 #include "storm/api/storm.h"
 
-#include "AutomaticSettings.h"
+#include "storm-cli-utilities/AutomaticSettings.h"
 #include "storm-cli-utilities/print.h"
 #include "storm-parsers/api/storm-parsers.h"
 #include "storm/builder/BuilderType.h"
