@@ -1,13 +1,14 @@
+#include "storm-pars/api/export.h"
+
 #include <algorithm>
 #include <fstream>
 #include <iterator>
 #include <vector>
 
-#include "storm-pars/api/export.h"
 #include "storm/analysis/GraphConditions.h"
 #include "storm/io/file.h"
 
-namespace storm {
+namespace storm::pars {
 namespace api {
 
 template<>
@@ -50,4 +51,4 @@ void exportParametricResultToFile(std::optional<storm::RationalFunction> result,
 }
 
 }  // namespace api
-}  // namespace storm
+}  // namespace storm::pars
