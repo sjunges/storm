@@ -5,7 +5,6 @@
 
 #include "storm-counterexamples/counterexamples/GuaranteedLabelSet.h"
 #include "storm-counterexamples/counterexamples/HighLevelCounterexample.h"
-#include "storm-counterexamples/settings/modules/CounterexampleGeneratorSettings.h"
 #include "storm/exceptions/InvalidArgumentException.h"
 #include "storm/exceptions/InvalidStateException.h"
 #include "storm/exceptions/MissingLibraryException.h"
@@ -15,6 +14,7 @@
 #include "storm/modelchecker/propositional/SparsePropositionalModelChecker.h"
 #include "storm/modelchecker/results/ExplicitQuantitativeCheckResult.h"
 #include "storm/settings/SettingsManager.h"
+#include "storm/settings/modules/CounterexampleGeneratorSettings.h"
 #include "storm/settings/modules/GeneralSettings.h"
 #include "storm/solver/Z3SmtSolver.h"
 #include "storm/storage/BoostTypes.h"

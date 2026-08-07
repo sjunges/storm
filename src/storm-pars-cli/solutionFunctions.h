@@ -1,5 +1,6 @@
 #pragma once
 
+#include "storm/modelchecker/results/SymbolicQualitativeCheckResult.h"
 #include "storm/modelchecker/results/SymbolicQuantitativeCheckResult.h"
 
 namespace storm::pars {
