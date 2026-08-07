@@ -132,6 +132,9 @@ TEST(DeterministicModelBisimulationDecomposition, Crowds) {
     EXPECT_EQ(105ul, result->getNumberOfTransitions());
 }
 
+// Suppress compiler warning on unreachable code due to skipped test
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunreachable-code"
 TEST(DeterministicModelBisimulationDecomposition, Cluster) {
     // TODO FIXME
     GTEST_SKIP() << "CTMC bisimulation currently yields unstable results.";
@@ -189,3 +192,4 @@ TEST(DeterministicModelBisimulationDecomposition, Cluster) {
     EXPECT_EQ(1618ul, result->getNumberOfStates());
     EXPECT_EQ(8816ul, result->getNumberOfTransitions());
 }
+#pragma clang diagnostic pop
