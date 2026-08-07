@@ -16,10 +16,12 @@ namespace api {
 template<typename ModelType>
 std::shared_ptr<ModelType> performDeterministicSparseBisimulationMinimization(std::shared_ptr<ModelType> model,
                                                                               std::vector<std::shared_ptr<storm::logic::Formula const>> const& formulas,
-                                                                              storm::storage::BisimulationType type, bool graphPreserving = true) {
+                                                                              storm::storage::BisimulationType type, bool graphPreserving = true,
+                                                                              bool allowMeasureDrivenInitialPartition = true) {
     typename storm::storage::DeterministicModelBisimulationDecomposition<ModelType>::Options options;
     if (!formulas.empty() && graphPreserving) {
-        options = typename storm::storage::DeterministicModelBisimulationDecomposition<ModelType>::Options(*model, formulas);
+        options =
+            typename storm::storage::DeterministicModelBisimulationDecomposition<ModelType>::Options(*model, formulas, allowMeasureDrivenInitialPartition);
     }
     // If we cannot use formula-based decomposition because of
     // non-graph-preserving regions but there are reward models, we need to
@@ -29,6 +31,7 @@ std::shared_ptr<ModelType> performDeterministicSparseBisimulationMinimization(st
         options.setKeepRewards(true);
     }
     options.setType(type);
+    options.setAllowMeasureDrivenInitialPartition(allowMeasureDrivenInitialPartition);
 
     storm::storage::DeterministicModelBisimulationDecomposition<ModelType> bisimulationDecomposition(*model, options);
     bisimulationDecomposition.computeBisimulationDecomposition();
@@ -38,10 +41,12 @@ std::shared_ptr<ModelType> performDeterministicSparseBisimulationMinimization(st
 template<typename ModelType>
 std::shared_ptr<ModelType> performNondeterministicSparseBisimulationMinimization(std::shared_ptr<ModelType> model,
                                                                                  std::vector<std::shared_ptr<storm::logic::Formula const>> const& formulas,
-                                                                                 storm::storage::BisimulationType type, bool graphPreserving = true) {
+                                                                                 storm::storage::BisimulationType type, bool graphPreserving = true,
+                                                                                 bool allowMeasureDrivenInitialPartition = true) {
     typename storm::storage::NondeterministicModelBisimulationDecomposition<ModelType>::Options options;
     if (!formulas.empty() && graphPreserving) {
-        options = typename storm::storage::NondeterministicModelBisimulationDecomposition<ModelType>::Options(*model, formulas);
+        options =
+            typename storm::storage::NondeterministicModelBisimulationDecomposition<ModelType>::Options(*model, formulas, allowMeasureDrivenInitialPartition);
     }
     // If we cannot use formula-based decomposition because of
     // non-graph-preserving regions but there are reward models, we need to
@@ -51,6 +56,7 @@ std::shared_ptr<ModelType> performNondeterministicSparseBisimulationMinimization
         options.setKeepRewards(true);
     }
     options.setType(type);
+    options.setAllowMeasureDrivenInitialPartition(allowMeasureDrivenInitialPartition);
 
     storm::storage::NondeterministicModelBisimulationDecomposition<ModelType> bisimulationDecomposition(*model, options);
     bisimulationDecomposition.computeBisimulationDecomposition();
@@ -60,7 +66,8 @@ std::shared_ptr<ModelType> performNondeterministicSparseBisimulationMinimization
 template<typename ValueType>
 std::shared_ptr<storm::models::sparse::Model<ValueType>> performBisimulationMinimization(
     std::shared_ptr<storm::models::sparse::Model<ValueType>> const& model, std::vector<std::shared_ptr<storm::logic::Formula const>> const& formulas,
-    storm::storage::BisimulationType type = storm::storage::BisimulationType::Strong, bool graphPreserving = true) {
+    storm::storage::BisimulationType type = storm::storage::BisimulationType::Strong, bool graphPreserving = true,
+    bool allowMeasureDrivenInitialPartition = true) {
     STORM_LOG_THROW(
         model->isOfType(storm::models::ModelType::Dtmc) || model->isOfType(storm::models::ModelType::Ctmc) || model->isOfType(storm::models::ModelType::Mdp),
         storm::exceptions::NotSupportedException, "Bisimulation minimization is currently only available for DTMCs, CTMCs and MDPs.");
@@ -70,13 +77,13 @@ std::shared_ptr<storm::models::sparse::Model<ValueType>> performBisimulationMini
 
     if (model->isOfType(storm::models::ModelType::Dtmc)) {
         return performDeterministicSparseBisimulationMinimization<storm::models::sparse::Dtmc<ValueType>>(
-            model->template as<storm::models::sparse::Dtmc<ValueType>>(), formulas, type, graphPreserving);
+            model->template as<storm::models::sparse::Dtmc<ValueType>>(), formulas, type, graphPreserving, allowMeasureDrivenInitialPartition);
     } else if (model->isOfType(storm::models::ModelType::Ctmc)) {
         return performDeterministicSparseBisimulationMinimization<storm::models::sparse::Ctmc<ValueType>>(
-            model->template as<storm::models::sparse::Ctmc<ValueType>>(), formulas, type, graphPreserving);
+            model->template as<storm::models::sparse::Ctmc<ValueType>>(), formulas, type, graphPreserving, allowMeasureDrivenInitialPartition);
     } else {
         return performNondeterministicSparseBisimulationMinimization<storm::models::sparse::Mdp<ValueType>>(
-            model->template as<storm::models::sparse::Mdp<ValueType>>(), formulas, type, graphPreserving);
+            model->template as<storm::models::sparse::Mdp<ValueType>>(), formulas, type, graphPreserving, allowMeasureDrivenInitialPartition);
     }
 }
 

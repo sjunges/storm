@@ -65,6 +65,18 @@ class DeterministicBlockData {
     // Retrieves the representative state for this block.
     storm::storage::sparse::state_type representativeState() const;
 
+    // Sets whether this is the prob0 block of a measure-driven initial partition.
+    void setProb0(bool value = true);
+
+    // Retrieves whether this is the prob0 block of a measure-driven initial partition.
+    bool prob0() const;
+
+    // Sets whether this is the prob1 block of a measure-driven initial partition.
+    void setProb1(bool value = true);
+
+    // Retrieves whether this is the prob1 block of a measure-driven initial partition.
+    bool prob1() const;
+
     friend std::ostream& operator<<(std::ostream& out, DeterministicBlockData const& data);
 
    public:
@@ -82,6 +94,8 @@ class DeterministicBlockData {
     static constexpr uint64_t REFINEMENT_FLAG = 1ull << 1;
     static constexpr uint64_t ABSORBING_FLAG = 1ull << 2;
     static constexpr uint64_t REWARD_FLAG = 1ull << 3;
+    static constexpr uint64_t PROB0_FLAG = 1ull << 4;
+    static constexpr uint64_t PROB1_FLAG = 1ull << 5;
     uint8_t flags;
 
     // An optional representative state for the block. If this is set, this state is used to derive the

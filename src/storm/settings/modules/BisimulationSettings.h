@@ -95,6 +95,12 @@ class BisimulationSettings : public ModuleSettings {
      */
     RefinementMode getRefinementMode() const;
 
+    /*!
+     * Retrieves whether the measure-driven initial partition is disabled for (sparse) bisimulation minimization.
+     * NOTE: only applies to sparse-based bisimulation.
+     */
+    bool isMeasureDrivenPartitionDisabled() const;
+
     virtual bool check() const override;
 
     // The name of the module.
@@ -112,6 +118,7 @@ class BisimulationSettings : public ModuleSettings {
     static const std::string refinementModeOptionName;
     static const std::string parallelismModeOptionName;
     static const std::string exactArithmeticDdOptionName;
+    static const std::string noMeasureDrivenOptionName;
 };
 }  // namespace modules
 }  // namespace settings

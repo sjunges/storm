@@ -65,8 +65,11 @@ class BisimulationDecomposition : public Decomposition<StateBlock> {
          * @param model The model for which the quotient model shall be computed. This needs to be given in order to
          * derive a suitable initial partition.
          * @param formulas The formulas that need to be preserved.
+         * @param allowMeasureDrivenInitialPartition Whether a measure-driven initial partition may be used (if
+         * applicable for the given formulas).
          */
-        Options(ModelType const& model, std::vector<std::shared_ptr<storm::logic::Formula const>> const& formulas);
+        Options(ModelType const& model, std::vector<std::shared_ptr<storm::logic::Formula const>> const& formulas,
+                bool allowMeasureDrivenInitialPartition = true);
 
         /*!
          * Changes the options in a way that the given formula is preserved.
@@ -110,6 +113,15 @@ class BisimulationDecomposition : public Decomposition<StateBlock> {
             this->keepRewards = keepRewards;
         }
 
+        bool getAllowMeasureDrivenInitialPartition() const {
+            return this->allowMeasureDrivenInitialPartition;
+        }
+
+        // Disables the measure-driven initial partition even if it would otherwise be applicable.
+        void setAllowMeasureDrivenInitialPartition(bool value) {
+            this->allowMeasureDrivenInitialPartition = value;
+        }
+
         bool isOptimizationDirectionSet() const {
             return static_cast<bool>(optimalityType);
         }
@@ -132,6 +144,10 @@ class BisimulationDecomposition : public Decomposition<StateBlock> {
         std::optional<storm::storage::BitVector> phiStates;
         std::optional<storm::storage::BitVector> psiStates;
 
+        // Whether optimalityType refers to a reward objective (Rmin/Rmax) rather than a probability objective
+        // (Pmin/Pmax). Only meaningful together with measureDrivenInitialPartition.
+        bool formulaIsRewardObjective = false;
+
         /// An optional set of strings that indicate which of the atomic propositions of the model are to be
         /// respected and which may be ignored. If not given, all atomic propositions of the model are respected.
         std::optional<std::set<std::string>> respectedAtomicPropositions;
@@ -152,6 +168,9 @@ class BisimulationDecomposition : public Decomposition<StateBlock> {
         /// A flag that indicates whether step-bounded properties are to be preserved. This may only be set to tru
         /// when computing strong bisimulation equivalence.
         bool bounded;
+
+        /// Whether a measure-driven initial partition may be used (if applicable).
+        bool allowMeasureDrivenInitialPartition = true;
 
         /// A flag that indicates whether discounted properties are to be preserved. This may only be set to true
         /// when computing strong bisimulation equivalence.
@@ -262,6 +281,21 @@ class BisimulationDecomposition : public Decomposition<StateBlock> {
      * @return The states with probability 0 and 1.
      */
     virtual std::pair<storm::storage::BitVector, storm::storage::BitVector> getStatesWithProbability01() = 0;
+
+    /*!
+     * Computes the states with infinite expected reward until psi. Used instead of getStatesWithProbability01()
+     * for the measure-driven initial partition of a reward objective. Default implementation delegates to
+     * getStatesWithProbability01(); nondeterministic models override this (see
+     * NondeterministicModelBisimulationDecomposition::getStatesWithInfiniteReward).
+     */
+    virtual storm::storage::BitVector getStatesWithInfiniteReward();
+
+    /*!
+     * Computes the states known a priori to have expected reward 0 until psi (a superset of the psi states
+     * themselves). Default implementation just returns the psi states; nondeterministic models can compute a
+     * larger set (see NondeterministicModelBisimulationDecomposition::getStatesWithRewardZero).
+     */
+    virtual storm::storage::BitVector getStatesWithRewardZero();
 
     /*!
      * Splits the initial partition based on the (unique) reward model of the current model.

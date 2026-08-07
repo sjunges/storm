@@ -40,6 +40,7 @@ Partition<DataType>::Partition(std::size_t numberOfStates, storm::storage::BitVe
             ++position;
         }
         firstBlock->data().setAbsorbing(true);
+        firstBlock->data().setProb0(true);
     }
 
     if (!prob1States.empty()) {
@@ -53,6 +54,7 @@ Partition<DataType>::Partition(std::size_t numberOfStates, storm::storage::BitVe
             ++position;
         }
         secondBlock->data().setAbsorbing(true);
+        secondBlock->data().setProb1(true);
         secondBlock->data().setRepresentativeState(representativeProb1State.value());
     }
 

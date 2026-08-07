@@ -93,6 +93,22 @@ storm::storage::sparse::state_type DeterministicBlockData::representativeState()
     return valRepresentativeState.value();
 }
 
+void DeterministicBlockData::setProb0(bool value) {
+    setFlag(PROB0_FLAG, value);
+}
+
+bool DeterministicBlockData::prob0() const {
+    return getFlag(PROB0_FLAG);
+}
+
+void DeterministicBlockData::setProb1(bool value) {
+    setFlag(PROB1_FLAG, value);
+}
+
+bool DeterministicBlockData::prob1() const {
+    return getFlag(PROB1_FLAG);
+}
+
 bool DeterministicBlockData::needsRefinement() const {
     return getFlag(REFINEMENT_FLAG);
 }

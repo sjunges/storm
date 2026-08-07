@@ -29,8 +29,10 @@ BisimulationDecomposition<ModelType, BlockDataType>::Options::Options(ModelType 
 
 template<typename ModelType, typename BlockDataType>
 BisimulationDecomposition<ModelType, BlockDataType>::Options::Options(ModelType const& model,
-                                                                      std::vector<std::shared_ptr<storm::logic::Formula const>> const& formulas)
+                                                                      std::vector<std::shared_ptr<storm::logic::Formula const>> const& formulas,
+                                                                      bool allowMeasureDrivenInitialPartition)
     : Options() {
+    this->allowMeasureDrivenInitialPartition = allowMeasureDrivenInitialPartition;
     if (formulas.empty()) {
         this->respectedAtomicPropositions = model.getStateLabeling().getLabels();
         this->keepRewards = true;
@@ -129,21 +131,31 @@ void BisimulationDecomposition<ModelType, BlockDataType>::Options::checkAndSetMe
                 optimalityType = OptimizationDirection::Minimize;
             }
         }
+        formulaIsRewardObjective = true;
         newFormula = formula.asRewardOperatorFormula().getSubformula().asSharedPointer();
     }
 
     std::shared_ptr<storm::logic::Formula const> leftSubformula = std::make_shared<storm::logic::BooleanLiteralFormula>(true);
     std::shared_ptr<storm::logic::Formula const> rightSubformula;
     if (newFormula->isUntilFormula()) {
-        leftSubformula = newFormula->asUntilFormula().getLeftSubformula().asSharedPointer();
-        rightSubformula = newFormula->asUntilFormula().getRightSubformula().asSharedPointer();
-        if (leftSubformula->isInFragment(storm::logic::propositional()) && rightSubformula->isInFragment(storm::logic::propositional())) {
-            measureDrivenInitialPartition = true;
+        // UntilFormula is only ever probability-reachability; a reward objective can't reach this point.
+        if (!formulaIsRewardObjective) {
+            leftSubformula = newFormula->asUntilFormula().getLeftSubformula().asSharedPointer();
+            rightSubformula = newFormula->asUntilFormula().getRightSubformula().asSharedPointer();
+            if (leftSubformula->isInFragment(storm::logic::propositional()) && rightSubformula->isInFragment(storm::logic::propositional())) {
+                measureDrivenInitialPartition = allowMeasureDrivenInitialPartition;
+            }
         }
     } else if (newFormula->isEventuallyFormula()) {
-        rightSubformula = newFormula->asEventuallyFormula().getSubformula().asSharedPointer();
-        if (rightSubformula->isInFragment(storm::logic::propositional())) {
-            measureDrivenInitialPartition = true;
+        storm::logic::EventuallyFormula const& eventuallyFormula = newFormula->asEventuallyFormula();
+        rightSubformula = eventuallyFormula.getSubformula().asSharedPointer();
+
+        // Only the context matching the unwrapped operator (probability vs. reward) with default reward
+        // accumulation is supported by getStatesWithInfiniteReward/getStatesWithRewardZero.
+        bool const contextMatches =
+            formulaIsRewardObjective ? eventuallyFormula.isReachabilityRewardFormula() : eventuallyFormula.isReachabilityProbabilityFormula();
+        if (contextMatches && !eventuallyFormula.hasRewardAccumulation() && rightSubformula->isInFragment(storm::logic::propositional())) {
+            measureDrivenInitialPartition = allowMeasureDrivenInitialPartition;
         }
     }
 
@@ -355,17 +367,33 @@ void BisimulationDecomposition<ModelType, BlockDataType>::initializeLabelBasedPa
 }
 
 template<typename ModelType, typename BlockDataType>
-void BisimulationDecomposition<ModelType, BlockDataType>::initializeMeasureDrivenPartition() {
-    std::pair<storm::storage::BitVector, storm::storage::BitVector> statesWithProbability01 = this->getStatesWithProbability01();
+storm::storage::BitVector BisimulationDecomposition<ModelType, BlockDataType>::getStatesWithInfiniteReward() {
+    return this->getStatesWithProbability01().first;
+}
 
+template<typename ModelType, typename BlockDataType>
+storm::storage::BitVector BisimulationDecomposition<ModelType, BlockDataType>::getStatesWithRewardZero() {
+    return options.psiStates.value();
+}
+
+template<typename ModelType, typename BlockDataType>
+void BisimulationDecomposition<ModelType, BlockDataType>::initializeMeasureDrivenPartition() {
     std::optional<storm::storage::sparse::state_type> representativePsiState;
     if (!options.psiStates.value().empty()) {
         representativePsiState = *options.psiStates.value().begin();
     }
 
-    partition = storm::storage::bisimulation::Partition<BlockDataType>(
-        model.getNumberOfStates(), statesWithProbability01.first,
-        options.getBounded() || options.getKeepRewards() ? options.psiStates.value() : statesWithProbability01.second, representativePsiState);
+    if (options.formulaIsRewardObjective) {
+        // No meaningful "probability 1" counterpart for rewards; merge with the reward-zero states instead.
+        storm::storage::BitVector infinityStates = this->getStatesWithInfiniteReward();
+        storm::storage::BitVector rewardZeroStates = this->getStatesWithRewardZero();
+        partition = storm::storage::bisimulation::Partition<BlockDataType>(model.getNumberOfStates(), infinityStates, rewardZeroStates, representativePsiState);
+    } else {
+        std::pair<storm::storage::BitVector, storm::storage::BitVector> statesWithProbability01 = this->getStatesWithProbability01();
+        partition = storm::storage::bisimulation::Partition<BlockDataType>(model.getNumberOfStates(), statesWithProbability01.first,
+                                                                           options.getBounded() ? options.psiStates.value() : statesWithProbability01.second,
+                                                                           representativePsiState);
+    }
 
     // If the model has state rewards, we need to consider them, because otherwise reward properties are not
     // preserved.

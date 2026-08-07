@@ -31,6 +31,10 @@ class NondeterministicModelBisimulationDecomposition : public BisimulationDecomp
    protected:
     virtual std::pair<storm::storage::BitVector, storm::storage::BitVector> getStatesWithProbability01() override;
 
+    virtual storm::storage::BitVector getStatesWithInfiniteReward() override;
+
+    virtual storm::storage::BitVector getStatesWithRewardZero() override;
+
     virtual void buildQuotient() override;
 
     virtual void refinePartitionBasedOnSplitter(bisimulation::Block<BlockDataType>& splitter,

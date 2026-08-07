@@ -22,6 +22,7 @@ const std::string BisimulationSettings::reuseOptionName = "reuse";
 const std::string BisimulationSettings::initialPartitionOptionName = "init";
 const std::string BisimulationSettings::refinementModeOptionName = "refine";
 const std::string BisimulationSettings::exactArithmeticDdOptionName = "ddexact";
+const std::string BisimulationSettings::noMeasureDrivenOptionName = "nomeasuredriven";
 
 BisimulationSettings::BisimulationSettings() : ModuleSettings(moduleName) {
     std::vector<std::string> types = {"strong", "weak"};
@@ -55,6 +56,10 @@ BisimulationSettings::BisimulationSettings() : ModuleSettings(moduleName) {
         storm::settings::OptionBuilder(moduleName, exactArithmeticDdOptionName, false, "Sets whether to use exact arithmetic in dd-based bisimulation.")
             .setIsAdvanced()
             .build());
+    this->addOption(storm::settings::OptionBuilder(moduleName, noMeasureDrivenOptionName, false,
+                                                   "Disables the measure-driven initial partition for sparse bisimulation minimization.")
+                        .setIsAdvanced()
+                        .build());
 
     std::vector<std::string> signatureModes = {"eager", "lazy"};
     this->addOption(storm::settings::OptionBuilder(moduleName, signatureModeOptionName, false, "Sets the signature computation mode.")
@@ -171,6 +176,10 @@ BisimulationSettings::RefinementMode BisimulationSettings::getRefinementMode() c
         return RefinementMode::ChangedStates;
     }
     return RefinementMode::Full;
+}
+
+bool BisimulationSettings::isMeasureDrivenPartitionDisabled() const {
+    return this->getOption(noMeasureDrivenOptionName).getHasOptionBeenSet();
 }
 
 bool BisimulationSettings::check() const {

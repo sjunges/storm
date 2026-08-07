@@ -602,6 +602,16 @@ void DeterministicModelBisimulationDecomposition<ModelType>::buildQuotient() {
         newLabeling.addLabel(ap);
     }
 
+    // Mark synthetic blocks produced by a measure-driven initial partition, so they're distinguishable from
+    // blocks that correspond to a single original state.
+    bool const addMeasureDrivenLabels = this->options.measureDrivenInitialPartition;
+    std::string const firstBlockLabel = this->options.formulaIsRewardObjective ? "__rewinf__" : "__prob0__";
+    std::string const secondBlockLabel = this->options.formulaIsRewardObjective ? "__rew0__" : "__prob1__";
+    if (addMeasureDrivenLabels) {
+        newLabeling.addLabel(firstBlockLabel);
+        newLabeling.addLabel(secondBlockLabel);
+    }
+
     // If the model had state rewards, we need to build the state rewards for the quotient as well.
     std::optional<std::vector<ValueType>> stateRewards;
     if (this->options.getKeepRewards() && this->model.hasRewardModel()) {
@@ -643,6 +653,14 @@ void DeterministicModelBisimulationDecomposition<ModelType>::buildQuotient() {
             for (auto const& ap : atomicPropositions) {
                 if (this->model.getStateLabeling().getStateHasLabel(ap, representativeState)) {
                     newLabeling.addLabelToState(ap, blockIndex);
+                }
+            }
+
+            if (addMeasureDrivenLabels) {
+                if (oldBlock.data().prob0()) {
+                    newLabeling.addLabelToState(firstBlockLabel, blockIndex);
+                } else if (oldBlock.data().prob1()) {
+                    newLabeling.addLabelToState(secondBlockLabel, blockIndex);
                 }
             }
         } else {

@@ -38,6 +38,45 @@ std::pair<storm::storage::BitVector, storm::storage::BitVector> Nondeterministic
 }
 
 template<typename ModelType>
+storm::storage::BitVector NondeterministicModelBisimulationDecomposition<ModelType>::getStatesWithInfiniteReward() {
+    STORM_LOG_THROW(this->options.isOptimizationDirectionSet(), storm::exceptions::IllegalFunctionCallException,
+                    "Can only compute states with infinite reward with an optimization direction (min/max).");
+    // Rmin is infinite iff no scheduler reaches psi a.s. (not in the existential Prob1E set); Rmax is infinite
+    // iff not every scheduler does (not in the universal Prob1A set) - the opposite of the reward's own
+    // direction. Cf. SparseMdpPrctlHelper::computeQualitativeStateSetsReachabilityRewards.
+    if (this->options.getOptimizationDirection() == OptimizationDirection::Minimize) {
+        return ~storm::utility::graph::performProb1E(this->model.getTransitionMatrix(), this->model.getTransitionMatrix().getRowGroupIndices(),
+                                                     this->model.getBackwardTransitions(), this->options.phiStates.value(), this->options.psiStates.value());
+    } else {
+        return ~storm::utility::graph::performProb1A(this->model.getTransitionMatrix(), this->model.getTransitionMatrix().getRowGroupIndices(),
+                                                     this->model.getBackwardTransitions(), this->options.phiStates.value(), this->options.psiStates.value());
+    }
+}
+
+template<typename ModelType>
+storm::storage::BitVector NondeterministicModelBisimulationDecomposition<ModelType>::getStatesWithRewardZero() {
+    if (!this->model.hasRewardModel()) {
+        return this->options.psiStates.value();
+    }
+    STORM_LOG_THROW(this->options.isOptimizationDirectionSet(), storm::exceptions::IllegalFunctionCallException,
+                    "Can only compute states with reward zero with an optimization direction (min/max).");
+    auto const& rewardModel = this->model.getUniqueRewardModel();
+    storm::storage::BitVector trueStates(this->model.getNumberOfStates(), true);
+
+    // For Rmin: reward 0 if some scheduler reaches psi using only zero-reward choices (existential). For Rmax:
+    // reward 0 only if every scheduler staying within zero-reward states reaches psi (universal).
+    if (this->options.getOptimizationDirection() == OptimizationDirection::Minimize) {
+        storm::storage::BitVector zeroRewardChoices = rewardModel.getChoicesWithZeroReward(this->model.getTransitionMatrix());
+        return storm::utility::graph::performProb1E(this->model.getTransitionMatrix(), this->model.getTransitionMatrix().getRowGroupIndices(),
+                                                    this->model.getBackwardTransitions(), trueStates, this->options.psiStates.value(), zeroRewardChoices);
+    } else {
+        storm::storage::BitVector zeroRewardStates = rewardModel.getStatesWithZeroReward(this->model.getTransitionMatrix());
+        return storm::utility::graph::performProb1A(this->model.getTransitionMatrix(), this->model.getTransitionMatrix().getRowGroupIndices(),
+                                                    this->model.getBackwardTransitions(), zeroRewardStates, this->options.psiStates.value());
+    }
+}
+
+template<typename ModelType>
 void NondeterministicModelBisimulationDecomposition<ModelType>::initialize() {
     this->createChoiceToStateMapping();
     this->initializeQuotientDistributions();
@@ -121,6 +160,16 @@ void NondeterministicModelBisimulationDecomposition<ModelType>::buildQuotient() 
         newLabeling.addLabel(ap);
     }
 
+    // Mark synthetic blocks produced by a measure-driven initial partition, so they're distinguishable from
+    // blocks that correspond to a single original state.
+    bool const addMeasureDrivenLabels = this->options.measureDrivenInitialPartition;
+    std::string const firstBlockLabel = this->options.formulaIsRewardObjective ? "__rewinf__" : "__prob0__";
+    std::string const secondBlockLabel = this->options.formulaIsRewardObjective ? "__rew0__" : "__prob1__";
+    if (addMeasureDrivenLabels) {
+        newLabeling.addLabel(firstBlockLabel);
+        newLabeling.addLabel(secondBlockLabel);
+    }
+
     // If the model had state (action) rewards, we need to build the state rewards for the quotient as well.
     std::optional<std::vector<ValueType>> stateRewards;
     std::optional<std::vector<ValueType>> stateActionRewards;
@@ -167,6 +216,14 @@ void NondeterministicModelBisimulationDecomposition<ModelType>::buildQuotient() 
             for (auto const& ap : atomicPropositions) {
                 if (this->model.getStateLabeling().getStateHasLabel(ap, representativeState)) {
                     newLabeling.addLabelToState(ap, blockIndex);
+                }
+            }
+
+            if (addMeasureDrivenLabels) {
+                if (oldBlock.data().prob0()) {
+                    newLabeling.addLabelToState(firstBlockLabel, blockIndex);
+                } else if (oldBlock.data().prob1()) {
+                    newLabeling.addLabelToState(secondBlockLabel, blockIndex);
                 }
             }
         } else {

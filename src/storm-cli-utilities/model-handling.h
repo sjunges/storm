@@ -700,7 +700,8 @@ std::shared_ptr<storm::models::sparse::Model<ValueType>> preprocessSparseModelBi
     }
 
     STORM_LOG_INFO("Performing bisimulation minimization...");
-    return storm::api::performBisimulationMinimization<ValueType>(model, createFormulasToRespect(input.properties), bisimType, graphPreserving);
+    return storm::api::performBisimulationMinimization<ValueType>(model, createFormulasToRespect(input.properties), bisimType, graphPreserving,
+                                                                  !bisimulationSettings.isMeasureDrivenPartitionDisabled());
 }
 
 template<typename ValueType>
