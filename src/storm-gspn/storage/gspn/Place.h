@@ -1,6 +1,7 @@
 #pragma once
 
 #include <boost/optional.hpp>
+#include <cstdint>
 #include <string>
 
 namespace storm {

@@ -34,16 +34,16 @@ void printRelevantInfoFromModel(std::shared_ptr<storm::solver::SmtSolver::ModelR
 
 template<typename ValueType>
 void IterativePolicySearch<ValueType>::Statistics::print() const {
-    STORM_PRINT_AND_LOG("#STATS Total time: " << totalTimer << '\n');
-    STORM_PRINT_AND_LOG("#STATS SAT Calls: " << satCalls << '\n');
-    STORM_PRINT_AND_LOG("#STATS SAT Calls time: " << smtCheckTimer << '\n');
-    STORM_PRINT_AND_LOG("#STATS Outer iterations: " << outerIterations << '\n');
-    STORM_PRINT_AND_LOG("#STATS Solver initialization time: " << initializeSolverTimer << '\n');
-    STORM_PRINT_AND_LOG("#STATS Obtain partial scheduler time: " << evaluateExtensionSolverTime << '\n');
-    STORM_PRINT_AND_LOG("#STATS Update solver to extend partial scheduler time: " << encodeExtensionSolverTime << '\n');
-    STORM_PRINT_AND_LOG("#STATS Update solver with new scheduler time: " << updateNewStrategySolverTime << '\n');
-    STORM_PRINT_AND_LOG("#STATS Winning regions update time: " << winningRegionUpdatesTimer << '\n');
-    STORM_PRINT_AND_LOG("#STATS Graph search time: " << graphSearchTime << '\n');
+    STORM_LOG_STATISTICS("#STATS Total time: " << totalTimer << '\n');
+    STORM_LOG_STATISTICS("#STATS SAT Calls: " << satCalls << '\n');
+    STORM_LOG_STATISTICS("#STATS SAT Calls time: " << smtCheckTimer << '\n');
+    STORM_LOG_STATISTICS("#STATS Outer iterations: " << outerIterations << '\n');
+    STORM_LOG_STATISTICS("#STATS Solver initialization time: " << initializeSolverTimer << '\n');
+    STORM_LOG_STATISTICS("#STATS Obtain partial scheduler time: " << evaluateExtensionSolverTime << '\n');
+    STORM_LOG_STATISTICS("#STATS Update solver to extend partial scheduler time: " << encodeExtensionSolverTime << '\n');
+    STORM_LOG_STATISTICS("#STATS Update solver with new scheduler time: " << updateNewStrategySolverTime << '\n');
+    STORM_LOG_STATISTICS("#STATS Winning regions update time: " << winningRegionUpdatesTimer << '\n');
+    STORM_LOG_STATISTICS("#STATS Graph search time: " << graphSearchTime << '\n');
 }
 
 template<typename ValueType>
@@ -419,7 +419,7 @@ bool IterativePolicySearch<ValueType>::analyze(uint64_t k, storm::storage::BitVe
     }
 
 #ifndef NDEBUG
-    for (auto const& state : targetStates) {
+    for (auto state : targetStates) {
         STORM_LOG_ASSERT(winningRegion.isWinning(pomdp.getObservation(state), getOffsetFromObservation(state, pomdp.getObservation(state))),
                          "Target state " << state << " , observation " << pomdp.getObservation(state) << " is not reflected as winning.");
     }
@@ -463,7 +463,7 @@ bool IterativePolicySearch<ValueType>::analyze(uint64_t k, storm::storage::BitVe
                 assert(obs < schedulerForObs.size());
                 ++(schedulerForObs[obs]);
                 auto constant = expressionManager->integer(schedulerForObs[obs]);
-                for (auto const& stateOffset : ~winningSet) {
+                for (auto stateOffset : ~winningSet) {
                     uint64_t state = statesForObservation[stateOffset];
                     STORM_LOG_TRACE("State " << state << " with observation " << obs << " does not allow scheduler " << constant);
                     smtSolver->add(!(continuationVarExpressions[state] && (schedulerVariableExpressions[obs] == constant)));

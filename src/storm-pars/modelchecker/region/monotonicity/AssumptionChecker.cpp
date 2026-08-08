@@ -49,7 +49,7 @@ void AssumptionChecker<ValueType, ConstantType>::initializeCheckingOnSamples(std
                 modelchecker::CheckTask<logic::EventuallyFormula, ConstantType>(formula->asProbabilityOperatorFormula().getSubformula().asEventuallyFormula());
             checkResult = checker.computeReachabilityProbabilities(Environment(), checkTask);
         } else {
-            STORM_LOG_THROW(false, exceptions::NotSupportedException, "Expecting until or eventually formula");
+            STORM_LOG_THROW(false, exceptions::NotSupportedException, "Expecting until or eventually formula.");
         }
         auto quantitativeResult = checkResult->asExplicitQuantitativeCheckResult<ConstantType>();
         std::vector<ConstantType> values = quantitativeResult.getValueVector();
@@ -67,7 +67,7 @@ void AssumptionChecker<ValueType, ConstantType>::setSampleValues(std::vector<std
 template<typename ValueType, typename ConstantType>
 AssumptionChecker<ValueType, ConstantType>::AssumptionChecker(std::shared_ptr<logic::Formula const> formula,
                                                               std::shared_ptr<models::sparse::Mdp<ValueType>> model, uint_fast64_t numberOfSamples) {
-    STORM_LOG_THROW(false, exceptions::NotSupportedException, "Assumption checking for mdps not yet implemented");
+    STORM_LOG_THROW(false, exceptions::NotSupportedException, "Assumption checking for mdps not yet implemented.");
 }
 
 template<typename ValueType, typename ConstantType>

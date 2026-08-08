@@ -301,7 +301,7 @@ class Order {
     void addStateSorted(uint_fast64_t state);
 
     /*!
-     * Prints the dot output to normal STORM_PRINT.
+     * Prints the dot output to stdout.
      */
     void toDotOutput() const;
 

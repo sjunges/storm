@@ -17,7 +17,6 @@
 #include "storm/modelchecker/results/ExplicitQuantitativeCheckResult.h"
 #include "storm/models/sparse/StandardRewardModel.h"
 #include "storm/settings/SettingsManager.h"
-#include "storm/settings/modules/CoreSettings.h"
 #include "storm/settings/modules/GeneralSettings.h"
 #include "storm/settings/modules/IOSettings.h"
 #include "storm/settings/modules/ModelCheckerSettings.h"
@@ -113,16 +112,14 @@ std::map<storm::storage::sparse::state_type, SolutionType> SparseMdpPrctlHelper<
                 storm::settings::getModule<storm::settings::modules::IOSettings>().getExportCdfDirectory() + "cdf.csv", cdfData, headers);
         }
 
-        if (storm::settings::getModule<storm::settings::modules::CoreSettings>().isShowStatisticsSet()) {
-            STORM_PRINT_AND_LOG("---------------------------------\n");
-            STORM_PRINT_AND_LOG("Statistics:\n");
-            STORM_PRINT_AND_LOG("---------------------------------\n");
-            STORM_PRINT_AND_LOG("          #checked epochs: " << epochOrder.size() << ".\n");
-            STORM_PRINT_AND_LOG("             overall Time: " << swAll << ".\n");
-            STORM_PRINT_AND_LOG("Epoch Model building Time: " << swBuild << ".\n");
-            STORM_PRINT_AND_LOG("Epoch Model checking Time: " << swCheck << ".\n");
-            STORM_PRINT_AND_LOG("---------------------------------\n");
-        }
+        STORM_LOG_STATISTICS("---------------------------------\n");
+        STORM_LOG_STATISTICS("Statistics:\n");
+        STORM_LOG_STATISTICS("---------------------------------\n");
+        STORM_LOG_STATISTICS("          #checked epochs: " << epochOrder.size() << ".\n");
+        STORM_LOG_STATISTICS("             overall Time: " << swAll << ".\n");
+        STORM_LOG_STATISTICS("Epoch Model building Time: " << swBuild << ".\n");
+        STORM_LOG_STATISTICS("Epoch Model checking Time: " << swCheck << ".\n");
+        STORM_LOG_STATISTICS("---------------------------------\n");
 
         return result;
     }
@@ -515,7 +512,7 @@ QualitativeStateSetsUntilProbabilities getQualitativeStateSetsUntilProbabilities
             result.statesWithProbability1.set(state, true);
         } else {
             STORM_LOG_THROW(storm::utility::isZero(resultsForNonMaybeStates[state]), storm::exceptions::IllegalArgumentException,
-                            "Expected that the result hint specifies probabilities in {0,1} for non-maybe states");
+                            "Expected that the result hint specifies probabilities in {0,1} for non-maybe states.");
             result.statesWithProbability0.set(state, true);
         }
     }
@@ -1110,7 +1107,7 @@ QualitativeStateSetsReachabilityRewards getQualitativeStateSetsReachabilityRewar
             result.rewardZeroStates.set(state, true);
         } else {
             STORM_LOG_THROW(storm::utility::isInfinity(resultsForNonMaybeStates[state]), storm::exceptions::IllegalArgumentException,
-                            "Expected that the result hint specifies probabilities in {0,infinity} for non-maybe states");
+                            "Expected that the result hint specifies probabilities in {0,infinity} for non-maybe states.");
             result.infinityStates.set(state, true);
         }
     }

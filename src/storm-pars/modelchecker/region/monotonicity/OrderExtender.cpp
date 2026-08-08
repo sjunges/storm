@@ -11,6 +11,7 @@
 
 #include "storm-pars/api/export.h"
 #include "storm-pars/api/region.h"
+#include "storm-pars/modelchecker/region/SparseDtmcParameterLiftingModelChecker.h"
 #include "storm-pars/modelchecker/region/monotonicity/MonotonicityHelper.h"
 #include "storm/storage/StronglyConnectedComponentDecomposition.h"
 
@@ -104,7 +105,7 @@ std::shared_ptr<Order> OrderExtender<ValueType, ConstantType>::getBottomTopOrder
     if (bottomTopOrder == nullptr) {
         STORM_LOG_ASSERT(model != nullptr, "Cannot lazily build the bottom-top order without a model.");
         STORM_LOG_THROW(matrix.getRowCount() == matrix.getColumnCount(), exceptions::NotSupportedException,
-                        "Creating order not supported for non-square matrix");
+                        "Creating order not supported for non-square matrix.");
         modelchecker::SparsePropositionalModelChecker<models::sparse::Model<ValueType>> propositionalChecker(*model);
         storage::BitVector phiStates;
         storage::BitVector psiStates;
@@ -129,8 +130,8 @@ std::shared_ptr<Order> OrderExtender<ValueType, ConstantType>::getBottomTopOrder
         storage::BitVector topStates = statesWithProbability01.second;
         storage::BitVector bottomStates = statesWithProbability01.first;
 
-        STORM_LOG_THROW(topStates.begin() != topStates.end(), exceptions::NotSupportedException, "Formula yields to no 1 states");
-        STORM_LOG_THROW(bottomStates.begin() != bottomStates.end(), exceptions::NotSupportedException, "Formula yields to no zero states");
+        STORM_LOG_THROW(topStates.begin() != topStates.end(), exceptions::NotSupportedException, "Formula yields to no 1 states.");
+        STORM_LOG_THROW(bottomStates.begin() != bottomStates.end(), exceptions::NotSupportedException, "Formula yields to no zero states.");
 
         // Unlike the BitVector-matrix constructor, this path does not pre-add states with a direct
         // transition to a top/bottom state to the order ahead of the main construction loop.
@@ -695,7 +696,7 @@ void OrderExtender<ValueType, ConstantType>::initializeMinMaxValues(storage::Par
                 std::make_shared<storm::logic::ProbabilityOperatorFormula>(formula->asProbabilityOperatorFormula().getSubformula().asSharedPointer(), opInfo);
             checkTask = modelchecker::CheckTask<logic::Formula, ValueType>(*newFormula);
         }
-        STORM_LOG_THROW(plaModelChecker.canHandle(model, checkTask.get()), exceptions::NotSupportedException, "Cannot handle this formula");
+        STORM_LOG_THROW(plaModelChecker.canHandle(model, checkTask.get()), exceptions::NotSupportedException, "Cannot handle this formula.");
         bool const allowModelSimplification = false;  // make sure that the results align with the input model
         plaModelChecker.specify(env, model, checkTask.get(), std::nullopt, nullptr, allowModelSimplification);
 

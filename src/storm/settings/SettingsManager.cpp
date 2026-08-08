@@ -5,6 +5,7 @@
 #include <cstring>
 #include <fstream>
 #include <iomanip>
+#include <iostream>
 #include <mutex>
 #include <regex>
 #include <set>
@@ -38,7 +39,6 @@
 #include "storm/settings/modules/NativeEquationSolverSettings.h"
 #include "storm/settings/modules/OviSolverSettings.h"
 #include "storm/settings/modules/ResourceSettings.h"
-#include "storm/settings/modules/Smt2SmtSolverSettings.h"
 #include "storm/settings/modules/SylvanSettings.h"
 #include "storm/settings/modules/TimeBoundedSolverSettings.h"
 #include "storm/settings/modules/TopologicalEquationSolverSettings.h"
@@ -233,7 +233,7 @@ void SettingsManager::setFromConfigurationFile(std::string const& configFilename
 }
 
 void SettingsManager::printHelp(std::string const& filter) const {
-    STORM_PRINT("usage: " << executableName << " [options]\n\n");
+    std::cout << "usage: " << executableName << " [options]\n\n";
 
     if (filter == "frequent" || filter == "all") {
         bool includeAdvanced = (filter == "all");
@@ -245,7 +245,7 @@ void SettingsManager::printHelp(std::string const& filter) const {
         for (auto const& moduleName : this->moduleNames) {
             // Only print for visible modules.
             if (hasModule(moduleName, true)) {
-                STORM_PRINT(getHelpForModule(moduleName, maxLength, includeAdvanced));
+                std::cout << getHelpForModule(moduleName, maxLength, includeAdvanced);
                 // collect 'hidden' options
                 if (!includeAdvanced) {
                     auto moduleIterator = moduleOptions.find(moduleName);
@@ -267,19 +267,19 @@ void SettingsManager::printHelp(std::string const& filter) const {
         }
         if (!includeAdvanced) {
             if (numHidden == 1) {
-                STORM_PRINT(numHidden << " hidden option.\n");
+                std::cout << numHidden << " hidden option.\n";
             } else {
-                STORM_PRINT(numHidden << " hidden options.\n");
+                std::cout << numHidden << " hidden options.\n";
             }
             if (!invisibleModules.empty()) {
                 if (invisibleModules.size() == 1) {
-                    STORM_PRINT(invisibleModules.size() << " hidden module (" << boost::join(invisibleModules, ", ") << ").\n");
+                    std::cout << invisibleModules.size() << " hidden module (" << boost::join(invisibleModules, ", ") << ").\n";
                 } else {
-                    STORM_PRINT(invisibleModules.size() << " hidden modules (" << boost::join(invisibleModules, ", ") << ").\n");
+                    std::cout << invisibleModules.size() << " hidden modules (" << boost::join(invisibleModules, ", ") << ").\n";
                 }
             }
-            STORM_PRINT("\nType '" + executableName + " --help modulename' to display all options of a specific module.\n");
-            STORM_PRINT("Type '" + executableName + " --help all' to display a complete list of options.\n");
+            std::cout << "\nType '" + executableName + " --help modulename' to display all options of a specific module.\n";
+            std::cout << "Type '" + executableName + " --help all' to display a complete list of options.\n";
         }
     } else {
         // Create a regular expression from the input hint.
@@ -306,9 +306,9 @@ void SettingsManager::printHelp(std::string const& filter) const {
         std::string optionList = getHelpForSelection(matchingModuleNames, matchingOptionNames,
                                                      "Matching modules for filter '" + filter + "':", "Matching options for filter '" + filter + "':");
         if (optionList.empty()) {
-            STORM_PRINT("Filter '" << filter << "' did not match any modules or options.\n");
+            std::cout << "Filter '" << filter << "' did not match any modules or options.\n";
         } else {
-            STORM_PRINT(optionList);
+            std::cout << optionList;
         }
     }
 }
@@ -522,7 +522,7 @@ void SettingsManager::setOptionArguments(std::string const& optionName, std::sha
         bool conversionOk = argument.setFromStringValue(argumentCache[i]);
         STORM_LOG_THROW(conversionOk, storm::exceptions::OptionParserException,
                         "Value '" << argumentCache[i] << "' is invalid for argument <" << argument.getName() << "> of option:\n"
-                                  << *option);
+                                  << *option << ".");
     }
 
     // In case there are optional arguments that were not set, we set them to their default value.
@@ -530,7 +530,7 @@ void SettingsManager::setOptionArguments(std::string const& optionName, std::sha
         ArgumentBase& argument = option->getArgument(i);
         STORM_LOG_THROW(argument.getIsOptional(), storm::exceptions::OptionParserException,
                         "Non-optional argument <" << argument.getName() << "> of option:\n"
-                                                  << *option);
+                                                  << *option << ".");
         argument.setFromDefaultValue();
     }
 
@@ -718,7 +718,6 @@ void initializeAll(std::string const& name, std::string const& executableName) {
     storm::settings::addModule<storm::settings::modules::GlpkSettings>();
     storm::settings::addModule<storm::settings::modules::GurobiSettings>();
     storm::settings::addModule<storm::settings::modules::TopologicalEquationSolverSettings>();
-    storm::settings::addModule<storm::settings::modules::Smt2SmtSolverSettings>();
     storm::settings::addModule<storm::settings::modules::ExplorationSettings>();
     storm::settings::addModule<storm::settings::modules::ResourceSettings>();
     storm::settings::addModule<storm::settings::modules::AbstractionSettings>();

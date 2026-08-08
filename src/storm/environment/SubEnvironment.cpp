@@ -65,5 +65,7 @@ template class SubEnvironment<MultiplierEnvironment>;
 template class SubEnvironment<OviSolverEnvironment>;
 template class SubEnvironment<GameSolverEnvironment>;
 template class SubEnvironment<TopologicalSolverEnvironment>;
+template class SubEnvironment<GurobiSolverEnvironment>;
+template class SubEnvironment<GlpkSolverEnvironment>;
 
 }  // namespace storm
