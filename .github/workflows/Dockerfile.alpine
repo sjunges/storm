@@ -28,7 +28,7 @@ ARG disable_cudd="OFF"
 ARG disable_glpk="OFF"
 ARG disable_gmm="OFF"
 ARG disable_gurobi="OFF"
-ARG disable_highs="OFF"
+ARG disable_highs="ON"
 ARG disable_libarchive="OFF"
 ARG disable_mathsat="OFF"
 ARG disable_soplex="OFF"
@@ -65,7 +65,6 @@ RUN apk add --no-cache \
     ginac-dev \
     z3-dev \
     glpk-dev \
-    highs-dev \
     libarchive-dev \
     $packages
 
