@@ -26,10 +26,10 @@ using storm::settings::modules::AbstractionSettings;
 template<storm::dd::DdType DdType, typename ValueType>
 PrismMenuGameAbstractor<DdType, ValueType>::PrismMenuGameAbstractor(storm::prism::Program const& program,
                                                                     std::shared_ptr<storm::utility::solver::SmtSolverFactory> const& smtSolverFactory,
-                                                                    MenuGameAbstractorOptions const& options)
+                                                                    storm::Environment const& env, MenuGameAbstractorOptions const& options)
     : program(program),
       smtSolverFactory(smtSolverFactory),
-      abstractionInformation(program.getManager(), program.getAllExpressionVariables(), smtSolverFactory->create(program.getManager()),
+      abstractionInformation(program.getManager(), program.getAllExpressionVariables(), smtSolverFactory->create(program.getManager()), env,
                              AbstractionInformationOptions(options.constraints)),
       modules(),
       initialStateAbstractor(abstractionInformation, {program.getInitialStatesExpression()}, this->smtSolverFactory),

@@ -3,6 +3,8 @@
 #include <cmath>
 
 #include "storm/adapters/RationalFunctionAdapter.h"
+#include "storm/environment/Environment.h"
+#include "storm/environment/dd/DdEnvironment.h"
 #include "storm/exceptions/InvalidArgumentException.h"
 #include "storm/exceptions/InvalidOperationException.h"
 #include "storm/storage/expressions/ExpressionManager.h"
@@ -12,8 +14,19 @@
 namespace storm {
 namespace dd {
 template<DdType LibraryType>
-DdManager<LibraryType>::DdManager() : internalDdManager(), metaVariableMap(), manager(new storm::expressions::ExpressionManager()) {
+DdManager<LibraryType>::DdManager(storm::Environment const& env)
+    : internalDdManager(env.dd().get<LibraryType>()), metaVariableMap(), manager(new storm::expressions::ExpressionManager()) {
     // Intentionally left empty.
+}
+
+template<DdType LibraryType>
+DdManager<LibraryType>::DdManager() : DdManager(storm::Environment()) {
+    // Intentionally left empty.
+}
+
+template<DdType LibraryType>
+std::shared_ptr<DdManager<LibraryType>> DdManager<LibraryType>::createWithDefaultEnvironment() {
+    return std::shared_ptr<DdManager<LibraryType>>(new DdManager<LibraryType>());
 }
 
 template<DdType LibraryType>

@@ -22,6 +22,8 @@ class SmtSolverFactory;
 }
 }  // namespace utility
 
+class Environment;
+
 namespace models {
 namespace symbolic {
 template<storm::dd::DdType Type, typename ValueType>
@@ -47,9 +49,10 @@ class JaniMenuGameAbstractor : public MenuGameAbstractor<DdType, ValueType> {
      *
      * @param model The concrete model for which to build the abstraction.
      * @param smtSolverFactory A factory that is to be used for creating new SMT solvers.
+     * @param env The environment providing the settings for the DD manager.
      */
     JaniMenuGameAbstractor(storm::jani::Model const& model, std::shared_ptr<storm::utility::solver::SmtSolverFactory> const& smtSolverFactory,
-                           MenuGameAbstractorOptions const& options = MenuGameAbstractorOptions());
+                           storm::Environment const& env, MenuGameAbstractorOptions const& options = MenuGameAbstractorOptions());
 
     JaniMenuGameAbstractor(JaniMenuGameAbstractor const&) = default;
     JaniMenuGameAbstractor& operator=(JaniMenuGameAbstractor const&) = default;

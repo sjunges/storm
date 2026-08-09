@@ -14,6 +14,7 @@
 #include "storm/storage/dd/DdType.h"
 
 namespace storm {
+class Environment;
 namespace dd {
 template<storm::dd::DdType T>
 class Bdd;
@@ -105,9 +106,12 @@ class DdPrismModelBuilder {
      * decision diagram).
      *
      * @param program The program to translate.
+     * @param env The environment providing the settings for the DD library (e.g. Sylvan or CUDD).
+     * @param options The options to use when building the model.
      * @return A pointer to the resulting model.
      */
-    std::shared_ptr<storm::models::symbolic::Model<Type, ValueType>> build(storm::prism::Program const& program, Options const& options = Options());
+    std::shared_ptr<storm::models::symbolic::Model<Type, ValueType>> build(storm::prism::Program const& program, storm::Environment const& env,
+                                                                           Options const& options = Options());
 
    private:
     // This structure can store the decision diagrams representing a particular action.

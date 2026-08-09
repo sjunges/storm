@@ -2,6 +2,8 @@
 #include "test/storm_gtest.h"
 
 #include "storm-gamebased-ar/abstraction/MenuGameRefiner.h"
+#include "storm/environment/Environment.h"
+
 #include "storm-gamebased-ar/abstraction/prism/PrismMenuGameAbstractor.h"
 #include "storm-parsers/parser/PrismParser.h"
 #include "storm/models/symbolic/StandardRewardModel.h"
@@ -64,7 +66,7 @@ TYPED_TEST(PrismMenuGame, DieAbstractionTest) {
     initialPredicates.push_back(manager.getVariableExpression("s") < manager.integer(3));
     std::shared_ptr<storm::utility::solver::SmtSolverFactory> smtSolverFactory = std::make_shared<storm::utility::solver::MathsatSmtSolverFactory>();
 
-    storm::gbar::abstraction::prism::PrismMenuGameAbstractor<DdType, double> abstractor(program, smtSolverFactory);
+    storm::gbar::abstraction::prism::PrismMenuGameAbstractor<DdType, double> abstractor(program, smtSolverFactory, storm::Environment());
     storm::gbar::abstraction::MenuGameRefiner<DdType, double> refiner(abstractor, smtSolverFactory->create(manager));
     refiner.refine(initialPredicates);
 
@@ -89,7 +91,7 @@ TYPED_TEST(PrismMenuGame, DieAbstractionTest) {
 
 //    std::shared_ptr<storm::utility::solver::SmtSolverFactory> smtSolverFactory = std::make_shared<storm::utility::solver::MathsatSmtSolverFactory>();
 
-//    storm::gbar::abstraction::prism::PrismMenuGameAbstractor<storm::dd::DdType::Sylvan, storm::RationalFunction> abstractor(program, smtSolverFactory);
+//    storm::gbar::abstraction::prism::PrismMenuGameAbstractor<storm::dd::DdType::Sylvan, storm::RationalFunction> abstractor(program, smtSolverFactory, storm::Environment());
 //    storm::gbar::abstraction::MenuGameRefiner<storm::dd::DdType::Sylvan, storm::RationalFunction> refiner(abstractor, smtSolverFactory->create(manager));
 //    refiner.refine(initialPredicates);
 
@@ -115,7 +117,7 @@ TYPED_TEST(PrismMenuGame, DieAbstractionAndRefinementTest) {
 
     std::shared_ptr<storm::utility::solver::SmtSolverFactory> smtSolverFactory = std::make_shared<storm::utility::solver::MathsatSmtSolverFactory>();
 
-    storm::gbar::abstraction::prism::PrismMenuGameAbstractor<DdType, double> abstractor(program, smtSolverFactory);
+    storm::gbar::abstraction::prism::PrismMenuGameAbstractor<DdType, double> abstractor(program, smtSolverFactory, storm::Environment());
     storm::gbar::abstraction::MenuGameRefiner<DdType, double> refiner(abstractor, smtSolverFactory->create(manager));
     refiner.refine(initialPredicates);
 
@@ -160,7 +162,7 @@ TYPED_TEST(PrismMenuGame, DieFullAbstractionTest) {
 
     std::shared_ptr<storm::utility::solver::SmtSolverFactory> smtSolverFactory = std::make_shared<storm::utility::solver::MathsatSmtSolverFactory>();
 
-    storm::gbar::abstraction::prism::PrismMenuGameAbstractor<DdType, double> abstractor(program, smtSolverFactory);
+    storm::gbar::abstraction::prism::PrismMenuGameAbstractor<DdType, double> abstractor(program, smtSolverFactory, storm::Environment());
     storm::gbar::abstraction::MenuGameRefiner<DdType, double> refiner(abstractor, smtSolverFactory->create(manager));
     refiner.refine(initialPredicates);
 
@@ -189,7 +191,7 @@ TYPED_TEST(PrismMenuGame, CrowdsAbstractionTest) {
 
     std::shared_ptr<storm::utility::solver::SmtSolverFactory> smtSolverFactory = std::make_shared<storm::utility::solver::MathsatSmtSolverFactory>();
 
-    storm::gbar::abstraction::prism::PrismMenuGameAbstractor<DdType, double> abstractor(program, smtSolverFactory);
+    storm::gbar::abstraction::prism::PrismMenuGameAbstractor<DdType, double> abstractor(program, smtSolverFactory, storm::Environment());
     storm::gbar::abstraction::MenuGameRefiner<DdType, double> refiner(abstractor, smtSolverFactory->create(manager));
     refiner.refine(initialPredicates);
 
@@ -218,7 +220,7 @@ TYPED_TEST(PrismMenuGame, CrowdsAbstractionAndRefinementTest) {
 
     std::shared_ptr<storm::utility::solver::SmtSolverFactory> smtSolverFactory = std::make_shared<storm::utility::solver::MathsatSmtSolverFactory>();
 
-    storm::gbar::abstraction::prism::PrismMenuGameAbstractor<DdType, double> abstractor(program, smtSolverFactory);
+    storm::gbar::abstraction::prism::PrismMenuGameAbstractor<DdType, double> abstractor(program, smtSolverFactory, storm::Environment());
     storm::gbar::abstraction::MenuGameRefiner<DdType, double> refiner(abstractor, smtSolverFactory->create(manager));
     refiner.refine(initialPredicates);
 
@@ -306,7 +308,7 @@ TYPED_TEST(PrismMenuGame, CrowdsFullAbstractionTest) {
 
     std::shared_ptr<storm::utility::solver::SmtSolverFactory> smtSolverFactory = std::make_shared<storm::utility::solver::MathsatSmtSolverFactory>();
 
-    storm::gbar::abstraction::prism::PrismMenuGameAbstractor<DdType, double> abstractor(program, smtSolverFactory);
+    storm::gbar::abstraction::prism::PrismMenuGameAbstractor<DdType, double> abstractor(program, smtSolverFactory, storm::Environment());
     storm::gbar::abstraction::MenuGameRefiner<DdType, double> refiner(abstractor, smtSolverFactory->create(manager));
     refiner.refine(initialPredicates);
 
@@ -337,7 +339,7 @@ TYPED_TEST(PrismMenuGame, TwoDiceAbstractionTest) {
 
     std::shared_ptr<storm::utility::solver::SmtSolverFactory> smtSolverFactory = std::make_shared<storm::utility::solver::MathsatSmtSolverFactory>();
 
-    storm::gbar::abstraction::prism::PrismMenuGameAbstractor<DdType, double> abstractor(program, smtSolverFactory);
+    storm::gbar::abstraction::prism::PrismMenuGameAbstractor<DdType, double> abstractor(program, smtSolverFactory, storm::Environment());
     storm::gbar::abstraction::MenuGameRefiner<DdType, double> refiner(abstractor, smtSolverFactory->create(manager));
     refiner.refine(initialPredicates);
 
@@ -367,7 +369,7 @@ TYPED_TEST(PrismMenuGame, TwoDiceAbstractionAndRefinementTest) {
 
     std::shared_ptr<storm::utility::solver::SmtSolverFactory> smtSolverFactory = std::make_shared<storm::utility::solver::MathsatSmtSolverFactory>();
 
-    storm::gbar::abstraction::prism::PrismMenuGameAbstractor<DdType, double> abstractor(program, smtSolverFactory);
+    storm::gbar::abstraction::prism::PrismMenuGameAbstractor<DdType, double> abstractor(program, smtSolverFactory, storm::Environment());
     storm::gbar::abstraction::MenuGameRefiner<DdType, double> refiner(abstractor, smtSolverFactory->create(manager));
     refiner.refine(initialPredicates);
 
@@ -430,7 +432,7 @@ TYPED_TEST(PrismMenuGame, TwoDiceFullAbstractionTest) {
 
     std::shared_ptr<storm::utility::solver::SmtSolverFactory> smtSolverFactory = std::make_shared<storm::utility::solver::MathsatSmtSolverFactory>();
 
-    storm::gbar::abstraction::prism::PrismMenuGameAbstractor<DdType, double> abstractor(program, smtSolverFactory);
+    storm::gbar::abstraction::prism::PrismMenuGameAbstractor<DdType, double> abstractor(program, smtSolverFactory, storm::Environment());
     storm::gbar::abstraction::MenuGameRefiner<DdType, double> refiner(abstractor, smtSolverFactory->create(manager));
     refiner.refine(initialPredicates);
 
@@ -462,7 +464,7 @@ TYPED_TEST(PrismMenuGame, WlanAbstractionTest) {
 
     std::shared_ptr<storm::utility::solver::SmtSolverFactory> smtSolverFactory = std::make_shared<storm::utility::solver::MathsatSmtSolverFactory>();
 
-    storm::gbar::abstraction::prism::PrismMenuGameAbstractor<DdType, double> abstractor(program, smtSolverFactory);
+    storm::gbar::abstraction::prism::PrismMenuGameAbstractor<DdType, double> abstractor(program, smtSolverFactory, storm::Environment());
     storm::gbar::abstraction::MenuGameRefiner<DdType, double> refiner(abstractor, smtSolverFactory->create(manager));
     refiner.refine(initialPredicates);
 
@@ -494,7 +496,7 @@ TYPED_TEST(PrismMenuGame, WlanAbstractionAndRefinementTest) {
 
     std::shared_ptr<storm::utility::solver::SmtSolverFactory> smtSolverFactory = std::make_shared<storm::utility::solver::MathsatSmtSolverFactory>();
 
-    storm::gbar::abstraction::prism::PrismMenuGameAbstractor<DdType, double> abstractor(program, smtSolverFactory);
+    storm::gbar::abstraction::prism::PrismMenuGameAbstractor<DdType, double> abstractor(program, smtSolverFactory, storm::Environment());
     storm::gbar::abstraction::MenuGameRefiner<DdType, double> refiner(abstractor, smtSolverFactory->create(manager));
     refiner.refine(initialPredicates);
 
@@ -626,7 +628,7 @@ TYPED_TEST(PrismMenuGame, WlanFullAbstractionTest) {
 
     std::shared_ptr<storm::utility::solver::SmtSolverFactory> smtSolverFactory = std::make_shared<storm::utility::solver::MathsatSmtSolverFactory>();
 
-    storm::gbar::abstraction::prism::PrismMenuGameAbstractor<DdType, double> abstractor(program, smtSolverFactory);
+    storm::gbar::abstraction::prism::PrismMenuGameAbstractor<DdType, double> abstractor(program, smtSolverFactory, storm::Environment());
     storm::gbar::abstraction::MenuGameRefiner<DdType, double> refiner(abstractor, smtSolverFactory->create(manager));
     refiner.refine(initialPredicates);
 

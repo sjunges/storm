@@ -15,6 +15,10 @@
 #include "storm/storage/expressions/Variable.h"
 
 namespace storm {
+class Environment;
+}  // namespace storm
+
+namespace storm {
 namespace dd {
 
 // Declare DdManager class so we can then specialize it for the different DD types.
@@ -31,8 +35,15 @@ class DdManager : public std::enable_shared_from_this<DdManager<LibraryType>> {
 
     /*!
      * Creates an empty manager without any meta variables.
+     *
+     * @param env The environment providing the settings for the DD library (e.g. Sylvan or CUDD).
      */
-    DdManager();
+    explicit DdManager(storm::Environment const& env);
+
+    /*!
+     * Creates a new manager that is configured according to a default environment.
+     */
+    static std::shared_ptr<DdManager<LibraryType>> createWithDefaultEnvironment();
 
     // Explicitly forbid copying a DdManager, but allow moving it.
     DdManager(DdManager<LibraryType> const& other) = delete;
@@ -392,6 +403,9 @@ class DdManager : public std::enable_shared_from_this<DdManager<LibraryType>> {
      * @return A pointer to the internal DD manager.
      */
     InternalDdManager<LibraryType> const* getInternalDdManagerPointer() const;
+
+    // The default constructor is only used internally, i.e. by the factory method createWithDefaultEnvironment().
+    DdManager();
 
     // ATTENTION: as the DD packages typically perform garbage collection, the order of members is crucial here:
     // First, the references to the DDs of the meta variables need to be disposed of and *then* the manager.

@@ -1,4 +1,5 @@
 #include "storm-config.h"
+#include "storm/environment/Environment.h"
 #include "test/storm_gtest.h"
 
 #include "storm-parsers/parser/PrismParser.h"
@@ -68,7 +69,7 @@ TYPED_TEST(GraphTestSymbolic, SymbolicProb01) {
     const storm::dd::DdType DdType = TestFixture::DdType;
     storm::storage::SymbolicModelDescription modelDescription = storm::parser::PrismParser::parse(STORM_TEST_RESOURCES_DIR "/dtmc/crowds-5-5.pm");
     storm::prism::Program program = modelDescription.preprocess().asPrismProgram();
-    std::shared_ptr<storm::models::symbolic::Model<DdType>> model = storm::builder::DdPrismModelBuilder<DdType>().build(program);
+    std::shared_ptr<storm::models::symbolic::Model<DdType>> model = storm::builder::DdPrismModelBuilder<DdType>().build(program, storm::Environment());
 
     ASSERT_TRUE(model->getType() == storm::models::ModelType::Dtmc);
 
@@ -97,7 +98,7 @@ TYPED_TEST(GraphTestSymbolic, SymbolicProb01MinMax) {
     const storm::dd::DdType DdType = TestFixture::DdType;
     storm::storage::SymbolicModelDescription modelDescription = storm::parser::PrismParser::parse(STORM_TEST_RESOURCES_DIR "/mdp/leader3.nm");
     storm::prism::Program program = modelDescription.preprocess().asPrismProgram();
-    std::shared_ptr<storm::models::symbolic::Model<DdType>> model = storm::builder::DdPrismModelBuilder<DdType>().build(program);
+    std::shared_ptr<storm::models::symbolic::Model<DdType>> model = storm::builder::DdPrismModelBuilder<DdType>().build(program, storm::Environment());
 
     ASSERT_TRUE(model->getType() == storm::models::ModelType::Mdp);
 
@@ -118,7 +119,7 @@ TYPED_TEST(GraphTestSymbolic, SymbolicProb01MinMax) {
 
     modelDescription = storm::parser::PrismParser::parse(STORM_TEST_RESOURCES_DIR "/mdp/coin2-2.nm");
     program = modelDescription.preprocess().asPrismProgram();
-    model = storm::builder::DdPrismModelBuilder<DdType>().build(program);
+    model = storm::builder::DdPrismModelBuilder<DdType>().build(program, storm::Environment());
 
     ASSERT_TRUE(model->getType() == storm::models::ModelType::Mdp);
 
@@ -149,7 +150,7 @@ TYPED_TEST(GraphTestSymbolic, SymbolicProb01MinMax) {
 
     modelDescription = storm::parser::PrismParser::parse(STORM_TEST_RESOURCES_DIR "/mdp/csma2-2.nm");
     program = modelDescription.preprocess().asPrismProgram();
-    model = storm::builder::DdPrismModelBuilder<DdType>().build(program);
+    model = storm::builder::DdPrismModelBuilder<DdType>().build(program, storm::Environment());
 
     ASSERT_TRUE(model->getType() == storm::models::ModelType::Mdp);
 

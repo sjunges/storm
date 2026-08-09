@@ -6,6 +6,7 @@
 #include "storm-dft/modelchecker/SFTBDDChecker.h"
 #include "storm-dft/transformations/SftToBddTransformator.h"
 #include "storm-dft/utility/MTTFHelper.h"
+#include "storm/environment/Environment.h"
 #include "storm-parsers/api/properties.h"
 
 namespace {
@@ -188,7 +189,7 @@ INSTANTIATE_TEST_SUITE_P(SFTs, SftBddTest, testing::ValuesIn(sftTestData), [](au
 TEST(TestBdd, AndOrRelevantEvents) {
 #ifdef STORM_HAVE_SYLVAN
     auto dft = storm::dft::api::loadDFTGalileoFile<double>(STORM_TEST_RESOURCES_DIR "/dft/bdd/AndOrTest.dft");
-    auto manager = std::make_shared<storm::dft::storage::SylvanBddManager>();
+    auto manager = std::make_shared<storm::dft::storage::SylvanBddManager>(storm::Environment());
     storm::dft::utility::RelevantEvents relevantEvents{"F", "F1", "F2", "x1"};
     storm::dft::transformations::SftToBddTransformator<double> transformer{dft, manager, relevantEvents};
 
@@ -208,7 +209,7 @@ TEST(TestBdd, AndOrRelevantEvents) {
 TEST(TestBdd, AndOrRelevantEventsChecked) {
 #ifdef STORM_HAVE_SYLVAN
     auto dft = storm::dft::api::loadDFTGalileoFile<double>(STORM_TEST_RESOURCES_DIR "/dft/bdd/AndOrTest.dft");
-    auto manager{std::make_shared<storm::dft::storage::SylvanBddManager>()};
+    auto manager{std::make_shared<storm::dft::storage::SylvanBddManager>(storm::Environment())};
     storm::dft::utility::RelevantEvents relevantEvents{"F", "F1", "F2", "x1"};
     auto transformator{std::make_shared<storm::dft::transformations::SftToBddTransformator<double>>(dft, manager, relevantEvents)};
 

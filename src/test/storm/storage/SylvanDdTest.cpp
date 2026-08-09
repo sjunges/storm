@@ -42,7 +42,7 @@ TYPED_TEST_SUITE(SylvanDd, TestingTypes, );
 
 TYPED_TEST(SylvanDd, AddSharpenTest) {
     const storm::dd::DdType DdType = TestFixture::DdType;
-    std::shared_ptr<storm::dd::DdManager<DdType>> manager(new storm::dd::DdManager<DdType>());
+    std::shared_ptr<storm::dd::DdManager<DdType>> manager(storm::dd::DdManager<DdType>::createWithDefaultEnvironment());
     manager->execute([&]() {
         std::pair<storm::expressions::Variable, storm::expressions::Variable> x = manager->addMetaVariable("x", 1, 9);
 
@@ -65,7 +65,7 @@ TYPED_TEST(SylvanDd, AddSharpenTest) {
 
 TYPED_TEST(SylvanDd, AddRationalSharpenTest) {
     const storm::dd::DdType DdType = TestFixture::DdType;
-    std::shared_ptr<storm::dd::DdManager<DdType>> manager(new storm::dd::DdManager<DdType>());
+    std::shared_ptr<storm::dd::DdManager<DdType>> manager(storm::dd::DdManager<DdType>::createWithDefaultEnvironment());
     manager->execute([&]() {
         std::pair<storm::expressions::Variable, storm::expressions::Variable> x = manager->addMetaVariable("x", 1, 9);
 
@@ -88,7 +88,7 @@ TYPED_TEST(SylvanDd, AddRationalSharpenTest) {
 
 TYPED_TEST(SylvanDd, AddToRationalTest) {
     const storm::dd::DdType DdType = TestFixture::DdType;
-    std::shared_ptr<storm::dd::DdManager<DdType>> manager(new storm::dd::DdManager<DdType>());
+    std::shared_ptr<storm::dd::DdManager<DdType>> manager(storm::dd::DdManager<DdType>::createWithDefaultEnvironment());
     manager->execute([&]() {
         std::pair<storm::expressions::Variable, storm::expressions::Variable> x = manager->addMetaVariable("x", 1, 9);
 
@@ -108,7 +108,7 @@ TYPED_TEST(SylvanDd, AddToRationalTest) {
 
 TYPED_TEST(SylvanDd, RationalFunctionConstants) {
     const storm::dd::DdType DdType = TestFixture::DdType;
-    std::shared_ptr<storm::dd::DdManager<DdType>> manager(new storm::dd::DdManager<DdType>());
+    std::shared_ptr<storm::dd::DdManager<DdType>> manager(storm::dd::DdManager<DdType>::createWithDefaultEnvironment());
     manager->execute([&]() {
         storm::dd::Add<DdType, storm::RationalFunction> zero;
         ASSERT_NO_THROW(zero = manager->template getAddZero<storm::RationalFunction>());
@@ -156,7 +156,7 @@ TYPED_TEST(SylvanDd, RationalFunctionConstants) {
 
 TYPED_TEST(SylvanDd, RationalFunctionToDouble) {
     const storm::dd::DdType DdType = TestFixture::DdType;
-    std::shared_ptr<storm::dd::DdManager<DdType>> manager(new storm::dd::DdManager<DdType>());
+    std::shared_ptr<storm::dd::DdManager<DdType>> manager(storm::dd::DdManager<DdType>::createWithDefaultEnvironment());
 
     manager->execute([&]() {
         std::pair<storm::expressions::Variable, storm::expressions::Variable> xExpr;
@@ -218,7 +218,7 @@ TYPED_TEST(SylvanDd, RationalFunctionToDouble) {
 
 TYPED_TEST(SylvanDd, RationalFunctionEncodingTest) {
     const storm::dd::DdType DdType = TestFixture::DdType;
-    std::shared_ptr<storm::dd::DdManager<DdType>> manager(new storm::dd::DdManager<DdType>());
+    std::shared_ptr<storm::dd::DdManager<DdType>> manager(storm::dd::DdManager<DdType>::createWithDefaultEnvironment());
     manager->execute([&]() {
         std::pair<storm::expressions::Variable, storm::expressions::Variable> x = manager->addMetaVariable("x", 1, 9);
 
@@ -244,7 +244,7 @@ TYPED_TEST(SylvanDd, RationalFunctionEncodingTest) {
 
 TYPED_TEST(SylvanDd, RationalFunctionIdentityTest) {
     const storm::dd::DdType DdType = TestFixture::DdType;
-    std::shared_ptr<storm::dd::DdManager<DdType>> manager(new storm::dd::DdManager<DdType>());
+    std::shared_ptr<storm::dd::DdManager<DdType>> manager(storm::dd::DdManager<DdType>::createWithDefaultEnvironment());
     manager->execute([&]() {
         std::pair<storm::expressions::Variable, storm::expressions::Variable> x = manager->addMetaVariable("x", 1, 9);
 

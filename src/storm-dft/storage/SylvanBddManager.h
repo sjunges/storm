@@ -3,6 +3,8 @@
 #include <map>
 
 #include "storm/adapters/sylvan.h"
+#include "storm/environment/Environment.h"
+#include "storm/environment/dd/DdEnvironment.h"
 #include "storm/io/file.h"
 #include "storm/storage/dd/sylvan/InternalSylvanDdManager.h"
 #include "storm/utility/macros.h"
@@ -27,8 +29,12 @@ class SylvanBddManager {
      * \note
      * Internally Sylvan is initialized by a InternalSylvanDdManager.
      * This ensures compatibility.
+     *
+     * \param env
+     * The environment providing the settings for the Sylvan manager.
      */
-    SylvanBddManager() = default;
+    explicit SylvanBddManager(storm::Environment const& env)
+        : internalManager{env.dd().get<storm::dd::DdType::Sylvan>()} {}
 
     // We can only initialize Sylvan once therefore no copy semantics
     SylvanBddManager(SylvanBddManager const &) = delete;
@@ -193,7 +199,7 @@ class SylvanBddManager {
 
    private:
 #ifdef STORM_HAVE_SYLVAN
-    storm::dd::InternalDdManager<storm::dd::DdType::Sylvan> internalManager{};
+    storm::dd::InternalDdManager<storm::dd::DdType::Sylvan> internalManager;
     uint32_t nextFreeVariableIndex{0};
 
     std::map<std::string, uint32_t> nameToIndex{};

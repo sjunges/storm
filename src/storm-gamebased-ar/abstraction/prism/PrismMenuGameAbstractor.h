@@ -22,6 +22,8 @@ class SmtSolverFactory;
 }
 }  // namespace utility
 
+class Environment;
+
 namespace models {
 namespace symbolic {
 template<storm::dd::DdType Type, typename ValueType>
@@ -47,9 +49,10 @@ class PrismMenuGameAbstractor : public MenuGameAbstractor<DdType, ValueType> {
      *
      * @param program The concrete program for which to build the abstraction.
      * @param smtSolverFactory A factory that is to be used for creating new SMT solvers.
+     * @param env The environment providing the settings for the DD manager.
      */
     PrismMenuGameAbstractor(storm::prism::Program const& program, std::shared_ptr<storm::utility::solver::SmtSolverFactory> const& smtSolverFactory,
-                            MenuGameAbstractorOptions const& options = MenuGameAbstractorOptions());
+                            storm::Environment const& env, MenuGameAbstractorOptions const& options = MenuGameAbstractorOptions());
 
     PrismMenuGameAbstractor(PrismMenuGameAbstractor const&) = default;
     PrismMenuGameAbstractor& operator=(PrismMenuGameAbstractor const&) = default;

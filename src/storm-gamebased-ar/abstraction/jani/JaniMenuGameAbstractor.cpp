@@ -28,10 +28,10 @@ using storm::settings::modules::AbstractionSettings;
 template<storm::dd::DdType DdType, typename ValueType>
 JaniMenuGameAbstractor<DdType, ValueType>::JaniMenuGameAbstractor(storm::jani::Model const& model,
                                                                   std::shared_ptr<storm::utility::solver::SmtSolverFactory> const& smtSolverFactory,
-                                                                  MenuGameAbstractorOptions const& options)
+                                                                  storm::Environment const& env, MenuGameAbstractorOptions const& options)
     : model(model),
       smtSolverFactory(smtSolverFactory),
-      abstractionInformation(model.getManager(), model.getAllExpressionVariables(), smtSolverFactory->create(model.getManager()),
+      abstractionInformation(model.getManager(), model.getAllExpressionVariables(), smtSolverFactory->create(model.getManager()), env,
                              AbstractionInformationOptions(options.constraints)),
       automata(),
       initialStateAbstractor(abstractionInformation, {model.getInitialStatesExpression()}, this->smtSolverFactory),
