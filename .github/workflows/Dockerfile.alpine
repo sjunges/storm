@@ -28,6 +28,7 @@ ARG disable_cudd="OFF"
 ARG disable_glpk="OFF"
 ARG disable_gmm="OFF"
 ARG disable_gurobi="OFF"
+# Highs solver is not available on Alpine
 ARG disable_highs="ON"
 ARG disable_libarchive="OFF"
 ARG disable_mathsat="OFF"
