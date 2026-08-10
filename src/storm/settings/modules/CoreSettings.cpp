@@ -86,7 +86,7 @@ CoreSettings::CoreSettings() : ModuleSettings(moduleName), engine(storm::utility
                 .build());
     }
 
-    std::vector<std::string> lpSolvers = {"gurobi", "glpk", "z3", "soplex", "highs"};
+    std::vector<std::string> lpSolvers = {"glpk", "gurobi", "highs", "soplex", "z3"};
     this->addOption(storm::settings::OptionBuilder(moduleName, lpSolverOptionName, false, "Sets which LP solver is preferred.")
                         .addArgument(storm::settings::ArgumentBuilder::createStringArgument("name", "The name of an LP solver.")
                                          .addValidatorString(ArgumentValidatorFactory::createMultipleChoiceValidator(lpSolvers))
