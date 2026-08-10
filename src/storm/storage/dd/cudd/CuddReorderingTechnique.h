@@ -1,7 +1,6 @@
 #pragma once
 
-namespace storm {
-namespace dd {
+namespace storm::dd {
 
 // An enumeration of all available reordering techniques of CUDD.
 enum class CuddReorderingTechnique {
@@ -25,5 +24,4 @@ enum class CuddReorderingTechnique {
     Exact
 };
 
-}  // namespace dd
-}  // namespace storm
+}  // namespace storm::dd

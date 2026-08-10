@@ -632,11 +632,11 @@ std::unique_ptr<storm::modelchecker::CheckResult> GameBasedMdpModelChecker<Type,
     // Create the abstractor.
     storm::gbar::abstraction::MenuGameAbstractorOptions abstractorOptions(std::move(options.constraints));
     if (preprocessedModel.isPrismProgram()) {
-        abstractor = std::make_shared<storm::gbar::abstraction::prism::PrismMenuGameAbstractor<Type, ValueType>>(preprocessedModel.asPrismProgram(),
-                                                                                                                 smtSolverFactory, env, abstractorOptions);
+        abstractor = std::make_shared<storm::gbar::abstraction::prism::PrismMenuGameAbstractor<Type, ValueType>>(env, preprocessedModel.asPrismProgram(),
+                                                                                                                 smtSolverFactory, abstractorOptions);
     } else {
-        abstractor = std::make_shared<storm::gbar::abstraction::jani::JaniMenuGameAbstractor<Type, ValueType>>(preprocessedModel.asJaniModel(),
-                                                                                                               smtSolverFactory, env, abstractorOptions);
+        abstractor = std::make_shared<storm::gbar::abstraction::jani::JaniMenuGameAbstractor<Type, ValueType>>(env, preprocessedModel.asJaniModel(),
+                                                                                                               smtSolverFactory, abstractorOptions);
     }
     std::unique_ptr<storm::modelchecker::CheckResult> result;
     abstractor->getDdManager().execute([&]() {

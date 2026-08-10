@@ -47,12 +47,13 @@ class PrismMenuGameAbstractor : public MenuGameAbstractor<DdType, ValueType> {
     /*!
      * Constructs an abstractor for the given program.
      *
+     * @param env The environment providing the settings for the DD manager.
      * @param program The concrete program for which to build the abstraction.
      * @param smtSolverFactory A factory that is to be used for creating new SMT solvers.
-     * @param env The environment providing the settings for the DD manager.
      */
-    PrismMenuGameAbstractor(storm::prism::Program const& program, std::shared_ptr<storm::utility::solver::SmtSolverFactory> const& smtSolverFactory,
-                            storm::Environment const& env, MenuGameAbstractorOptions const& options = MenuGameAbstractorOptions());
+    PrismMenuGameAbstractor(storm::Environment const& env, storm::prism::Program const& program,
+                            std::shared_ptr<storm::utility::solver::SmtSolverFactory> const& smtSolverFactory,
+                            MenuGameAbstractorOptions const& options = MenuGameAbstractorOptions());
 
     PrismMenuGameAbstractor(PrismMenuGameAbstractor const&) = default;
     PrismMenuGameAbstractor& operator=(PrismMenuGameAbstractor const&) = default;

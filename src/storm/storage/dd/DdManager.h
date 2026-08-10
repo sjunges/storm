@@ -404,9 +404,6 @@ class DdManager : public std::enable_shared_from_this<DdManager<LibraryType>> {
      */
     InternalDdManager<LibraryType> const* getInternalDdManagerPointer() const;
 
-    // The default constructor is only used internally, i.e. by the factory method createWithDefaultEnvironment().
-    DdManager();
-
     // ATTENTION: as the DD packages typically perform garbage collection, the order of members is crucial here:
     // First, the references to the DDs of the meta variables need to be disposed of and *then* the manager.
 

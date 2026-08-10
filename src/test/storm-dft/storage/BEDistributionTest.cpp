@@ -13,7 +13,7 @@ TEST(BEDistributionTest, ConstantFail) {
 
 #ifdef STORM_HAVE_SYLVAN
     // Perform BDD-based analysis on FT
-    auto checker = std::make_shared<storm::dft::modelchecker::SFTBDDChecker>(dft);
+    auto checker = std::make_shared<storm::dft::modelchecker::SFTBDDChecker>(dft, storm::dft::storage::SylvanBddManager::createWithDefaultEnvironment());
     double resultBDD = checker->getProbabilityAtTimebound(timebound);
     EXPECT_NEAR(resultBDD, 0.3296799540, 1e-10);
 #endif
@@ -33,7 +33,7 @@ TEST(BEDistributionTest, ConstantNonFail) {
 
 #ifdef STORM_HAVE_SYLVAN
     // Perform BDD-based analysis on FT
-    auto checker = std::make_shared<storm::dft::modelchecker::SFTBDDChecker>(dft);
+    auto checker = std::make_shared<storm::dft::modelchecker::SFTBDDChecker>(dft, storm::dft::storage::SylvanBddManager::createWithDefaultEnvironment());
     double resultBDD = checker->getProbabilityAtTimebound(timebound);
     EXPECT_NEAR(resultBDD, 0.9592377960, 1e-10);
 #endif
@@ -53,7 +53,7 @@ TEST(BEDistributionTest, ConstantNonFail2) {
 
 #ifdef STORM_HAVE_SYLVAN
     // Perform BDD-based analysis on FT
-    auto checker = std::make_shared<storm::dft::modelchecker::SFTBDDChecker>(dft);
+    auto checker = std::make_shared<storm::dft::modelchecker::SFTBDDChecker>(dft, storm::dft::storage::SylvanBddManager::createWithDefaultEnvironment());
     double resultBDD = checker->getProbabilityAtTimebound(timebound);
     EXPECT_EQ(resultBDD, 0);
 #endif
@@ -73,7 +73,7 @@ TEST(BEDistributionTest, Probability) {
 
 #ifdef STORM_HAVE_SYLVAN
     // Perform BDD-based analysis on FT
-    auto checker = std::make_shared<storm::dft::modelchecker::SFTBDDChecker>(dft);
+    auto checker = std::make_shared<storm::dft::modelchecker::SFTBDDChecker>(dft, storm::dft::storage::SylvanBddManager::createWithDefaultEnvironment());
     double resultBDD = checker->getProbabilityAtTimebound(timebound);
     EXPECT_NEAR(resultBDD, 0.1095403852, 1e-10);
 #endif
@@ -93,7 +93,7 @@ TEST(BEDistributionTest, Exponential) {
 
 #ifdef STORM_HAVE_SYLVAN
     // Perform BDD-based analysis on FT
-    auto checker = std::make_shared<storm::dft::modelchecker::SFTBDDChecker>(dft);
+    auto checker = std::make_shared<storm::dft::modelchecker::SFTBDDChecker>(dft, storm::dft::storage::SylvanBddManager::createWithDefaultEnvironment());
     double resultBDD = checker->getProbabilityAtTimebound(timebound);
     EXPECT_NEAR(resultBDD, 0.108688872, 1e-10);
 #endif
@@ -113,7 +113,7 @@ TEST(BEDistributionTest, Erlang) {
 
 #ifdef STORM_HAVE_SYLVAN
     // Perform BDD-based analysis on FT
-    auto checker = std::make_shared<storm::dft::modelchecker::SFTBDDChecker>(dft);
+    auto checker = std::make_shared<storm::dft::modelchecker::SFTBDDChecker>(dft, storm::dft::storage::SylvanBddManager::createWithDefaultEnvironment());
     double resultBDD = checker->getProbabilityAtTimebound(timebound);
     EXPECT_NEAR(resultBDD, 0.4949009834, 1e-10);
 #endif
@@ -133,7 +133,7 @@ TEST(BEDistributionTest, Weibull) {
     double timebound = 2;
 
     // Perform BDD-based analysis on FT
-    auto checker = std::make_shared<storm::dft::modelchecker::SFTBDDChecker>(dft);
+    auto checker = std::make_shared<storm::dft::modelchecker::SFTBDDChecker>(dft, storm::dft::storage::SylvanBddManager::createWithDefaultEnvironment());
     double resultBDD = checker->getProbabilityAtTimebound(timebound);
     EXPECT_NEAR(resultBDD, 0.0382982486, 1e-10);
 #else
@@ -147,7 +147,7 @@ TEST(BEDistributionTest, LogNormal) {
     double timebound = 0.8;
 
     // Perform BDD-based analysis on FT
-    auto checker = std::make_shared<storm::dft::modelchecker::SFTBDDChecker>(dft);
+    auto checker = std::make_shared<storm::dft::modelchecker::SFTBDDChecker>(dft, storm::dft::storage::SylvanBddManager::createWithDefaultEnvironment());
     double resultBDD = checker->getProbabilityAtTimebound(timebound);
     EXPECT_NEAR(resultBDD, 0.2336675428, 1e-10);
 #else

@@ -32,9 +32,9 @@ class SFTBDDPropertyFormulaAdapter {
 
    public:
 #ifdef STORM_HAVE_SYLVAN
-    SFTBDDPropertyFormulaAdapter(
-        std::shared_ptr<storm::dft::storage::DFT<ValueType>> dft, FormulaVector const &formulas, storm::dft::utility::RelevantEvents relevantEvents = {},
-        std::shared_ptr<storm::dft::storage::SylvanBddManager> sylvanBddManager = std::make_shared<storm::dft::storage::SylvanBddManager>(storm::Environment()))
+    SFTBDDPropertyFormulaAdapter(std::shared_ptr<storm::dft::storage::DFT<ValueType>> dft, FormulaVector const &formulas,
+                                 std::shared_ptr<storm::dft::storage::SylvanBddManager> sylvanBddManager,
+                                 storm::dft::utility::RelevantEvents relevantEvents = {})
         : formulas{formulas} {
         checkForm(formulas);
 
@@ -43,9 +43,9 @@ class SFTBDDPropertyFormulaAdapter {
         checker = std::make_shared<storm::dft::modelchecker::SFTBDDChecker>(transformator);
     }
 #else
-    SFTBDDPropertyFormulaAdapter(
-        std::shared_ptr<storm::dft::storage::DFT<ValueType>> dft, FormulaVector const &formulas, storm::dft::utility::RelevantEvents relevantEvents = {},
-        std::shared_ptr<storm::dft::storage::SylvanBddManager> sylvanBddManager = std::make_shared<storm::dft::storage::SylvanBddManager>(storm::Environment())) {
+    SFTBDDPropertyFormulaAdapter(std::shared_ptr<storm::dft::storage::DFT<ValueType>> dft, FormulaVector const &formulas,
+                                 std::shared_ptr<storm::dft::storage::SylvanBddManager> sylvanBddManager,
+                                 storm::dft::utility::RelevantEvents relevantEvents = {}) {
         STORM_LOG_THROW(false, storm::exceptions::MissingLibraryException,
                         "This version of Storm was compiled without support for Sylvan. Yet, a method was called that requires this support. Please choose a "
                         "version of Storm with Sylvan support.");

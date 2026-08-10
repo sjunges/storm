@@ -191,7 +191,7 @@ void JaniBeliefSupportMdpGenerator<ValueType>::verifySymbolic(storm::Environment
     // This trick only works because we do not explictly check that the model is stochastic!
     symdesc = symdesc.preprocess("posProb=0.1");
     auto property = storm::api::parsePropertiesForJaniModel("Pmax>=1 [!\"bad\" U \"target\"]", model)[0];
-    auto mdp = storm::api::buildSymbolicModel<storm::dd::DdType::Sylvan, ValueType>(symdesc, env, {property.getRawFormula()});
+    auto mdp = storm::api::buildSymbolicModel<storm::dd::DdType::Sylvan, ValueType>(env, symdesc, {property.getRawFormula()});
     std::unique_ptr<modelchecker::CheckResult> result =
         storm::api::verifyWithDdEngine(env, mdp, storm::api::createTask<ValueType>(property.getRawFormula(), onlyInitial));
     std::unique_ptr<storm::modelchecker::CheckResult> filter;

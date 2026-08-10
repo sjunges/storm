@@ -19,7 +19,7 @@ namespace modelchecker {
 
 template<typename ValueType>
 DftModularizationChecker<ValueType>::DftModularizationChecker(std::shared_ptr<storm::dft::storage::DFT<ValueType>> dft)
-    : dft{dft}, modelchecker(true), sylvanBddManager{std::make_shared<storm::dft::storage::SylvanBddManager>(storm::Environment())} {
+    : dft{dft}, modelchecker(true), sylvanBddManager{storm::dft::storage::SylvanBddManager::createWithDefaultEnvironment()} {
     // Initialize modules
     storm::dft::utility::DftModularizer<ValueType> modularizer;
     auto topModule = modularizer.computeModules(*dft);
@@ -54,7 +54,7 @@ std::vector<ValueType> DftModularizationChecker<ValueType>::check(FormulaVector 
 
     auto newDft = replaceDynamicModules(timepoints);
 
-    storm::dft::adapters::SFTBDDPropertyFormulaAdapter checker{newDft, formulas, {}, sylvanBddManager};
+    storm::dft::adapters::SFTBDDPropertyFormulaAdapter checker{newDft, formulas, sylvanBddManager, {}};
     return checker.check(chunksize);
 }
 

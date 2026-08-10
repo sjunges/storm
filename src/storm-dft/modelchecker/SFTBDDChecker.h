@@ -27,7 +27,7 @@ class SFTBDDChecker {
 #endif
 
     SFTBDDChecker(std::shared_ptr<storm::dft::storage::DFT<ValueType>> dft,
-                  std::shared_ptr<storm::dft::storage::SylvanBddManager> sylvanBddManager = std::make_shared<storm::dft::storage::SylvanBddManager>(storm::Environment()));
+                  std::shared_ptr<storm::dft::storage::SylvanBddManager> sylvanBddManager);
 
     SFTBDDChecker(std::shared_ptr<storm::dft::transformations::SftToBddTransformator<ValueType>> transformator);
 

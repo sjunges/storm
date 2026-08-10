@@ -56,7 +56,7 @@ class SftBddTest : public testing::TestWithParam<SftTestData> {
 #ifdef STORM_HAVE_SYLVAN
         auto const &param{TestWithParam::GetParam()};
         auto dft{storm::dft::api::loadDFTGalileoFile<double>(param.filepath)};
-        checker = std::make_shared<storm::dft::modelchecker::SFTBDDChecker>(dft);
+        checker = std::make_shared<storm::dft::modelchecker::SFTBDDChecker>(dft, storm::dft::storage::SylvanBddManager::createWithDefaultEnvironment());
 #else
         GTEST_SKIP() << "Library Sylvan not available.";
 #endif
@@ -189,7 +189,7 @@ INSTANTIATE_TEST_SUITE_P(SFTs, SftBddTest, testing::ValuesIn(sftTestData), [](au
 TEST(TestBdd, AndOrRelevantEvents) {
 #ifdef STORM_HAVE_SYLVAN
     auto dft = storm::dft::api::loadDFTGalileoFile<double>(STORM_TEST_RESOURCES_DIR "/dft/bdd/AndOrTest.dft");
-    auto manager = std::make_shared<storm::dft::storage::SylvanBddManager>(storm::Environment());
+    auto manager = storm::dft::storage::SylvanBddManager::createWithDefaultEnvironment();
     storm::dft::utility::RelevantEvents relevantEvents{"F", "F1", "F2", "x1"};
     storm::dft::transformations::SftToBddTransformator<double> transformer{dft, manager, relevantEvents};
 
@@ -209,7 +209,7 @@ TEST(TestBdd, AndOrRelevantEvents) {
 TEST(TestBdd, AndOrRelevantEventsChecked) {
 #ifdef STORM_HAVE_SYLVAN
     auto dft = storm::dft::api::loadDFTGalileoFile<double>(STORM_TEST_RESOURCES_DIR "/dft/bdd/AndOrTest.dft");
-    auto manager{std::make_shared<storm::dft::storage::SylvanBddManager>(storm::Environment())};
+    auto manager{storm::dft::storage::SylvanBddManager::createWithDefaultEnvironment()};
     storm::dft::utility::RelevantEvents relevantEvents{"F", "F1", "F2", "x1"};
     auto transformator{std::make_shared<storm::dft::transformations::SftToBddTransformator<double>>(dft, manager, relevantEvents)};
 
@@ -232,7 +232,7 @@ TEST(TestBdd, AndOrFormulaFail) {
 #ifdef STORM_HAVE_SYLVAN
     auto dft = storm::dft::api::loadDFTGalileoFile<double>(STORM_TEST_RESOURCES_DIR "/dft/bdd/AndOrTest.dft");
     auto const props{storm::api::extractFormulasFromProperties(storm::api::parseProperties("P=? [F < 1 !\"F2_failed\"];"))};
-    storm::dft::adapters::SFTBDDPropertyFormulaAdapter checker{dft, props};
+    storm::dft::adapters::SFTBDDPropertyFormulaAdapter checker{dft, props, storm::dft::storage::SylvanBddManager::createWithDefaultEnvironment()};
 
     STORM_SILENT_EXPECT_THROW(checker.check(), storm::exceptions::NotSupportedException);
 #else
@@ -252,7 +252,7 @@ TEST(TestBdd, AndOrFormula) {
                                                                               "P=? [F  = 1 !\"F2_failed\"];"
                                                                               "P=? [F <= 1 \"F1_failed\"];"
                                                                               "P=? [F <= 1 \"F2_failed\"];"))};
-    storm::dft::adapters::SFTBDDPropertyFormulaAdapter checker{dft, props};
+    storm::dft::adapters::SFTBDDPropertyFormulaAdapter checker{dft, props, storm::dft::storage::SylvanBddManager::createWithDefaultEnvironment()};
 
     auto const resultProbs{checker.check()};
     auto const result{checker.formulasToBdd()};

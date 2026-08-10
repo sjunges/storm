@@ -503,7 +503,7 @@ std::shared_ptr<storm::models::ModelBase> buildModelDd(SymbolicInput const& inpu
         STORM_PRINT_AND_LOG("Using Sylvan with " << numThreads << " parallel threads.\n");
     }
     auto buildSettings = storm::settings::getModule<storm::settings::modules::BuildSettings>();
-    return storm::api::buildSymbolicModel<DdType, ValueType>(input.model.get(), env, createFormulasToRespect(input.properties),
+    return storm::api::buildSymbolicModel<DdType, ValueType>(env, input.model.get(), createFormulasToRespect(input.properties),
                                                              buildSettings.isBuildFullModelSet(),
                                                              !buildSettings.isApplyNoMaximumProgressAssumptionSet());
 }

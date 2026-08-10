@@ -20,13 +20,8 @@ DdManager<LibraryType>::DdManager(storm::Environment const& env)
 }
 
 template<DdType LibraryType>
-DdManager<LibraryType>::DdManager() : DdManager(storm::Environment()) {
-    // Intentionally left empty.
-}
-
-template<DdType LibraryType>
 std::shared_ptr<DdManager<LibraryType>> DdManager<LibraryType>::createWithDefaultEnvironment() {
-    return std::shared_ptr<DdManager<LibraryType>>(new DdManager<LibraryType>());
+    return std::make_shared<DdManager<LibraryType>>(storm::Environment());
 }
 
 template<DdType LibraryType>

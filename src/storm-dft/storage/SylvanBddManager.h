@@ -36,6 +36,13 @@ class SylvanBddManager {
     explicit SylvanBddManager(storm::Environment const& env)
         : internalManager{env.dd().get<storm::dd::DdType::Sylvan>()} {}
 
+    /*!
+     * Creates a new manager that is configured according to a default environment.
+     */
+    static std::shared_ptr<SylvanBddManager> createWithDefaultEnvironment() {
+        return std::make_shared<SylvanBddManager>(storm::Environment());
+    }
+
     // We can only initialize Sylvan once therefore no copy semantics
     SylvanBddManager(SylvanBddManager const &) = delete;
 
