@@ -11,6 +11,7 @@
 #include "storm/storage/bisimulation/NondeterministicModelBisimulationDecomposition.h"
 
 namespace {
+static constexpr double DefaultTestTolerance = 1e-6;
 
 // Model checks propertyString on both the original model and its bisimulation quotient; returns (ground truth,
 // quotient value) for the initial state.
@@ -27,7 +28,8 @@ std::pair<double, double> computeGroundTruthAndBisimulationResult(std::string co
     double groundTruth = storm::api::verifyWithSparseEngine(model, storm::api::createTask<double>(formula, true))
                              ->template asExplicitQuantitativeCheckResult<double>()[*model->getInitialStates().begin()];
 
-    typename storm::storage::NondeterministicModelBisimulationDecomposition<storm::models::sparse::Mdp<double>>::Options options(*mdp, *formula);
+    typename storm::storage::NondeterministicModelBisimulationDecomposition<storm::models::sparse::Mdp<double>>::Options options(*mdp, *formula,
+                                                                                                                                  DefaultTestTolerance);
     storm::storage::NondeterministicModelBisimulationDecomposition<storm::models::sparse::Mdp<double>> bisim(*mdp, options);
     bisim.computeBisimulationDecomposition();
     std::shared_ptr<storm::models::sparse::Model<double>> quotient = bisim.getQuotient();
@@ -62,7 +64,10 @@ TEST(NondeterministicModelBisimulationDecomposition, TwoDice) {
     ASSERT_EQ(model->getType(), storm::models::ModelType::Mdp);
     std::shared_ptr<storm::models::sparse::Mdp<double>> mdp = model->as<storm::models::sparse::Mdp<double>>();
 
-    storm::storage::NondeterministicModelBisimulationDecomposition<storm::models::sparse::Mdp<double>> bisim(*mdp);
+    using OptionsType = typename storm::storage::NondeterministicModelBisimulationDecomposition<storm::models::sparse::Mdp<double>>::Options;
+
+    storm::storage::NondeterministicModelBisimulationDecomposition<storm::models::sparse::Mdp<double>> bisim(
+        *mdp, OptionsType::preservingAllLabels(DefaultTestTolerance));
     ASSERT_NO_THROW(bisim.computeBisimulationDecomposition());
     std::shared_ptr<storm::models::sparse::Model<double>> result;
     ASSERT_NO_THROW(result = bisim.getQuotient());
@@ -72,7 +77,7 @@ TEST(NondeterministicModelBisimulationDecomposition, TwoDice) {
     EXPECT_EQ(183ul, result->getNumberOfTransitions());
     EXPECT_EQ(97ul, result->as<storm::models::sparse::Mdp<double>>()->getNumberOfChoices());
 
-    typename storm::storage::NondeterministicModelBisimulationDecomposition<storm::models::sparse::Mdp<double>>::Options options;
+    OptionsType options = OptionsType::preservingAllLabels(DefaultTestTolerance);
     options.respectedAtomicPropositions = std::set<std::string>({"two"});
 
     storm::storage::NondeterministicModelBisimulationDecomposition<storm::models::sparse::Mdp<double>> bisim2(*mdp, options);
@@ -88,7 +93,7 @@ TEST(NondeterministicModelBisimulationDecomposition, TwoDice) {
     storm::parser::FormulaParser formulaParser;
     std::shared_ptr<storm::logic::Formula const> formula = formulaParser.parseSingleFormulaFromString("Pmin=? [F \"two\"]");
 
-    typename storm::storage::NondeterministicModelBisimulationDecomposition<storm::models::sparse::Mdp<double>>::Options options2(*mdp, *formula);
+    OptionsType options2(*mdp, *formula, DefaultTestTolerance);
 
     storm::storage::NondeterministicModelBisimulationDecomposition<storm::models::sparse::Mdp<double>> bisim3(*mdp, options2);
     ASSERT_NO_THROW(bisim3.computeBisimulationDecomposition());
@@ -124,7 +129,8 @@ TEST(NondeterministicModelBisimulationDecomposition, MeasureDrivenRewardUnsound)
     // Sanity check: the correct result is finite (a scheduler exists that reaches "goal" almost surely).
     ASSERT_LT(groundTruthValue, storm::utility::infinity<double>());
 
-    typename storm::storage::NondeterministicModelBisimulationDecomposition<storm::models::sparse::Mdp<double>>::Options options(*mdp, *formula);
+    typename storm::storage::NondeterministicModelBisimulationDecomposition<storm::models::sparse::Mdp<double>>::Options options(*mdp, *formula,
+                                                                                                                                  DefaultTestTolerance);
     storm::storage::NondeterministicModelBisimulationDecomposition<storm::models::sparse::Mdp<double>> bisim(*mdp, options);
     ASSERT_NO_THROW(bisim.computeBisimulationDecomposition());
     std::shared_ptr<storm::models::sparse::Model<double>> quotient;
