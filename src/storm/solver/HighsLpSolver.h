@@ -4,6 +4,7 @@
 #include <optional>
 #include <string>
 #include <vector>
+
 #include "storm/solver/LpSolver.h"
 // To detect whether the usage of HiGHS is possible, this include is necessary.
 #include "storm-config.h"
