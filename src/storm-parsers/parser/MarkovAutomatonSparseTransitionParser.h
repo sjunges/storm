@@ -78,8 +78,7 @@ class MarkovAutomatonSparseTransitionParser {
      * @param filename The name of the file to parse.
      * @return A structure representing the result of the parser.
      */
-    static Result parseMarkovAutomatonTransitions(std::string const& filename,
-                                                   ExplicitModelParserOptions const& options = ExplicitModelParserOptions());
+    static Result parseMarkovAutomatonTransitions(std::string const& filename, ExplicitModelParserOptions const& options = ExplicitModelParserOptions());
 
    private:
     /*!

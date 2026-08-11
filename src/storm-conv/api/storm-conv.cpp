@@ -15,7 +15,7 @@ namespace storm {
 namespace api {
 
 void transformJani(storm::jani::Model& janiModel, std::vector<storm::jani::Property>& properties, storm::converter::JaniConversionOptions const& options,
-                    std::shared_ptr<storm::utility::solver::SmtSolverFactory> smtSolverFactory) {
+                   std::shared_ptr<storm::utility::solver::SmtSolverFactory> smtSolverFactory) {
     if (options.replaceUnassignedVariablesWithConstants) {
         janiModel.replaceUnassignedVariablesWithConstants();
     }

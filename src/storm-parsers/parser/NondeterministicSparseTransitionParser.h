@@ -46,8 +46,8 @@ class NondeterministicSparseTransitionParser {
      *
      * @param filename The path and name of file to be parsed.
      */
-    static storm::storage::SparseMatrix<ValueType> parseNondeterministicTransitions(
-        std::string const& filename, ExplicitModelParserOptions const& options = ExplicitModelParserOptions());
+    static storm::storage::SparseMatrix<ValueType> parseNondeterministicTransitions(std::string const& filename,
+                                                                                    ExplicitModelParserOptions const& options = ExplicitModelParserOptions());
 
     /*!
      * Load a nondeterministic transition system from file and create a sparse adjacency matrix whose entries represent the weights of the edges

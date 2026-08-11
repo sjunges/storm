@@ -22,7 +22,7 @@ namespace api {
 
 // If smtSolverFactory is null, a Z3-based factory is used (independent of any globally configured SMT solver).
 void transformJani(storm::jani::Model& janiModel, std::vector<storm::jani::Property>& properties, storm::converter::JaniConversionOptions const& options,
-                    std::shared_ptr<storm::utility::solver::SmtSolverFactory> smtSolverFactory = nullptr);
+                   std::shared_ptr<storm::utility::solver::SmtSolverFactory> smtSolverFactory = nullptr);
 
 void transformPrism(storm::prism::Program& prismProgram, std::vector<storm::jani::Property>& properties, bool simplify = false, bool flatten = false);
 

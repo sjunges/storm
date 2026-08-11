@@ -597,8 +597,7 @@ std::shared_ptr<storm::models::ModelBase> buildModelExplicit(storm::settings::mo
             ioSettings.getTransitionFilename(), ioSettings.getLabelingFilename(),
             ioSettings.isStateRewardsSet() ? boost::optional<std::string>(ioSettings.getStateRewardsFilename()) : boost::none,
             ioSettings.isTransitionRewardsSet() ? boost::optional<std::string>(ioSettings.getTransitionRewardsFilename()) : boost::none,
-            ioSettings.isChoiceLabelingSet() ? boost::optional<std::string>(ioSettings.getChoiceLabelingFilename()) : boost::none,
-            explicitModelParserOptions);
+            ioSettings.isChoiceLabelingSet() ? boost::optional<std::string>(ioSettings.getChoiceLabelingFilename()) : boost::none, explicitModelParserOptions);
     } else if (ioSettings.isExplicitDRNSet()) {
         storm::parser::DirectEncodingParserOptions options;
         options.buildChoiceLabeling = buildSettings.isBuildChoiceLabelsSet();

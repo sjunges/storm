@@ -46,7 +46,7 @@ class DeterministicSparseTransitionParser {
      * @return A SparseMatrix containing the parsed transition system.
      */
     static storm::storage::SparseMatrix<ValueType> parseDeterministicTransitions(std::string const& filename,
-                                                                                  ExplicitModelParserOptions const& options = ExplicitModelParserOptions());
+                                                                                 ExplicitModelParserOptions const& options = ExplicitModelParserOptions());
 
     /*!
      * Load the transition rewards for a deterministic transition system from file and create a

@@ -225,16 +225,15 @@ typename DeterministicSparseTransitionParser<ValueType>::FirstPassResult Determi
 template class DeterministicSparseTransitionParser<double>;
 template storm::storage::SparseMatrix<double> DeterministicSparseTransitionParser<double>::parseDeterministicTransitionRewards(
     std::string const& filename, storm::storage::SparseMatrix<double> const& transitionMatrix);
-template storm::storage::SparseMatrix<double> DeterministicSparseTransitionParser<double>::parse(
-    std::string const& filename, bool isRewardFile, storm::storage::SparseMatrix<double> const& transitionMatrix,
-    ExplicitModelParserOptions const& options);
+template storm::storage::SparseMatrix<double> DeterministicSparseTransitionParser<double>::parse(std::string const& filename, bool isRewardFile,
+                                                                                                 storm::storage::SparseMatrix<double> const& transitionMatrix,
+                                                                                                 ExplicitModelParserOptions const& options);
 
 template class DeterministicSparseTransitionParser<storm::Interval>;
 
 template storm::storage::SparseMatrix<storm::Interval> DeterministicSparseTransitionParser<storm::Interval>::parseDeterministicTransitionRewards(
     std::string const& filename, storm::storage::SparseMatrix<double> const& transitionMatrix);
 template storm::storage::SparseMatrix<storm::Interval> DeterministicSparseTransitionParser<storm::Interval>::parse(
-    std::string const& filename, bool isRewardFile, storm::storage::SparseMatrix<double> const& transitionMatrix,
-    ExplicitModelParserOptions const& options);
+    std::string const& filename, bool isRewardFile, storm::storage::SparseMatrix<double> const& transitionMatrix, ExplicitModelParserOptions const& options);
 }  // namespace parser
 }  // namespace storm
