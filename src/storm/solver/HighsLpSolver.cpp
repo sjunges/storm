@@ -88,6 +88,14 @@ template<typename ValueType, bool RawMode>
 HighsLpSolver<ValueType, RawMode>::~HighsLpSolver() {}
 
 template<typename ValueType, bool RawMode>
+double HighsLpSolver<ValueType, RawMode>::toHighsBound(double value) const {
+    if (!std::isfinite(value)) {
+        return value > 0 ? highs.getInfinity() : -highs.getInfinity();
+    }
+    return value;
+}
+
+template<typename ValueType, bool RawMode>
 typename HighsLpSolver<ValueType, RawMode>::Variable HighsLpSolver<ValueType, RawMode>::addVariable(std::string const& name, VariableType const& type,
                                                                                                     std::optional<ValueType> const& lowerBound,
                                                                                                     std::optional<ValueType> const& upperBound,
@@ -108,7 +116,8 @@ typename HighsLpSolver<ValueType, RawMode>::Variable HighsLpSolver<ValueType, Ra
         upper = 1.0;
     }
 
-    HighsStatus addColStatus = highs.addCol(storm::utility::convertNumber<double>(objectiveFunctionCoefficient), lower, upper, 0, nullptr, nullptr);
+    HighsStatus addColStatus =
+        highs.addCol(storm::utility::convertNumber<double>(objectiveFunctionCoefficient), toHighsBound(lower), toHighsBound(upper), 0, nullptr, nullptr);
     STORM_LOG_THROW(addColStatus != HighsStatus::kError, storm::exceptions::InvalidStateException, "Unable to add variable to HiGHS model.");
     HighsInt column = static_cast<HighsInt>(nextVariableIndex);
 
@@ -159,7 +168,8 @@ void HighsLpSolver<ValueType, RawMode>::addConstraint(std::string const&, Constr
         default:
             STORM_LOG_ASSERT(false, "Illegal operator in LP solver constraint.");
     }
-    highs.addRow(lower, upper, constraintData.variableIndices.size(), constraintData.variableIndices.data(), constraintData.coefficients.data());
+    highs.addRow(toHighsBound(lower), toHighsBound(upper), constraintData.variableIndices.size(), constraintData.variableIndices.data(),
+                constraintData.coefficients.data());
 }
 
 template<typename ValueType, bool RawMode>
@@ -209,7 +219,7 @@ void HighsLpSolver<ValueType, RawMode>::addIndicatorConstraint(std::string const
             } else {
                 lower = newRhs;
             }
-            highs.addRow(lower, upper, variableIndices.size(), variableIndices.data(), coefficients.data());
+            highs.addRow(toHighsBound(lower), toHighsBound(upper), variableIndices.size(), variableIndices.data(), coefficients.data());
         };
 
         auto addSingleIndicatorConstraint = [&](bool isLessEqual, bool indicatorValue) {

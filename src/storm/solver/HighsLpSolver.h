@@ -95,6 +95,11 @@ class HighsLpSolver : public LpSolver<ValueType, RawMode> {
 
    private:
 #ifdef STORM_HAVE_HIGHS
+    // Translates an internally used (possibly infinite) bound value into the representation HiGHS expects for infinity.
+    // Internally, unboundedness is tracked using actual infinity (rather than HiGHS' finite infinity sentinel) so that
+    // std::isfinite can be used to detect genuinely unbounded variables, e.g. when computing big-M coefficients.
+    double toHighsBound(double value) const;
+
     // The HiGHS LP/MILP solver instance. HiGHS offers no incremental solving interface, hence we always (re)solve the full model.
     mutable Highs highs;
 
