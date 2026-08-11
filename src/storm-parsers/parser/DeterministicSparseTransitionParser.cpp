@@ -78,7 +78,7 @@ storm::storage::SparseMatrix<ValueType> DeterministicSparseTransitionParser<Valu
 
     uint_fast64_t row, col, lastRow = 0;
     double val;
-    bool dontFixDeadlocks = options.dontFixDeadlocks;
+    bool fixDeadlocks = options.fixDeadlocks;
     bool hadDeadlocks = false;
 
     // Read all transitions from file. Note that we assume that the
@@ -104,7 +104,7 @@ storm::storage::SparseMatrix<ValueType> DeterministicSparseTransitionParser<Valu
         if (row > 0) {
             for (uint_fast64_t skippedRow = 0; skippedRow < row; ++skippedRow) {
                 hadDeadlocks = true;
-                if (!dontFixDeadlocks) {
+                if (fixDeadlocks) {
                     resultMatrix.addNextValue(skippedRow, skippedRow, storm::utility::one<ValueType>());
                     STORM_LOG_WARN("Warning while parsing " << filename << ": state " << skippedRow
                                                             << " has no outgoing transitions. A self-loop was inserted.");
@@ -126,7 +126,7 @@ storm::storage::SparseMatrix<ValueType> DeterministicSparseTransitionParser<Valu
             if (lastRow != row) {
                 for (uint_fast64_t skippedRow = lastRow + 1; skippedRow < row; ++skippedRow) {
                     hadDeadlocks = true;
-                    if (!dontFixDeadlocks) {
+                    if (fixDeadlocks) {
                         resultMatrix.addNextValue(skippedRow, skippedRow, storm::utility::one<ValueType>());
                         STORM_LOG_INFO("Warning while parsing " << filename << ": state " << skippedRow
                                                                 << " has no outgoing transitions. A self-loop was inserted.");
@@ -143,7 +143,7 @@ storm::storage::SparseMatrix<ValueType> DeterministicSparseTransitionParser<Valu
         }
 
         // If we encountered deadlock and did not fix them, now is the time to throw the exception.
-        STORM_LOG_THROW(!dontFixDeadlocks || !hadDeadlocks, storm::exceptions::WrongFormatException, "Some of the states do not have outgoing transitions.");
+        STORM_LOG_THROW(fixDeadlocks || !hadDeadlocks, storm::exceptions::WrongFormatException, "Some of the states do not have outgoing transitions.");
     }
 
     // Finally, build the actual matrix, test and return it.

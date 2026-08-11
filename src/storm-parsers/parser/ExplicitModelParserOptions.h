@@ -4,7 +4,7 @@ namespace storm {
 namespace parser {
 
 struct ExplicitModelParserOptions {
-    bool dontFixDeadlocks = false;
+    bool fixDeadlocks = true;
     bool buildChoiceLabels = false;
 };
 

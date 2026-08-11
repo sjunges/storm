@@ -89,7 +89,7 @@ storm::storage::SparseMatrix<ValueType> NondeterministicSparseTransitionParser<V
     // Initialize variables for the parsing run.
     uint_fast64_t source = 0, target = 0, lastSource = 0, choice = 0, lastChoice = 0, curRow = 0;
     double val = 0.0;
-    bool dontFixDeadlocks = options.dontFixDeadlocks;
+    bool fixDeadlocks = options.fixDeadlocks;
     bool hadDeadlocks = false;
 
     // The first state already starts a new row group of the matrix.
@@ -139,7 +139,7 @@ storm::storage::SparseMatrix<ValueType> NondeterministicSparseTransitionParser<V
             // Also begin a new rowGroup for the skipped state.
             for (uint_fast64_t node = lastSource + 1; node < source; node++) {
                 hadDeadlocks = true;
-                if (!dontFixDeadlocks) {
+                if (fixDeadlocks) {
                     matrixBuilder.newRowGroup(curRow);
                     matrixBuilder.addNextValue(curRow, node, 1);
                     ++curRow;
@@ -168,7 +168,7 @@ storm::storage::SparseMatrix<ValueType> NondeterministicSparseTransitionParser<V
         buf = trimWhitespaces(buf);
     }
 
-    STORM_LOG_THROW(!dontFixDeadlocks || !hadDeadlocks || isRewardFile, storm::exceptions::WrongFormatException,
+    STORM_LOG_THROW(fixDeadlocks || !hadDeadlocks || isRewardFile, storm::exceptions::WrongFormatException,
                     "Some of the states do not have outgoing transitions.");
 
     // Since we assume the transition rewards are for the transitions of the model, we copy the rowGroupIndices.

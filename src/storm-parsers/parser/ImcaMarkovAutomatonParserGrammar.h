@@ -42,8 +42,7 @@ class ImcaParserGrammar : public qi::grammar<Iterator, storm::storage::sparse::M
     qi::rule<Iterator, StateType(), Skipper> state;
     qi::rule<Iterator, ValueType(), Skipper> value;
 
-    bool buildChoiceLabels;
-    bool dontFixDeadlocks;
+    ExplicitModelParserOptions options;
 
     StateType numStates;
     StateType numChoices;

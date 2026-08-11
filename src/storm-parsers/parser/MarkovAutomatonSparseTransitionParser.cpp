@@ -17,7 +17,7 @@ typename MarkovAutomatonSparseTransitionParser<ValueType>::FirstPassResult Marko
     char const* buf, ExplicitModelParserOptions const& options) {
     MarkovAutomatonSparseTransitionParser::FirstPassResult result;
 
-    bool dontFixDeadlocks = options.dontFixDeadlocks;
+    bool fixDeadlocks = options.fixDeadlocks;
 
     // Skip the format hint if it is there.
     buf = trimWhitespaces(buf);
@@ -43,7 +43,7 @@ typename MarkovAutomatonSparseTransitionParser<ValueType>::FirstPassResult Marko
 
         // If we have skipped some states, we need to reserve the space for the self-loop insertion in the second pass.
         if (source > lastsource + 1) {
-            if (!dontFixDeadlocks) {
+            if (fixDeadlocks) {
                 result.numberOfNonzeroEntries += source - lastsource - 1;
                 result.numberOfChoices += source - lastsource - 1;
             } else {
@@ -148,7 +148,7 @@ typename MarkovAutomatonSparseTransitionParser<ValueType>::FirstPassResult Marko
 
     // If there are some states with indices that are behind the last source for which no transition was specified,
     // we need to reserve some space for introducing self-loops later.
-    if (!dontFixDeadlocks) {
+    if (fixDeadlocks) {
         result.numberOfNonzeroEntries += result.highestStateIndex - lastsource;
         result.numberOfChoices += result.highestStateIndex - lastsource;
     } else {
@@ -164,7 +164,7 @@ typename MarkovAutomatonSparseTransitionParser<ValueType>::Result MarkovAutomato
     char const* buf, FirstPassResult const& firstPassResult, ExplicitModelParserOptions const& options) {
     Result result(firstPassResult);
 
-    bool dontFixDeadlocks = options.dontFixDeadlocks;
+    bool fixDeadlocks = options.fixDeadlocks;
 
     // Skip the format hint if it is there.
     buf = trimWhitespaces(buf);
@@ -188,7 +188,7 @@ typename MarkovAutomatonSparseTransitionParser<ValueType>::Result MarkovAutomato
 
         // If we have skipped some states, we need to insert self-loops if requested.
         if (source > lastsource + 1) {
-            if (!dontFixDeadlocks) {
+            if (fixDeadlocks) {
                 for (uint_fast64_t index = lastsource + 1; index < source; ++index) {
                     result.transitionMatrixBuilder.newRowGroup(currentChoice);
                     result.transitionMatrixBuilder.addNextValue(currentChoice, index, 1);
@@ -266,7 +266,7 @@ typename MarkovAutomatonSparseTransitionParser<ValueType>::Result MarkovAutomato
 
     // If there are some states with indices that are behind the last source for which no transition was specified,
     // we need to insert the self-loops now. Note that we assume all these states to be Markovian.
-    if (!dontFixDeadlocks) {
+    if (fixDeadlocks) {
         for (uint_fast64_t index = lastsource + 1; index <= firstPassResult.highestStateIndex; ++index) {
             result.markovianStates.set(index, true);
             result.exitRates[index] = storm::utility::one<ValueType>();

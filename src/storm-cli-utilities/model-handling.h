@@ -591,7 +591,7 @@ std::shared_ptr<storm::models::ModelBase> buildModelExplicit(storm::settings::mo
     std::shared_ptr<storm::models::ModelBase> result;
     if (ioSettings.isExplicitSet()) {
         storm::parser::ExplicitModelParserOptions explicitModelParserOptions;
-        explicitModelParserOptions.dontFixDeadlocks = buildSettings.isDontFixDeadlocksSet();
+        explicitModelParserOptions.fixDeadlocks = !buildSettings.isDontFixDeadlocksSet();
         explicitModelParserOptions.buildChoiceLabels = buildSettings.isBuildChoiceLabelsSet();
         result = storm::api::buildExplicitModel<ValueType>(
             ioSettings.getTransitionFilename(), ioSettings.getLabelingFilename(),
@@ -629,7 +629,7 @@ std::shared_ptr<storm::models::ModelBase> buildModelExplicit(storm::settings::mo
     } else {
         STORM_LOG_THROW(ioSettings.isExplicitIMCASet(), storm::exceptions::InvalidSettingsException, "Unexpected explicit model input type.");
         storm::parser::ExplicitModelParserOptions explicitModelParserOptions;
-        explicitModelParserOptions.dontFixDeadlocks = buildSettings.isDontFixDeadlocksSet();
+        explicitModelParserOptions.fixDeadlocks = !buildSettings.isDontFixDeadlocksSet();
         explicitModelParserOptions.buildChoiceLabels = buildSettings.isBuildChoiceLabelsSet();
         result = storm::api::buildExplicitIMCAModel<ValueType>(ioSettings.getExplicitIMCAFilename(), explicitModelParserOptions);
     }
