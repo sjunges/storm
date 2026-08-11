@@ -29,7 +29,7 @@ std::pair<double, double> computeGroundTruthAndBisimulationResult(std::string co
                              ->template asExplicitQuantitativeCheckResult<double>()[*model->getInitialStates().begin()];
 
     typename storm::storage::NondeterministicModelBisimulationDecomposition<storm::models::sparse::Mdp<double>>::Options options(*mdp, *formula,
-                                                                                                                                  DefaultTestTolerance);
+                                                                                                                                 DefaultTestTolerance);
     storm::storage::NondeterministicModelBisimulationDecomposition<storm::models::sparse::Mdp<double>> bisim(*mdp, options);
     bisim.computeBisimulationDecomposition();
     std::shared_ptr<storm::models::sparse::Model<double>> quotient = bisim.getQuotient();
@@ -130,7 +130,7 @@ TEST(NondeterministicModelBisimulationDecomposition, MeasureDrivenRewardUnsound)
     ASSERT_LT(groundTruthValue, storm::utility::infinity<double>());
 
     typename storm::storage::NondeterministicModelBisimulationDecomposition<storm::models::sparse::Mdp<double>>::Options options(*mdp, *formula,
-                                                                                                                                  DefaultTestTolerance);
+                                                                                                                                 DefaultTestTolerance);
     storm::storage::NondeterministicModelBisimulationDecomposition<storm::models::sparse::Mdp<double>> bisim(*mdp, options);
     ASSERT_NO_THROW(bisim.computeBisimulationDecomposition());
     std::shared_ptr<storm::models::sparse::Model<double>> quotient;
