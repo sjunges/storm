@@ -220,13 +220,13 @@ typedef ::testing::Types<DefaultEnvironment
                          ,
                          GurobiEnvironment
 #endif
-#ifdef STORM_HAVE_SOPLEX
-                         ,
-                         SoplexEnvironment, SoplexExactEnvironment
-#endif
 #ifdef STORM_HAVE_HIGHS
                          ,
                          HighsEnvironment
+#endif
+#ifdef STORM_HAVE_SOPLEX
+                         ,
+                         SoplexEnvironment, SoplexExactEnvironment
 #endif
 #ifdef STORM_HAVE_Z3
                          ,

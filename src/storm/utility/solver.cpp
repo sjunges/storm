@@ -124,20 +124,20 @@ std::unique_ptr<LpSolverFactory<ValueType>> getLpSolverFactory(storm::Environmen
         t = convert(solvType);
     }
     switch (t) {
-        case storm::solver::LpSolverType::Gurobi:
-            return std::unique_ptr<LpSolverFactory<ValueType>>(new GurobiLpSolverFactory<ValueType>());
         case storm::solver::LpSolverType::Glpk:
             return std::unique_ptr<LpSolverFactory<ValueType>>(new GlpkLpSolverFactory<ValueType>());
-        case storm::solver::LpSolverType::Z3:
-            return std::unique_ptr<LpSolverFactory<ValueType>>(new Z3LpSolverFactory<ValueType>());
-        case storm::solver::LpSolverType::Soplex:
-            return std::unique_ptr<LpSolverFactory<ValueType>>(new SoplexLpSolverFactory<ValueType>());
+        case storm::solver::LpSolverType::Gurobi:
+            return std::unique_ptr<LpSolverFactory<ValueType>>(new GurobiLpSolverFactory<ValueType>());
         case storm::solver::LpSolverType::Highs:
             if constexpr (std::is_same_v<ValueType, double>) {
                 return std::unique_ptr<LpSolverFactory<ValueType>>(new HighsLpSolverFactory<ValueType>());
             } else {
                 STORM_LOG_THROW(false, storm::exceptions::InvalidOperationException, "The HiGHS LP solver only supports double precision.");
             }
+        case storm::solver::LpSolverType::Soplex:
+            return std::unique_ptr<LpSolverFactory<ValueType>>(new SoplexLpSolverFactory<ValueType>());
+        case storm::solver::LpSolverType::Z3:
+            return std::unique_ptr<LpSolverFactory<ValueType>>(new Z3LpSolverFactory<ValueType>());
     }
     return nullptr;
 }

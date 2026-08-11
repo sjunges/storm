@@ -134,16 +134,16 @@ bool CoreSettings::isEquationSolverSetFromDefaultValue() const {
 
 storm::solver::LpSolverType CoreSettings::getLpSolver() const {
     std::string lpSolverName = this->getOption(lpSolverOptionName).getArgumentByName("name").getValueAsString();
-    if (lpSolverName == "gurobi") {
-        return storm::solver::LpSolverType::Gurobi;
-    } else if (lpSolverName == "glpk") {
+    if (lpSolverName == "glpk") {
         return storm::solver::LpSolverType::Glpk;
-    } else if (lpSolverName == "z3") {
-        return storm::solver::LpSolverType::Z3;
-    } else if (lpSolverName == "soplex") {
-        return storm::solver::LpSolverType::Soplex;
+    } else if (lpSolverName == "gurobi") {
+        return storm::solver::LpSolverType::Gurobi;
     } else if (lpSolverName == "highs") {
         return storm::solver::LpSolverType::Highs;
+    } else if (lpSolverName == "soplex") {
+        return storm::solver::LpSolverType::Soplex;
+    } else if (lpSolverName == "z3") {
+        return storm::solver::LpSolverType::Z3;
     }
     STORM_LOG_THROW(false, storm::exceptions::IllegalArgumentValueException, "Unknown LP solver '" << lpSolverName << "'.");
 }
