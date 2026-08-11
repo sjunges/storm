@@ -4,8 +4,6 @@
 #include "storm-parsers/util/cstring.h"
 #include "storm/exceptions/FileIoException.h"
 #include "storm/exceptions/WrongFormatException.h"
-#include "storm/settings/SettingsManager.h"
-#include "storm/settings/modules/BuildSettings.h"
 #include "storm/utility/constants.h"
 #include "storm/utility/macros.h"
 
@@ -15,10 +13,11 @@ namespace parser {
 using namespace storm::utility::cstring;
 
 template<typename ValueType>
-typename MarkovAutomatonSparseTransitionParser<ValueType>::FirstPassResult MarkovAutomatonSparseTransitionParser<ValueType>::firstPass(char const* buf) {
+typename MarkovAutomatonSparseTransitionParser<ValueType>::FirstPassResult MarkovAutomatonSparseTransitionParser<ValueType>::firstPass(
+    char const* buf, ExplicitModelParserOptions const& options) {
     MarkovAutomatonSparseTransitionParser::FirstPassResult result;
 
-    bool dontFixDeadlocks = storm::settings::getModule<storm::settings::modules::BuildSettings>().isDontFixDeadlocksSet();
+    bool dontFixDeadlocks = options.dontFixDeadlocks;
 
     // Skip the format hint if it is there.
     buf = trimWhitespaces(buf);
@@ -162,10 +161,10 @@ typename MarkovAutomatonSparseTransitionParser<ValueType>::FirstPassResult Marko
 
 template<typename ValueType>
 typename MarkovAutomatonSparseTransitionParser<ValueType>::Result MarkovAutomatonSparseTransitionParser<ValueType>::secondPass(
-    char const* buf, FirstPassResult const& firstPassResult) {
+    char const* buf, FirstPassResult const& firstPassResult, ExplicitModelParserOptions const& options) {
     Result result(firstPassResult);
 
-    bool dontFixDeadlocks = storm::settings::getModule<storm::settings::modules::BuildSettings>().isDontFixDeadlocksSet();
+    bool dontFixDeadlocks = options.dontFixDeadlocks;
 
     // Skip the format hint if it is there.
     buf = trimWhitespaces(buf);
@@ -285,7 +284,7 @@ typename MarkovAutomatonSparseTransitionParser<ValueType>::Result MarkovAutomato
 
 template<typename ValueType>
 typename MarkovAutomatonSparseTransitionParser<ValueType>::Result MarkovAutomatonSparseTransitionParser<ValueType>::parseMarkovAutomatonTransitions(
-    std::string const& filename) {
+    std::string const& filename, ExplicitModelParserOptions const& options) {
     // Set the locale to correctly recognize floating point numbers.
     setlocale(LC_NUMERIC, "C");
 
@@ -293,7 +292,7 @@ typename MarkovAutomatonSparseTransitionParser<ValueType>::Result MarkovAutomato
     MappedFile file(filename.c_str());
     char const* buf = file.getData();
 
-    return secondPass(buf, firstPass(buf));
+    return secondPass(buf, firstPass(buf, options), options);
 }
 
 template class MarkovAutomatonSparseTransitionParser<double>;

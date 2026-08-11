@@ -2,17 +2,21 @@
 
 #include "storm/adapters/RationalNumberAdapter.h"
 #include "storm/io/file.h"
-#include "storm/settings/SettingsManager.h"
-#include "storm/settings/modules/BuildSettings.h"
 #include "storm/utility/builder.h"
 
 namespace storm {
 namespace parser {
 
 template<typename ValueType, typename StateType>
-ImcaParserGrammar<ValueType, StateType>::ImcaParserGrammar()
-    : ImcaParserGrammar<ValueType, StateType>::base_type(start), numStates(0), numChoices(0), numTransitions(0), hasStateReward(false), hasActionReward(false) {
-    buildChoiceLabels = storm::settings::getModule<storm::settings::modules::BuildSettings>().isBuildChoiceLabelsSet();
+ImcaParserGrammar<ValueType, StateType>::ImcaParserGrammar(ExplicitModelParserOptions const& options)
+    : ImcaParserGrammar<ValueType, StateType>::base_type(start),
+      buildChoiceLabels(options.buildChoiceLabels),
+      dontFixDeadlocks(options.dontFixDeadlocks),
+      numStates(0),
+      numChoices(0),
+      numTransitions(0),
+      hasStateReward(false),
+      hasActionReward(false) {
     initialize();
 }
 
@@ -136,7 +140,7 @@ storm::storage::sparse::ModelComponents<ValueType> ImcaParserGrammar<ValueType, 
 
     // Fix deadlocks (if required)
     STORM_LOG_ASSERT(stateBehaviors.size() == numStates, "State behavior count mismatch.");
-    if (!storm::settings::getModule<storm::settings::modules::BuildSettings>().isDontFixDeadlocksSet()) {
+    if (!dontFixDeadlocks) {
         StateType state = 0;
         for (auto& behavior : stateBehaviors) {
             if (!behavior.wasExpanded()) {

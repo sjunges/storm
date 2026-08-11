@@ -8,8 +8,6 @@
 #include "storm/adapters/IntervalAdapter.h"
 #include "storm/exceptions/InvalidArgumentException.h"
 #include "storm/exceptions/WrongFormatException.h"
-#include "storm/settings/SettingsManager.h"
-#include "storm/settings/modules/BuildSettings.h"
 #include "storm/utility/constants.h"
 #include "storm/utility/macros.h"
 
@@ -19,9 +17,10 @@ namespace parser {
 using namespace storm::utility::cstring;
 
 template<typename ValueType>
-storm::storage::SparseMatrix<ValueType> DeterministicSparseTransitionParser<ValueType>::parseDeterministicTransitions(std::string const& filename) {
+storm::storage::SparseMatrix<ValueType> DeterministicSparseTransitionParser<ValueType>::parseDeterministicTransitions(
+    std::string const& filename, ExplicitModelParserOptions const& options) {
     storm::storage::SparseMatrix<ValueType> emptyMatrix;
-    return DeterministicSparseTransitionParser<ValueType>::parse(filename, false, emptyMatrix);
+    return DeterministicSparseTransitionParser<ValueType>::parse(filename, false, emptyMatrix, options);
 }
 
 template<typename ValueType>
@@ -34,7 +33,8 @@ storm::storage::SparseMatrix<ValueType> DeterministicSparseTransitionParser<Valu
 template<typename ValueType>
 template<typename MatrixValueType>
 storm::storage::SparseMatrix<ValueType> DeterministicSparseTransitionParser<ValueType>::parse(
-    std::string const& filename, bool isRewardFile, storm::storage::SparseMatrix<MatrixValueType> const& transitionMatrix) {
+    std::string const& filename, bool isRewardFile, storm::storage::SparseMatrix<MatrixValueType> const& transitionMatrix,
+    ExplicitModelParserOptions const& options) {
     // Enforce locale where decimal point is '.'.
     setlocale(LC_NUMERIC, "C");
 
@@ -78,7 +78,7 @@ storm::storage::SparseMatrix<ValueType> DeterministicSparseTransitionParser<Valu
 
     uint_fast64_t row, col, lastRow = 0;
     double val;
-    bool dontFixDeadlocks = storm::settings::getModule<storm::settings::modules::BuildSettings>().isDontFixDeadlocksSet();
+    bool dontFixDeadlocks = options.dontFixDeadlocks;
     bool hadDeadlocks = false;
 
     // Read all transitions from file. Note that we assume that the
@@ -225,14 +225,16 @@ typename DeterministicSparseTransitionParser<ValueType>::FirstPassResult Determi
 template class DeterministicSparseTransitionParser<double>;
 template storm::storage::SparseMatrix<double> DeterministicSparseTransitionParser<double>::parseDeterministicTransitionRewards(
     std::string const& filename, storm::storage::SparseMatrix<double> const& transitionMatrix);
-template storm::storage::SparseMatrix<double> DeterministicSparseTransitionParser<double>::parse(std::string const& filename, bool isRewardFile,
-                                                                                                 storm::storage::SparseMatrix<double> const& transitionMatrix);
+template storm::storage::SparseMatrix<double> DeterministicSparseTransitionParser<double>::parse(
+    std::string const& filename, bool isRewardFile, storm::storage::SparseMatrix<double> const& transitionMatrix,
+    ExplicitModelParserOptions const& options);
 
 template class DeterministicSparseTransitionParser<storm::Interval>;
 
 template storm::storage::SparseMatrix<storm::Interval> DeterministicSparseTransitionParser<storm::Interval>::parseDeterministicTransitionRewards(
     std::string const& filename, storm::storage::SparseMatrix<double> const& transitionMatrix);
 template storm::storage::SparseMatrix<storm::Interval> DeterministicSparseTransitionParser<storm::Interval>::parse(
-    std::string const& filename, bool isRewardFile, storm::storage::SparseMatrix<double> const& transitionMatrix);
+    std::string const& filename, bool isRewardFile, storm::storage::SparseMatrix<double> const& transitionMatrix,
+    ExplicitModelParserOptions const& options);
 }  // namespace parser
 }  // namespace storm
