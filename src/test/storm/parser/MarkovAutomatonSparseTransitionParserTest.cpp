@@ -3,9 +3,9 @@
 
 #include <vector>
 
+#include "storm-parsers/parser/ExplicitModelParserOptions.h"
 #include "storm-parsers/parser/MarkovAutomatonParser.h"
 #include "storm-parsers/parser/MarkovAutomatonSparseTransitionParser.h"
-#include "storm-parsers/parser/ExplicitModelParserOptions.h"
 #include "storm-parsers/util/cstring.h"
 #include "storm/exceptions/FileIoException.h"
 #include "storm/exceptions/WrongFormatException.h"

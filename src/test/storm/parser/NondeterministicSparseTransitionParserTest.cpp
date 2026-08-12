@@ -1,8 +1,8 @@
 #include "storm-config.h"
 #include "test/storm_gtest.h"
 
-#include "storm-parsers/parser/NondeterministicSparseTransitionParser.h"
 #include "storm-parsers/parser/ExplicitModelParserOptions.h"
+#include "storm-parsers/parser/NondeterministicSparseTransitionParser.h"
 #include "storm/exceptions/FileIoException.h"
 #include "storm/exceptions/InvalidArgumentException.h"
 #include "storm/exceptions/WrongFormatException.h"
