@@ -27,7 +27,7 @@ TEST(SymbolicDtmcPrctlModelCheckerTest, Die_RationalFunction_Sylvan) {
     options.buildAllRewardModels = false;
     options.rewardModelsToBuild.insert("coin_flips");
     std::shared_ptr<storm::models::symbolic::Model<storm::dd::DdType::Sylvan, storm::RationalFunction>> model =
-        storm::builder::DdPrismModelBuilder<storm::dd::DdType::Sylvan, storm::RationalFunction>().build(program, storm::Environment(), options);
+        storm::builder::DdPrismModelBuilder<storm::dd::DdType::Sylvan, storm::RationalFunction>().build(storm::Environment(), program, options);
     EXPECT_EQ(13ul, model->getNumberOfStates());
     EXPECT_EQ(20ul, model->getNumberOfTransitions());
     ASSERT_EQ(model->getType(), storm::models::ModelType::Dtmc);

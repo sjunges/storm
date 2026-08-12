@@ -31,7 +31,7 @@ JaniMenuGameAbstractor<DdType, ValueType>::JaniMenuGameAbstractor(storm::Environ
                                                                   MenuGameAbstractorOptions const& options)
     : model(model),
       smtSolverFactory(smtSolverFactory),
-      abstractionInformation(model.getManager(), model.getAllExpressionVariables(), smtSolverFactory->create(model.getManager()), env,
+      abstractionInformation(env, model.getManager(), model.getAllExpressionVariables(), smtSolverFactory->create(model.getManager()),
                              AbstractionInformationOptions(options.constraints)),
       automata(),
       initialStateAbstractor(abstractionInformation, {model.getInitialStatesExpression()}, this->smtSolverFactory),

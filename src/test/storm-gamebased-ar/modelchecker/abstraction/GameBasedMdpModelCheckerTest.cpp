@@ -60,7 +60,7 @@ TYPED_TEST(GameBasedMdpModelCheckerTest, Dice) {
 
     // Build the die model
     typename storm::builder::DdPrismModelBuilder<DdType>::Options options;
-    std::shared_ptr<storm::models::symbolic::Model<DdType>> model = storm::builder::DdPrismModelBuilder<DdType>().build(program, storm::Environment(), options);
+    std::shared_ptr<storm::models::symbolic::Model<DdType>> model = storm::builder::DdPrismModelBuilder<DdType>().build(storm::Environment(), program, options);
 
     ASSERT_EQ(model->getNumberOfStates(), 169ull);
     ASSERT_EQ(model->getNumberOfTransitions(), 436ull);

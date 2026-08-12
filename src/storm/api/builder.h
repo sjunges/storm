@@ -47,7 +47,7 @@ std::shared_ptr<storm::models::symbolic::Model<LibraryType, ValueType>> buildSym
         }
 
         storm::builder::DdPrismModelBuilder<LibraryType, ValueType> builder;
-        return builder.build(model.asPrismProgram(), env, options);
+        return builder.build(env, model.asPrismProgram(), options);
     } else {
         STORM_LOG_THROW(model.isJaniModel(), storm::exceptions::NotSupportedException, "Building symbolic model from this model description is unsupported.");
         typename storm::builder::DdJaniModelBuilder<LibraryType, ValueType>::Options options(formulas);
@@ -62,7 +62,7 @@ std::shared_ptr<storm::models::symbolic::Model<LibraryType, ValueType>> buildSym
         }
 
         storm::builder::DdJaniModelBuilder<LibraryType, ValueType> builder;
-        return builder.build(model.asJaniModel(), env, options);
+        return builder.build(env, model.asJaniModel(), options);
     }
 }
 

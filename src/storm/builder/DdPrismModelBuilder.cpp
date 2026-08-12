@@ -1564,8 +1564,8 @@ std::shared_ptr<storm::models::symbolic::Model<Type, ValueType>> DdPrismModelBui
 }
 
 template<storm::dd::DdType Type, typename ValueType>
-std::shared_ptr<storm::models::symbolic::Model<Type, ValueType>> DdPrismModelBuilder<Type, ValueType>::build(storm::prism::Program const& program,
-                                                                                                             storm::Environment const& env,
+std::shared_ptr<storm::models::symbolic::Model<Type, ValueType>> DdPrismModelBuilder<Type, ValueType>::build(storm::Environment const& env,
+                                                                                                             storm::prism::Program const& program,
                                                                                                              Options const& options) {
     if (!std::is_same<ValueType, storm::RationalFunction>::value && program.hasUndefinedConstants()) {
         std::vector<std::reference_wrapper<storm::prism::Constant const>> undefinedConstants = program.getUndefinedConstants();

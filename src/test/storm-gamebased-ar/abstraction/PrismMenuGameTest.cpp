@@ -79,29 +79,6 @@ TYPED_TEST(PrismMenuGame, DieAbstractionTest) {
     storm::settings::mutableAbstractionSettings().restoreDefaults();
 }
 
-// Commented out due to incompatibility with new refiner functionality.
-// This functionality depends on some operators being available on the value type which are not there for rational functions.
-// TEST(PrismMenuGame, DieAbstractionTest_SylvanWithRationalFunction) {
-//    storm::prism::Program program = storm::parser::PrismParser::parse(STORM_TEST_RESOURCES_DIR "/dtmc/die.pm");
-
-//    std::vector<storm::expressions::Expression> initialPredicates;
-//    storm::expressions::ExpressionManager& manager = program.getManager();
-
-//    initialPredicates.push_back(manager.getVariableExpression("s") < manager.integer(3));
-
-//    std::shared_ptr<storm::utility::solver::SmtSolverFactory> smtSolverFactory = std::make_shared<storm::utility::solver::MathsatSmtSolverFactory>();
-
-//    storm::gbar::abstraction::prism::PrismMenuGameAbstractor<storm::dd::DdType::Sylvan, storm::RationalFunction> abstractor(storm::Environment(), program, smtSolverFactory);
-//    storm::gbar::abstraction::MenuGameRefiner<storm::dd::DdType::Sylvan, storm::RationalFunction> refiner(abstractor, smtSolverFactory->create(manager));
-//    refiner.refine(initialPredicates);
-
-//    storm::gbar::abstraction::MenuGame<storm::dd::DdType::Sylvan, storm::RationalFunction> game = abstractor.abstract();
-
-//    EXPECT_EQ(26, game.getNumberOfTransitions());
-//    EXPECT_EQ(4, game.getNumberOfStates());
-//    EXPECT_EQ(2, game.getBottomStates().getNonZeroCount());
-//}
-
 TYPED_TEST(PrismMenuGame, DieAbstractionAndRefinementTest) {
     const storm::dd::DdType DdType = TestFixture::DdType;
     auto& settings = storm::settings::mutableAbstractionSettings();

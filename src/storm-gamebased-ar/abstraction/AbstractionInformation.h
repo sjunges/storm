@@ -47,14 +47,14 @@ class AbstractionInformation {
     /*!
      * Creates a new abstraction information object.
      *
+     * @param env The environment providing the settings for the DD manager.
      * @param expressionManager The manager responsible for all variables and expressions during the abstraction process.
      * @param abstractedVariables All expression variables that can appear in predicates known to this object.
      * @param smtSolver An SMT solver that is used to detect equivalent predicates.
-     * @param env The environment providing the settings for the DD manager.
      * @param options Options for the abstraction information.
      */
-    AbstractionInformation(storm::expressions::ExpressionManager& expressionManager, std::set<storm::expressions::Variable> const& abstractedVariables,
-                           std::unique_ptr<storm::solver::SmtSolver>&& smtSolver, storm::Environment const& env,
+    AbstractionInformation(storm::Environment const& env, storm::expressions::ExpressionManager& expressionManager,
+                           std::set<storm::expressions::Variable> const& abstractedVariables, std::unique_ptr<storm::solver::SmtSolver>&& smtSolver,
                            AbstractionInformationOptions const& options = AbstractionInformationOptions());
 
     /*!

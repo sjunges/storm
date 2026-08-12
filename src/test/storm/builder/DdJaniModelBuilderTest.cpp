@@ -67,27 +67,27 @@ TYPED_TEST(DdJaniModelBuilderTest, Dtmc) {
     auto janiModel = this->getJaniModelFromPrism("/dtmc/die.pm");
 
     storm::builder::DdJaniModelBuilder<DdType, double> builder;
-    std::shared_ptr<storm::models::symbolic::Model<DdType>> model = builder.build(janiModel, storm::Environment());
+    std::shared_ptr<storm::models::symbolic::Model<DdType>> model = builder.build(storm::Environment(), janiModel);
     EXPECT_EQ(13ul, model->getNumberOfStates());
     EXPECT_EQ(20ul, model->getNumberOfTransitions());
 
     janiModel = this->getJaniModelFromPrism("/dtmc/brp-16-2.pm");
-    model = builder.build(janiModel, storm::Environment());
+    model = builder.build(storm::Environment(), janiModel);
     EXPECT_EQ(677ul, model->getNumberOfStates());
     EXPECT_EQ(867ul, model->getNumberOfTransitions());
 
     janiModel = this->getJaniModelFromPrism("/dtmc/crowds-5-5.pm");
-    model = builder.build(janiModel, storm::Environment());
+    model = builder.build(storm::Environment(), janiModel);
     EXPECT_EQ(8607ul, model->getNumberOfStates());
     EXPECT_EQ(15113ul, model->getNumberOfTransitions());
 
     janiModel = this->getJaniModelFromPrism("/dtmc/leader-3-5.pm");
-    model = builder.build(janiModel, storm::Environment());
+    model = builder.build(storm::Environment(), janiModel);
     EXPECT_EQ(273ul, model->getNumberOfStates());
     EXPECT_EQ(397ul, model->getNumberOfTransitions());
 
     janiModel = this->getJaniModelFromPrism("/dtmc/nand-5-2.pm");
-    model = builder.build(janiModel, storm::Environment());
+    model = builder.build(storm::Environment(), janiModel);
     EXPECT_EQ(1728ul, model->getNumberOfStates());
     EXPECT_EQ(2505ul, model->getNumberOfTransitions());
 }
@@ -96,27 +96,27 @@ TYPED_TEST(DdJaniModelBuilderTest, Ctmc) {
     const storm::dd::DdType DdType = TestFixture::DdType;
     auto janiModel = this->getJaniModelFromPrism("/ctmc/cluster2.sm", true);
     storm::builder::DdJaniModelBuilder<DdType, double> builder;
-    std::shared_ptr<storm::models::symbolic::Model<DdType>> model = builder.build(janiModel, storm::Environment());
+    std::shared_ptr<storm::models::symbolic::Model<DdType>> model = builder.build(storm::Environment(), janiModel);
     EXPECT_EQ(276ul, model->getNumberOfStates());
     EXPECT_EQ(1120ul, model->getNumberOfTransitions());
 
     janiModel = this->getJaniModelFromPrism("/ctmc/embedded2.sm", true);
-    model = builder.build(janiModel, storm::Environment());
+    model = builder.build(storm::Environment(), janiModel);
     EXPECT_EQ(3478ul, model->getNumberOfStates());
     EXPECT_EQ(14639ul, model->getNumberOfTransitions());
 
     janiModel = this->getJaniModelFromPrism("/ctmc/polling2.sm", true);
-    model = builder.build(janiModel, storm::Environment());
+    model = builder.build(storm::Environment(), janiModel);
     EXPECT_EQ(12ul, model->getNumberOfStates());
     EXPECT_EQ(22ul, model->getNumberOfTransitions());
 
     janiModel = this->getJaniModelFromPrism("/ctmc/fms2.sm", true);
-    model = builder.build(janiModel, storm::Environment());
+    model = builder.build(storm::Environment(), janiModel);
     EXPECT_EQ(810ul, model->getNumberOfStates());
     EXPECT_EQ(3699ul, model->getNumberOfTransitions());
 
     janiModel = this->getJaniModelFromPrism("/ctmc/tandem5.sm", true);
-    model = builder.build(janiModel, storm::Environment());
+    model = builder.build(storm::Environment(), janiModel);
     EXPECT_EQ(66ul, model->getNumberOfStates());
     EXPECT_EQ(189ul, model->getNumberOfTransitions());
 }
@@ -125,7 +125,7 @@ TYPED_TEST(DdJaniModelBuilderTest, Mdp) {
     const storm::dd::DdType DdType = TestFixture::DdType;
     auto janiModel = this->getJaniModelFromPrism("/mdp/two_dice.nm");
     storm::builder::DdJaniModelBuilder<DdType, double> builder;
-    std::shared_ptr<storm::models::symbolic::Model<DdType>> model = builder.build(janiModel, storm::Environment());
+    std::shared_ptr<storm::models::symbolic::Model<DdType>> model = builder.build(storm::Environment(), janiModel);
 
     EXPECT_TRUE(model->getType() == storm::models::ModelType::Mdp);
     std::shared_ptr<storm::models::symbolic::Mdp<DdType>> mdp = model->template as<storm::models::symbolic::Mdp<DdType>>();
@@ -135,7 +135,7 @@ TYPED_TEST(DdJaniModelBuilderTest, Mdp) {
     EXPECT_EQ(254ul, mdp->getNumberOfChoices());
 
     janiModel = this->getJaniModelFromPrism("/mdp/leader3.nm");
-    model = builder.build(janiModel, storm::Environment());
+    model = builder.build(storm::Environment(), janiModel);
 
     EXPECT_TRUE(model->getType() == storm::models::ModelType::Mdp);
     mdp = model->template as<storm::models::symbolic::Mdp<DdType>>();
@@ -145,7 +145,7 @@ TYPED_TEST(DdJaniModelBuilderTest, Mdp) {
     EXPECT_EQ(573ul, mdp->getNumberOfChoices());
 
     janiModel = this->getJaniModelFromPrism("/mdp/coin2-2.nm");
-    model = builder.build(janiModel, storm::Environment());
+    model = builder.build(storm::Environment(), janiModel);
 
     EXPECT_TRUE(model->getType() == storm::models::ModelType::Mdp);
     mdp = model->template as<storm::models::symbolic::Mdp<DdType>>();
@@ -155,7 +155,7 @@ TYPED_TEST(DdJaniModelBuilderTest, Mdp) {
     EXPECT_EQ(400ul, mdp->getNumberOfChoices());
 
     janiModel = this->getJaniModelFromPrism("/mdp/csma2-2.nm");
-    model = builder.build(janiModel, storm::Environment());
+    model = builder.build(storm::Environment(), janiModel);
 
     EXPECT_TRUE(model->getType() == storm::models::ModelType::Mdp);
     mdp = model->template as<storm::models::symbolic::Mdp<DdType>>();
@@ -165,7 +165,7 @@ TYPED_TEST(DdJaniModelBuilderTest, Mdp) {
     EXPECT_EQ(1054ul, mdp->getNumberOfChoices());
 
     janiModel = this->getJaniModelFromPrism("/mdp/firewire3-0.5.nm");
-    model = builder.build(janiModel, storm::Environment());
+    model = builder.build(storm::Environment(), janiModel);
 
     EXPECT_TRUE(model->getType() == storm::models::ModelType::Mdp);
     mdp = model->template as<storm::models::symbolic::Mdp<DdType>>();
@@ -175,7 +175,7 @@ TYPED_TEST(DdJaniModelBuilderTest, Mdp) {
     EXPECT_EQ(5519ul, mdp->getNumberOfChoices());
 
     janiModel = this->getJaniModelFromPrism("/mdp/wlan0-2-2.nm");
-    model = builder.build(janiModel, storm::Environment());
+    model = builder.build(storm::Environment(), janiModel);
 
     EXPECT_TRUE(model->getType() == storm::models::ModelType::Mdp);
     mdp = model->template as<storm::models::symbolic::Mdp<DdType>>();
@@ -185,7 +185,7 @@ TYPED_TEST(DdJaniModelBuilderTest, Mdp) {
     EXPECT_EQ(59ul, mdp->getNumberOfChoices());
 
     janiModel = this->getJaniModelFromPrism("/mdp/sync.nm");
-    model = builder.build(janiModel, storm::Environment());
+    model = builder.build(storm::Environment(), janiModel);
 
     EXPECT_TRUE(model->getType() == storm::models::ModelType::Mdp);
     mdp = model->template as<storm::models::symbolic::Mdp<DdType>>();
@@ -202,7 +202,7 @@ TYPED_TEST(DdJaniModelBuilderTest, SynchronizationVectors) {
     storm::builder::DdJaniModelBuilder<DdType, double> builder;
 
     // Start by checking the original composition.
-    std::shared_ptr<storm::models::symbolic::Model<DdType>> model = builder.build(janiModel, storm::Environment());
+    std::shared_ptr<storm::models::symbolic::Model<DdType>> model = builder.build(storm::Environment(), janiModel);
     EXPECT_EQ(7ul, model->getNumberOfStates());
     EXPECT_EQ(10ul, model->getNumberOfTransitions());
 
@@ -249,7 +249,7 @@ TYPED_TEST(DdJaniModelBuilderTest, SynchronizationVectors) {
 
     std::shared_ptr<storm::jani::Composition> newComposition = std::make_shared<storm::jani::ParallelComposition>(automataCompositions, synchronizationVectors);
     janiModel.setSystemComposition(newComposition);
-    model = builder.build(janiModel, storm::Environment());
+    model = builder.build(storm::Environment(), janiModel);
     EXPECT_EQ(24ul, model->getNumberOfStates());
     EXPECT_EQ(48ul, model->getNumberOfTransitions());
 
@@ -278,7 +278,7 @@ TYPED_TEST(DdJaniModelBuilderTest, SynchronizationVectors) {
 
     newComposition = std::make_shared<storm::jani::ParallelComposition>(automataCompositions, synchronizationVectors);
     janiModel.setSystemComposition(newComposition);
-    model = builder.build(janiModel, storm::Environment());
+    model = builder.build(storm::Environment(), janiModel);
     EXPECT_EQ(7ul, model->getNumberOfStates());
     EXPECT_EQ(10ul, model->getNumberOfTransitions());
 
@@ -300,7 +300,7 @@ TYPED_TEST(DdJaniModelBuilderTest, SynchronizationVectors) {
     synchronizationVectors.emplace_back(inputVector);
     newComposition = std::make_shared<storm::jani::ParallelComposition>(automataCompositions, synchronizationVectors);
     janiModel.setSystemComposition(newComposition);
-    model = builder.build(janiModel, storm::Environment());
+    model = builder.build(storm::Environment(), janiModel);
     EXPECT_EQ(3ul, model->getNumberOfStates());
     EXPECT_EQ(3ul, model->getNumberOfTransitions());
 
@@ -327,7 +327,7 @@ TYPED_TEST(DdJaniModelBuilderTest, SynchronizationVectors) {
     synchronizationVectors.emplace_back(inputVector, "b");
     newComposition = std::make_shared<storm::jani::ParallelComposition>(automataCompositions, synchronizationVectors);
     janiModel.setSystemComposition(newComposition);
-    model = builder.build(janiModel, storm::Environment());
+    model = builder.build(storm::Environment(), janiModel);
     EXPECT_EQ(4ul, model->getNumberOfStates());
     EXPECT_EQ(5ul, model->getNumberOfTransitions());
 }
@@ -337,11 +337,11 @@ TYPED_TEST(DdJaniModelBuilderTest, Composition) {
     auto janiModel = this->getJaniModelFromPrism("/mdp/system_composition.nm");
 
     storm::builder::DdJaniModelBuilder<DdType, double> builder;
-    STORM_SILENT_EXPECT_THROW(std::shared_ptr<storm::models::symbolic::Model<DdType>> model = builder.build(janiModel, storm::Environment()),
+    STORM_SILENT_EXPECT_THROW(std::shared_ptr<storm::models::symbolic::Model<DdType>> model = builder.build(storm::Environment(), janiModel),
                               storm::exceptions::WrongFormatException);
 
     janiModel = this->getJaniModelFromPrism("/mdp/system_composition2.nm");
-    STORM_SILENT_EXPECT_THROW(std::shared_ptr<storm::models::symbolic::Model<DdType>> model = builder.build(janiModel, storm::Environment()),
+    STORM_SILENT_EXPECT_THROW(std::shared_ptr<storm::models::symbolic::Model<DdType>> model = builder.build(storm::Environment(), janiModel),
                               storm::exceptions::WrongFormatException);
 }
 
@@ -377,7 +377,7 @@ TYPED_TEST(DdJaniModelBuilderTest, InputEnabling) {
 
     std::shared_ptr<storm::jani::Composition> newComposition = std::make_shared<storm::jani::ParallelComposition>(automataCompositions, synchronizationVectors);
     janiModel.setSystemComposition(newComposition);
-    std::shared_ptr<storm::models::symbolic::Model<DdType>> model = builder.build(janiModel, storm::Environment());
+    std::shared_ptr<storm::models::symbolic::Model<DdType>> model = builder.build(storm::Environment(), janiModel);
     EXPECT_EQ(4ul, model->getNumberOfStates());
     EXPECT_EQ(5ul, model->getNumberOfTransitions());
 }

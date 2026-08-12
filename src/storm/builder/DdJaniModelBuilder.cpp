@@ -2398,8 +2398,8 @@ std::shared_ptr<storm::models::symbolic::Model<Type, ValueType>> buildInternal(s
 }
 
 template<storm::dd::DdType Type, typename ValueType>
-std::shared_ptr<storm::models::symbolic::Model<Type, ValueType>> DdJaniModelBuilder<Type, ValueType>::build(storm::jani::Model const& model,
-                                                                                                            storm::Environment const& env,
+std::shared_ptr<storm::models::symbolic::Model<Type, ValueType>> DdJaniModelBuilder<Type, ValueType>::build(storm::Environment const& env,
+                                                                                                            storm::jani::Model const& model,
                                                                                                             Options const& options) {
     // Prepare the model and do some sanity checks
     if (!std::is_same<ValueType, storm::RationalFunction>::value && model.hasUndefinedConstants()) {

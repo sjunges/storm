@@ -29,7 +29,7 @@ PrismMenuGameAbstractor<DdType, ValueType>::PrismMenuGameAbstractor(storm::Envir
                                                                     MenuGameAbstractorOptions const& options)
     : program(program),
       smtSolverFactory(smtSolverFactory),
-      abstractionInformation(program.getManager(), program.getAllExpressionVariables(), smtSolverFactory->create(program.getManager()), env,
+      abstractionInformation(env, program.getManager(), program.getAllExpressionVariables(), smtSolverFactory->create(program.getManager()),
                              AbstractionInformationOptions(options.constraints)),
       modules(),
       initialStateAbstractor(abstractionInformation, {program.getInitialStatesExpression()}, this->smtSolverFactory),

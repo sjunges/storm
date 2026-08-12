@@ -54,31 +54,31 @@ TYPED_TEST(DdPrismModelBuilderTest, Dtmc) {
     storm::storage::SymbolicModelDescription modelDescription = storm::parser::PrismParser::parse(STORM_TEST_RESOURCES_DIR "/dtmc/die.pm");
     storm::prism::Program program = modelDescription.preprocess().asPrismProgram();
 
-    std::shared_ptr<storm::models::symbolic::Model<DdType>> model = storm::builder::DdPrismModelBuilder<DdType>().build(program, storm::Environment());
+    std::shared_ptr<storm::models::symbolic::Model<DdType>> model = storm::builder::DdPrismModelBuilder<DdType>().build(storm::Environment(), program);
     EXPECT_EQ(13ul, model->getNumberOfStates());
     EXPECT_EQ(20ul, model->getNumberOfTransitions());
 
     modelDescription = storm::parser::PrismParser::parse(STORM_TEST_RESOURCES_DIR "/dtmc/brp-16-2.pm");
     program = modelDescription.preprocess().asPrismProgram();
-    model = storm::builder::DdPrismModelBuilder<DdType>().build(program, storm::Environment());
+    model = storm::builder::DdPrismModelBuilder<DdType>().build(storm::Environment(), program);
     EXPECT_EQ(677ul, model->getNumberOfStates());
     EXPECT_EQ(867ul, model->getNumberOfTransitions());
 
     modelDescription = storm::parser::PrismParser::parse(STORM_TEST_RESOURCES_DIR "/dtmc/crowds-5-5.pm");
     program = modelDescription.preprocess().asPrismProgram();
-    model = storm::builder::DdPrismModelBuilder<DdType>().build(program, storm::Environment());
+    model = storm::builder::DdPrismModelBuilder<DdType>().build(storm::Environment(), program);
     EXPECT_EQ(8607ul, model->getNumberOfStates());
     EXPECT_EQ(15113ul, model->getNumberOfTransitions());
 
     modelDescription = storm::parser::PrismParser::parse(STORM_TEST_RESOURCES_DIR "/dtmc/leader-3-5.pm");
     program = modelDescription.preprocess().asPrismProgram();
-    model = storm::builder::DdPrismModelBuilder<DdType>().build(program, storm::Environment());
+    model = storm::builder::DdPrismModelBuilder<DdType>().build(storm::Environment(), program);
     EXPECT_EQ(273ul, model->getNumberOfStates());
     EXPECT_EQ(397ul, model->getNumberOfTransitions());
 
     modelDescription = storm::parser::PrismParser::parse(STORM_TEST_RESOURCES_DIR "/dtmc/nand-5-2.pm");
     program = modelDescription.preprocess().asPrismProgram();
-    model = storm::builder::DdPrismModelBuilder<DdType>().build(program, storm::Environment());
+    model = storm::builder::DdPrismModelBuilder<DdType>().build(storm::Environment(), program);
     EXPECT_EQ(1728ul, model->getNumberOfStates());
     EXPECT_EQ(2505ul, model->getNumberOfTransitions());
 }
@@ -88,31 +88,31 @@ TYPED_TEST(DdPrismModelBuilderTest, Ctmc) {
     storm::storage::SymbolicModelDescription modelDescription = storm::parser::PrismParser::parse(STORM_TEST_RESOURCES_DIR "/ctmc/cluster2.sm", true);
     storm::prism::Program program = modelDescription.preprocess().asPrismProgram();
 
-    std::shared_ptr<storm::models::symbolic::Model<DdType>> model = storm::builder::DdPrismModelBuilder<DdType>().build(program, storm::Environment());
+    std::shared_ptr<storm::models::symbolic::Model<DdType>> model = storm::builder::DdPrismModelBuilder<DdType>().build(storm::Environment(), program);
     EXPECT_EQ(276ul, model->getNumberOfStates());
     EXPECT_EQ(1120ul, model->getNumberOfTransitions());
 
     modelDescription = storm::parser::PrismParser::parse(STORM_TEST_RESOURCES_DIR "/ctmc/embedded2.sm", true);
     program = modelDescription.preprocess().asPrismProgram();
-    model = storm::builder::DdPrismModelBuilder<DdType>().build(program, storm::Environment());
+    model = storm::builder::DdPrismModelBuilder<DdType>().build(storm::Environment(), program);
     EXPECT_EQ(3478ul, model->getNumberOfStates());
     EXPECT_EQ(14639ul, model->getNumberOfTransitions());
 
     modelDescription = storm::parser::PrismParser::parse(STORM_TEST_RESOURCES_DIR "/ctmc/polling2.sm", true);
     program = modelDescription.preprocess().asPrismProgram();
-    model = storm::builder::DdPrismModelBuilder<DdType>().build(program, storm::Environment());
+    model = storm::builder::DdPrismModelBuilder<DdType>().build(storm::Environment(), program);
     EXPECT_EQ(12ul, model->getNumberOfStates());
     EXPECT_EQ(22ul, model->getNumberOfTransitions());
 
     modelDescription = storm::parser::PrismParser::parse(STORM_TEST_RESOURCES_DIR "/ctmc/fms2.sm", true);
     program = modelDescription.preprocess().asPrismProgram();
-    model = storm::builder::DdPrismModelBuilder<DdType>().build(program, storm::Environment());
+    model = storm::builder::DdPrismModelBuilder<DdType>().build(storm::Environment(), program);
     EXPECT_EQ(810ul, model->getNumberOfStates());
     EXPECT_EQ(3699ul, model->getNumberOfTransitions());
 
     modelDescription = storm::parser::PrismParser::parse(STORM_TEST_RESOURCES_DIR "/ctmc/tandem5.sm", true);
     program = modelDescription.preprocess().asPrismProgram();
-    model = storm::builder::DdPrismModelBuilder<DdType>().build(program, storm::Environment());
+    model = storm::builder::DdPrismModelBuilder<DdType>().build(storm::Environment(), program);
     EXPECT_EQ(66ul, model->getNumberOfStates());
     EXPECT_EQ(189ul, model->getNumberOfTransitions());
 }
@@ -121,7 +121,7 @@ TYPED_TEST(DdPrismModelBuilderTest, Mdp) {
     const storm::dd::DdType DdType = TestFixture::DdType;
     storm::storage::SymbolicModelDescription modelDescription = storm::parser::PrismParser::parse(STORM_TEST_RESOURCES_DIR "/mdp/two_dice.nm");
     storm::prism::Program program = modelDescription.preprocess().asPrismProgram();
-    std::shared_ptr<storm::models::symbolic::Model<DdType>> model = storm::builder::DdPrismModelBuilder<DdType>().build(program, storm::Environment());
+    std::shared_ptr<storm::models::symbolic::Model<DdType>> model = storm::builder::DdPrismModelBuilder<DdType>().build(storm::Environment(), program);
 
     EXPECT_TRUE(model->getType() == storm::models::ModelType::Mdp);
     std::shared_ptr<storm::models::symbolic::Mdp<DdType>> mdp = model->template as<storm::models::symbolic::Mdp<DdType>>();
@@ -132,7 +132,7 @@ TYPED_TEST(DdPrismModelBuilderTest, Mdp) {
 
     modelDescription = storm::parser::PrismParser::parse(STORM_TEST_RESOURCES_DIR "/mdp/leader3.nm");
     program = modelDescription.preprocess().asPrismProgram();
-    model = storm::builder::DdPrismModelBuilder<DdType>().build(program, storm::Environment());
+    model = storm::builder::DdPrismModelBuilder<DdType>().build(storm::Environment(), program);
     EXPECT_TRUE(model->getType() == storm::models::ModelType::Mdp);
     mdp = model->template as<storm::models::symbolic::Mdp<DdType>>();
 
@@ -142,7 +142,7 @@ TYPED_TEST(DdPrismModelBuilderTest, Mdp) {
 
     modelDescription = storm::parser::PrismParser::parse(STORM_TEST_RESOURCES_DIR "/mdp/coin2-2.nm");
     program = modelDescription.preprocess().asPrismProgram();
-    model = storm::builder::DdPrismModelBuilder<DdType>().build(program, storm::Environment());
+    model = storm::builder::DdPrismModelBuilder<DdType>().build(storm::Environment(), program);
     EXPECT_TRUE(model->getType() == storm::models::ModelType::Mdp);
     mdp = model->template as<storm::models::symbolic::Mdp<DdType>>();
 
@@ -152,7 +152,7 @@ TYPED_TEST(DdPrismModelBuilderTest, Mdp) {
 
     modelDescription = storm::parser::PrismParser::parse(STORM_TEST_RESOURCES_DIR "/mdp/csma2-2.nm");
     program = modelDescription.preprocess().asPrismProgram();
-    model = storm::builder::DdPrismModelBuilder<DdType>().build(program, storm::Environment());
+    model = storm::builder::DdPrismModelBuilder<DdType>().build(storm::Environment(), program);
     EXPECT_TRUE(model->getType() == storm::models::ModelType::Mdp);
     mdp = model->template as<storm::models::symbolic::Mdp<DdType>>();
 
@@ -162,7 +162,7 @@ TYPED_TEST(DdPrismModelBuilderTest, Mdp) {
 
     modelDescription = storm::parser::PrismParser::parse(STORM_TEST_RESOURCES_DIR "/mdp/firewire3-0.5.nm");
     program = modelDescription.preprocess().asPrismProgram();
-    model = storm::builder::DdPrismModelBuilder<DdType>().build(program, storm::Environment());
+    model = storm::builder::DdPrismModelBuilder<DdType>().build(storm::Environment(), program);
     EXPECT_TRUE(model->getType() == storm::models::ModelType::Mdp);
     mdp = model->template as<storm::models::symbolic::Mdp<DdType>>();
 
@@ -172,7 +172,7 @@ TYPED_TEST(DdPrismModelBuilderTest, Mdp) {
 
     modelDescription = storm::parser::PrismParser::parse(STORM_TEST_RESOURCES_DIR "/mdp/wlan0-2-2.nm");
     program = modelDescription.preprocess().asPrismProgram();
-    model = storm::builder::DdPrismModelBuilder<DdType>().build(program, storm::Environment());
+    model = storm::builder::DdPrismModelBuilder<DdType>().build(storm::Environment(), program);
     EXPECT_TRUE(model->getType() == storm::models::ModelType::Mdp);
     mdp = model->template as<storm::models::symbolic::Mdp<DdType>>();
 
@@ -182,7 +182,7 @@ TYPED_TEST(DdPrismModelBuilderTest, Mdp) {
 
     modelDescription = storm::parser::PrismParser::parse(STORM_TEST_RESOURCES_DIR "/mdp/sync.nm");
     program = modelDescription.preprocess().asPrismProgram();
-    model = storm::builder::DdPrismModelBuilder<DdType>().build(program, storm::Environment());
+    model = storm::builder::DdPrismModelBuilder<DdType>().build(storm::Environment(), program);
     EXPECT_TRUE(model->getType() == storm::models::ModelType::Mdp);
     mdp = model->template as<storm::models::symbolic::Mdp<DdType>>();
 
@@ -197,7 +197,7 @@ TYPED_TEST(DdPrismModelBuilderTest, Composition) {
     storm::storage::SymbolicModelDescription modelDescription = storm::parser::PrismParser::parse(STORM_TEST_RESOURCES_DIR "/mdp/system_composition.nm");
     storm::prism::Program program = modelDescription.preprocess().asPrismProgram();
 
-    std::shared_ptr<storm::models::symbolic::Model<DdType>> model = storm::builder::DdPrismModelBuilder<DdType>().build(program, storm::Environment());
+    std::shared_ptr<storm::models::symbolic::Model<DdType>> model = storm::builder::DdPrismModelBuilder<DdType>().build(storm::Environment(), program);
 
     EXPECT_TRUE(model->getType() == storm::models::ModelType::Mdp);
     std::shared_ptr<storm::models::symbolic::Mdp<DdType>> mdp = model->template as<storm::models::symbolic::Mdp<DdType>>();
@@ -208,7 +208,7 @@ TYPED_TEST(DdPrismModelBuilderTest, Composition) {
 
     modelDescription = storm::parser::PrismParser::parse(STORM_TEST_RESOURCES_DIR "/mdp/system_composition2.nm");
     program = modelDescription.preprocess().asPrismProgram();
-    model = storm::builder::DdPrismModelBuilder<DdType>().build(program, storm::Environment());
+    model = storm::builder::DdPrismModelBuilder<DdType>().build(storm::Environment(), program);
     EXPECT_TRUE(model->getType() == storm::models::ModelType::Mdp);
     mdp = model->template as<storm::models::symbolic::Mdp<DdType>>();
 

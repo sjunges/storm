@@ -9,6 +9,9 @@ class SylvanDdManagerEnvironment {
     SylvanDdManagerEnvironment();
     ~SylvanDdManagerEnvironment();
 
+    /*!
+     * Retrieves the maximal amount of memory (in megabytes) that Sylvan can occupy.
+     */
     uint64_t getMaximalMemory() const;
     void setMaximalMemory(uint64_t value);
 

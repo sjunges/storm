@@ -34,6 +34,7 @@ typename DdEnvironmentSelector<Type>::type& DdEnvironment::get() {
     if constexpr (Type == storm::dd::DdType::Sylvan) {
         return this->sylvan();
     } else {
+        static_assert(Type == storm::dd::DdType::CUDD, "Unhandled DD type.");
         return this->cudd();
     }
 }
@@ -43,6 +44,7 @@ typename DdEnvironmentSelector<Type>::type const& DdEnvironment::get() const {
     if constexpr (Type == storm::dd::DdType::Sylvan) {
         return this->sylvan();
     } else {
+        static_assert(Type == storm::dd::DdType::CUDD, "Unhandled DD type.");
         return this->cudd();
     }
 }

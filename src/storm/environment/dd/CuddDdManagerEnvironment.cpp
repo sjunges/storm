@@ -29,11 +29,11 @@ void CuddDdManagerEnvironment::setConstantPrecision(double value) {
     constantPrecision = value;
 }
 
-uint_fast64_t CuddDdManagerEnvironment::getMaximalMemory() const {
+uint64_t CuddDdManagerEnvironment::getMaximalMemory() const {
     return maximalMemory;
 }
 
-void CuddDdManagerEnvironment::setMaximalMemory(uint_fast64_t value) {
+void CuddDdManagerEnvironment::setMaximalMemory(uint64_t value) {
     maximalMemory = value;
 }
 
