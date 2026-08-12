@@ -33,7 +33,15 @@ class SylvanBddManager {
      * \param env
      * The environment providing the settings for the Sylvan manager.
      */
+#ifdef STORM_HAVE_SYLVAN
     explicit SylvanBddManager(storm::Environment const &env) : internalManager{env.dd().get<storm::dd::DdType::Sylvan>()} {}
+#else
+    explicit SylvanBddManager(storm::Environment const &) {
+        STORM_LOG_THROW(false, storm::exceptions::MissingLibraryException,
+                        "This version of Storm was compiled without support for Sylvan. Yet, a method was called that requires this support. Please choose a "
+                        "version of Storm with Sylvan support.");
+    }
+#endif
 
     /*!
      * Creates a new manager that is configured according to a default environment.
