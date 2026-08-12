@@ -1,7 +1,7 @@
 #include "storm-gamebased-ar/abstraction/AbstractionInformation.h"
 
-#include "storm/storage/BitVector.h"
 #include "storm/environment/Environment.h"
+#include "storm/storage/BitVector.h"
 #include "storm/storage/dd/DdManager.h"
 
 #include "storm/exceptions/InvalidOperationException.h"
@@ -16,8 +16,7 @@ namespace abstraction {
 template<storm::dd::DdType DdType>
 AbstractionInformation<DdType>::AbstractionInformation(storm::Environment const& env, storm::expressions::ExpressionManager& expressionManager,
                                                        std::set<storm::expressions::Variable> const& abstractedVariables,
-                                                       std::unique_ptr<storm::solver::SmtSolver>&& smtSolver,
-                                                       AbstractionInformationOptions const& options)
+                                                       std::unique_ptr<storm::solver::SmtSolver>&& smtSolver, AbstractionInformationOptions const& options)
     : expressionManager(expressionManager),
       equivalenceChecker(std::move(smtSolver)),
       abstractedVariables(abstractedVariables),

@@ -6,8 +6,8 @@
 #include "storm-dft/modelchecker/SFTBDDChecker.h"
 #include "storm-dft/transformations/SftToBddTransformator.h"
 #include "storm-dft/utility/MTTFHelper.h"
-#include "storm/environment/Environment.h"
 #include "storm-parsers/api/properties.h"
+#include "storm/environment/Environment.h"
 
 namespace {
 

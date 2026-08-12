@@ -33,8 +33,7 @@ class SylvanBddManager {
      * \param env
      * The environment providing the settings for the Sylvan manager.
      */
-    explicit SylvanBddManager(storm::Environment const& env)
-        : internalManager{env.dd().get<storm::dd::DdType::Sylvan>()} {}
+    explicit SylvanBddManager(storm::Environment const &env) : internalManager{env.dd().get<storm::dd::DdType::Sylvan>()} {}
 
     /*!
      * Creates a new manager that is configured according to a default environment.

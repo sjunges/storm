@@ -1,11 +1,18 @@
 #pragma once
 
+#include <algorithm>
 #include <chrono>
+#include <iterator>
+#include <memory>
 #include <queue>
+#include <set>
+#include <sstream>
+#include <utility>
 
 #include "storm-counterexamples/counterexamples/GuaranteedLabelSet.h"
 #include "storm-counterexamples/counterexamples/HighLevelCounterexample.h"
 #include "storm/exceptions/InvalidArgumentException.h"
+#include "storm/exceptions/InvalidPropertyException.h"
 #include "storm/exceptions/InvalidStateException.h"
 #include "storm/exceptions/MissingLibraryException.h"
 #include "storm/exceptions/NotSupportedException.h"
@@ -13,6 +20,10 @@
 #include "storm/modelchecker/prctl/helper/SparseMdpPrctlHelper.h"
 #include "storm/modelchecker/propositional/SparsePropositionalModelChecker.h"
 #include "storm/modelchecker/results/ExplicitQuantitativeCheckResult.h"
+#include "storm/models/ModelType.h"
+#include "storm/models/sparse/Dtmc.h"
+#include "storm/models/sparse/Mdp.h"
+#include "storm/models/sparse/Model.h"
 #include "storm/settings/SettingsManager.h"
 #include "storm/settings/modules/CounterexampleGeneratorSettings.h"
 #include "storm/settings/modules/GeneralSettings.h"
@@ -20,7 +31,9 @@
 #include "storm/storage/BoostTypes.h"
 #include "storm/storage/expressions/Expression.h"
 #include "storm/storage/prism/Program.h"
+#include "storm/storage/sparse/JaniChoiceOrigins.h"
 #include "storm/storage/sparse/PrismChoiceOrigins.h"
+#include "storm/utility/graph.h"
 #include "storm/utility/macros.h"
 
 namespace storm {
@@ -37,7 +50,7 @@ inline size_t nrCommands(storm::storage::SymbolicModelDescription const& descr) 
     if (descr.isJaniModel()) {
         return descr.asJaniModel().getNumberOfEdges();
     } else {
-        assert(descr.isPrismProgram());
+        STORM_LOG_ASSERT(descr.isPrismProgram(), "Expected Prism program.");
         return descr.asPrismProgram().getNumberOfCommands();
     }
 }
@@ -1775,7 +1788,7 @@ class SMTMinimalLabelSetGenerator {
                 labelSets[choice] = choiceOrigins.getEdgeIndexSet(choice);
             }
         }
-        assert(labelSets.size() == model.getNumberOfChoices());
+        STORM_LOG_ASSERT(labelSets.size() == model.getNumberOfChoices(), "Label set size mismatch.");
 
         // (1) Check whether its possible to exceed the threshold if checkThresholdFeasible is set.
         std::vector<double> maximalReachabilityProbability;
@@ -2049,7 +2062,7 @@ class SMTMinimalLabelSetGenerator {
                     if (model.getChoiceOrigins()->isPrismChoiceOrigins()) {
                         labelSetSize = model.getChoiceOrigins()->asPrismChoiceOrigins().getCommandSet(choice).size();
                     } else {
-                        assert(model.getChoiceOrigins()->isJaniChoiceOrigins());
+                        STORM_LOG_ASSERT(model.getChoiceOrigins()->isJaniChoiceOrigins(), "Expected JANI choice origins.");
                         labelSetSize = model.getChoiceOrigins()->asJaniChoiceOrigins().getEdgeIndexSet(choice).size();
                     }
                     hasLabeledChoice |= (labelSetSize != 0);
@@ -2067,7 +2080,7 @@ class SMTMinimalLabelSetGenerator {
                     auto const& labelSet = model.getChoiceOrigins()->asPrismChoiceOrigins().getCommandSet(smallestCommandChoice);
                     commandSet.insert(labelSet.begin(), labelSet.end());
                 } else {
-                    assert(model.getChoiceOrigins()->isJaniChoiceOrigins());
+                    STORM_LOG_ASSERT(model.getChoiceOrigins()->isJaniChoiceOrigins(), "Expected JANI choice origins.");
                     auto const& labelSet = model.getChoiceOrigins()->asJaniChoiceOrigins().getEdgeIndexSet(smallestCommandChoice);
                     commandSet.insert(labelSet.begin(), labelSet.end());
                 }
@@ -2123,7 +2136,7 @@ class SMTMinimalLabelSetGenerator {
             result.comparisonType = probabilityOperator.getComparisonType();
             result.threshold.push_back(probabilityOperator.getThresholdAs<T>());
         } else {
-            assert(formula->isRewardOperatorFormula());
+            STORM_LOG_ASSERT(formula->isRewardOperatorFormula(), "Expected reward operator formula.");
             storm::logic::RewardOperatorFormula const& rewardOperator = formula->asRewardOperatorFormula();
             STORM_LOG_THROW(rewardOperator.hasBound(), storm::exceptions::InvalidPropertyException,
                             "Counterexample generation only supports bounded formulas.");

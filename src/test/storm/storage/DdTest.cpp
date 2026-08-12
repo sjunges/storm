@@ -1,8 +1,8 @@
 #include "storm-config.h"
 #include "test/storm_gtest.h"
 
-#include "storm/exceptions/InvalidArgumentException.h"
 #include "storm/environment/Environment.h"
+#include "storm/exceptions/InvalidArgumentException.h"
 #include "storm/settings/SettingsManager.h"
 #include "storm/storage/SparseMatrix.h"
 #include "storm/storage/dd/Add.h"

@@ -262,9 +262,8 @@ TYPED_TEST(SymbolicModelBisimulationDecomposition, AsynchronousLeader) {
     storm::parser::FormulaParser formulaParser;
     std::shared_ptr<storm::logic::Formula const> formula = formulaParser.parseSingleFormulaFromString("Rmax=? [F \"elected\"]");
 
-    std::shared_ptr<storm::models::symbolic::Model<DdType, double>> model =
-        storm::builder::DdPrismModelBuilder<DdType, double>().build(this->env, smd.asPrismProgram(),
-                                                                    typename storm::builder::DdPrismModelBuilder<DdType, double>::Options(*formula));
+    std::shared_ptr<storm::models::symbolic::Model<DdType, double>> model = storm::builder::DdPrismModelBuilder<DdType, double>().build(
+        this->env, smd.asPrismProgram(), typename storm::builder::DdPrismModelBuilder<DdType, double>::Options(*formula));
 
     model->getManager().execute([&]() {
         storm::dd::BisimulationDecomposition<DdType, double> decomposition(*model, storm::storage::BisimulationType::Strong);

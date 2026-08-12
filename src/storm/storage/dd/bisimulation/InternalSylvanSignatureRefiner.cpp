@@ -8,13 +8,6 @@
 
 #ifdef STORM_HAVE_SYLVAN
 #include "sylvan_cache.h"
-
-#pragma clang diagnostic push
-// The cas macro from storm/adapters/sylvan.h and the direct __sync_fetch_and_add expand to __sync_* builtins
-// -Watomic-implicit-seq-cst fires at these use sites, so suppress it here.
-#pragma clang diagnostic ignored "-Watomic-implicit-seq-cst"
-
-#pragma clang diagnostic ignored "-Wused-but-marked-unused"
 #endif
 
 namespace storm {
@@ -22,6 +15,14 @@ namespace dd {
 namespace bisimulation {
 
 #ifdef STORM_HAVE_SYLVAN
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wpedantic"
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Watomic-implicit-seq-cst"
+#pragma clang diagnostic ignored "-Wextra-semi-stmt"
+#pragma clang diagnostic ignored "-Wused-but-marked-unused"
+#pragma clang diagnostic ignored "-Wzero-as-null-pointer-constant"
+
 static const uint64_t NO_ELEMENT_MARKER = -1ull;
 
 InternalSylvanSignatureRefinerBase::InternalSylvanSignatureRefinerBase(storm::dd::DdManager<storm::dd::DdType::Sylvan> const& manager,
@@ -126,10 +127,6 @@ static uint64_t sylvan_hash(uint64_t a, uint64_t b) {
  * The code was modified in minor places to account for necessary changes, for example to handle
  * nondeterminism variables.
  */
-
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wpedantic"
-
 VOID_TASK_3(sylvan_rehash, size_t, first, size_t, count, InternalSylvanSignatureRefinerBase*, refiner) {
     if (count > 128) {
         SPAWN(sylvan_rehash, first, count / 2, refiner);
@@ -250,13 +247,10 @@ TASK_3(BDD, sylvan_encode_block, BDD, vars, uint64_t, numberOfVariables, uint64_
 }
 
 TASK_3(BDD, sylvan_assign_block, BDD, sig, BDD, previous_block, InternalSylvanSignatureRefinerBase*, refiner) {
-    assert(previous_block != mtbdd_false);  // if so, incorrect call!
+    STORM_LOG_ASSERT(previous_block != mtbdd_false, "Incorrect call: previous_block is mtbdd_false.");
 
     // maybe do garbage collection
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wextra-semi-stmt"
     sylvan_gc_test();
-#pragma clang diagnostic pop
 
     if (sig == sylvan_false) {
         // slightly different handling because sylvan_false == 0
@@ -265,9 +259,9 @@ TASK_3(BDD, sylvan_assign_block, BDD, sig, BDD, previous_block, InternalSylvanSi
 
     if (refiner->options.reuseBlockNumbers) {
         // try to claim previous block number
-        assert(previous_block != sylvan_false);
+        STORM_LOG_ASSERT(previous_block != sylvan_false, "Previous_block is sylvan_false.");
         const uint64_t p_b = CALL(sylvan_decode_block, previous_block);
-        assert(p_b < refiner->signatures.size());
+        STORM_LOG_ASSERT(p_b < refiner->signatures.size(), "Block index out of range.");
 
         for (;;) {
             BDD cur = *(volatile BDD*)&refiner->signatures[p_b];
@@ -308,10 +302,7 @@ TASK_5(BDD, sylvan_refine_partition, BDD, dd, BDD, previous_partition, BDD, nond
         return result;
     }
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wextra-semi-stmt"
     sylvan_gc_test();
-#pragma clang diagnostic pop
 
     /* vars != sylvan_false */
     /* dd cannot be sylvan_true - if vars != sylvan_true, then dd is in a,B */
@@ -377,8 +368,8 @@ TASK_5(BDD, sylvan_refine_partition, BDD, dd, BDD, previous_partition, BDD, nond
     return result;
 }
 
-#pragma GCC diagnostic pop
 #pragma clang diagnostic pop
+#pragma GCC diagnostic pop
 
 #else
 InternalSylvanSignatureRefinerBase::InternalSylvanSignatureRefinerBase(storm::dd::DdManager<storm::dd::DdType::Sylvan> const& manager,

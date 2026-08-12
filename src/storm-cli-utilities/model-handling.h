@@ -3,11 +3,11 @@
 #include <boost/algorithm/string/join.hpp>
 #include <type_traits>
 
-#include "storm/api/storm.h"
-
 #include "storm-cli-utilities/AutomaticSettings.h"
 #include "storm-cli-utilities/print.h"
 #include "storm-parsers/api/storm-parsers.h"
+#include "storm/adapters/RationalFunctionAdapter.h"
+#include "storm/api/storm.h"
 #include "storm/builder/BuilderType.h"
 #include "storm/environment/Environment.h"
 #include "storm/environment/dd/DdEnvironment.h"
@@ -19,6 +19,7 @@
 #include "storm/models/symbolic/MarkovAutomaton.h"
 #include "storm/models/symbolic/StandardRewardModel.h"
 #include "storm/settings/SettingsManager.h"
+#include "storm/settings/modules/BisimulationSettings.h"
 #include "storm/settings/modules/BuildSettings.h"
 #include "storm/settings/modules/CoreSettings.h"
 #include "storm/settings/modules/CounterexampleGeneratorSettings.h"
@@ -337,7 +338,7 @@ auto castAndApply(std::shared_ptr<storm::models::ModelBase> const& model, auto c
             return castAndApplyImpl.template operator()<storm::models::sparse::Model<ValueType>>();
         } else {
             auto ddType = model->getDdType();
-            STORM_LOG_ASSERT(model->isSymbolicModel() && ddType.has_value(), "Unexpected model representation");
+            STORM_LOG_ASSERT(model->isSymbolicModel() && ddType.has_value(), "Unexpected model representation.");
             if constexpr (storm::IsIntervalType<ValueType>) {
                 // Avoiding a couple of unnecessary template instantiations
                 STORM_LOG_THROW(false, storm::exceptions::NotSupportedException, "Symbolic interval models are currently not supported.");
@@ -348,7 +349,7 @@ auto castAndApply(std::shared_ptr<storm::models::ModelBase> const& model, auto c
                         return castAndApplyImpl.template operator()<storm::models::symbolic::Model<CUDD, ValueType>>();
                     }
                 }
-                STORM_LOG_ASSERT(*ddType == Sylvan, "Unexpected Dd type");
+                STORM_LOG_ASSERT(*ddType == Sylvan, "Unexpected Dd type.");
                 return castAndApplyImpl.template operator()<storm::models::symbolic::Model<Sylvan, ValueType>>();
             }
         }
@@ -504,8 +505,8 @@ std::shared_ptr<storm::models::ModelBase> buildModelDd(storm::Environment const&
     }
     auto buildSettings = storm::settings::getModule<storm::settings::modules::BuildSettings>();
     return storm::api::buildSymbolicModel<DdType, ValueType>(env, input.model.get(), createFormulasToRespect(input.properties),
-                                                             buildSettings.isBuildFullModelSet(),
-                                                             !buildSettings.isApplyNoMaximumProgressAssumptionSet());
+                                                             buildSettings.isBuildFullModelSet(), !buildSettings.isApplyNoMaximumProgressAssumptionSet(),
+                                                             !buildSettings.isDontFixDeadlocksSet());
 }
 
 inline storm::builder::BuilderOptions createBuildOptionsSparseFromSettings(SymbolicInput const& input) {
@@ -549,7 +550,25 @@ inline storm::builder::BuilderOptions createBuildOptionsSparseFromSettings(Symbo
     if (ioSettings.isComputeExpectedVisitingTimesSet() || ioSettings.isComputeSteadyStateDistributionSet()) {
         options.clearTerminalStates();
     }
+
+    auto generalSettings = storm::settings::getModule<storm::settings::modules::GeneralSettings>();
+    options.setStochasticTolerance(generalSettings.getPrecision());
+    options.setShowProgress(generalSettings.isVerboseSet());
+    options.setShowProgressDelay(generalSettings.getShowProgressDelay());
+
     return options;
+}
+
+template<typename ValueType>
+typename storm::builder::ExplicitModelBuilder<ValueType>::Options createExplorationOptionsFromSettings() {
+    auto buildSettings = storm::settings::getModule<storm::settings::modules::BuildSettings>();
+    typename storm::builder::ExplicitModelBuilder<ValueType>::Options explorationOptions;
+    explorationOptions.explorationOrder = buildSettings.getExplorationOrder();
+    explorationOptions.fixDeadlocks = !buildSettings.isDontFixDeadlocksSet();
+    if (buildSettings.isExplorationStateLimitSet()) {
+        explorationOptions.explorationStateLimit = buildSettings.getExplorationStateLimit();
+    }
+    return explorationOptions;
 }
 
 template<typename ValueType>
@@ -563,9 +582,9 @@ std::shared_ptr<storm::models::ModelBase> buildModelSparse(SymbolicInput const& 
         STORM_LOG_THROW(IsDoubleInterval || IsRationalInterval, storm::exceptions::NotSupportedException,
                         "Can not build interval model for the provided value type.");
         using IntervalType = std::conditional_t<IsDoubleInterval, storm::Interval, storm::RationalInterval>;
-        return storm::api::buildSparseModel<IntervalType>(input.model.get(), options);
+        return storm::api::buildSparseModel<IntervalType>(input.model.get(), options, createExplorationOptionsFromSettings<IntervalType>());
     } else {
-        return storm::api::buildSparseModel<ValueType>(input.model.get(), options);
+        return storm::api::buildSparseModel<ValueType>(input.model.get(), options, createExplorationOptionsFromSettings<ValueType>());
     }
 }
 
@@ -684,9 +703,10 @@ std::shared_ptr<storm::models::sparse::Model<ValueType>> preprocessSparseModelBi
     if (bisimulationSettings.isWeakBisimulationSet()) {
         bisimType = storm::storage::BisimulationType::Weak;
     }
+    std::optional<double> tolerance = storm::settings::getModule<storm::settings::modules::GeneralSettings>().getPrecision();
 
     STORM_LOG_INFO("Performing bisimulation minimization...");
-    return storm::api::performBisimulationMinimization<ValueType>(model, createFormulasToRespect(input.properties), bisimType, graphPreserving);
+    return storm::api::performBisimulationMinimization<ValueType>(model, createFormulasToRespect(input.properties), bisimType, graphPreserving, tolerance);
 }
 
 template<typename ValueType>
@@ -864,9 +884,18 @@ std::shared_ptr<storm::models::Model<ExportValueType>> preprocessDdModelBisimula
         STORM_LOG_INFO("Setting bisimulation quotient format to 'sparse'.");
         quotientFormat = storm::dd::bisimulation::QuotientFormat::Sparse;
     }
+
+    storm::dd::bisimulation::BisimulationOptions ddBisimulationOptions;
+    ddBisimulationOptions.reuseMode = bisimulationSettings.getReuseMode();
+    ddBisimulationOptions.refinementMode = bisimulationSettings.getRefinementMode();
+    ddBisimulationOptions.initialPartitionMode = bisimulationSettings.getInitialPartitionMode();
+    ddBisimulationOptions.useRepresentatives = bisimulationSettings.isUseRepresentativesSet();
+    ddBisimulationOptions.useOriginalVariables = bisimulationSettings.isUseOriginalVariablesSet();
+
     STORM_LOG_INFO("Performing bisimulation minimization...");
     return storm::api::performBisimulationMinimization<DdType, ValueType, ExportValueType>(
-        model, createFormulasToRespect(input.properties), storm::storage::BisimulationType::Strong, bisimulationSettings.getSignatureMode(), quotientFormat);
+        model, createFormulasToRespect(input.properties), storm::storage::BisimulationType::Strong, bisimulationSettings.getSignatureMode(), quotientFormat,
+        ddBisimulationOptions);
 }
 
 template<typename ExportValueType, storm::dd::DdType DdType, typename ValueType>

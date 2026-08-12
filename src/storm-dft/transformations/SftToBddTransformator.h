@@ -24,8 +24,7 @@ class SftToBddTransformator {
 #endif
 
 #ifdef STORM_HAVE_SYLVAN
-    SftToBddTransformator(std::shared_ptr<storm::dft::storage::DFT<ValueType>> dft,
-                          std::shared_ptr<storm::dft::storage::SylvanBddManager> sylvanBddManager,
+    SftToBddTransformator(std::shared_ptr<storm::dft::storage::DFT<ValueType>> dft, std::shared_ptr<storm::dft::storage::SylvanBddManager> sylvanBddManager,
                           storm::dft::utility::RelevantEvents relevantEvents = {})
         : dft{std::move(dft)}, sylvanBddManager{std::move(sylvanBddManager)}, relevantEvents{relevantEvents} {
         // create Variables for the BEs
@@ -101,8 +100,7 @@ class SftToBddTransformator {
         return sylvanBddManager;
     }
 #else
-    SftToBddTransformator(std::shared_ptr<storm::dft::storage::DFT<ValueType>> dft,
-                          std::shared_ptr<storm::dft::storage::SylvanBddManager> sylvanBddManager,
+    SftToBddTransformator(std::shared_ptr<storm::dft::storage::DFT<ValueType>> dft, std::shared_ptr<storm::dft::storage::SylvanBddManager> sylvanBddManager,
                           storm::dft::utility::RelevantEvents relevantEvents = {}) {
         STORM_LOG_THROW(false, storm::exceptions::MissingLibraryException,
                         "This version of Storm was compiled without support for Sylvan. Yet, a method was called that requires this support. Please choose a "
