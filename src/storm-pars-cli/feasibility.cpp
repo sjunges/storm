@@ -12,9 +12,14 @@
 #include "storm-pars/api/region.h"
 #include "storm-pars/derivative/GradientDescentInstantiationSearcher.h"
 #include "storm-pars/derivative/GradientDescentMethod.h"
+#include "storm-pars/scp/SparseScpInstantiationSearcher.h"
 #include "storm-pars/settings/modules/DerivativeSettings.h"
 #include "storm-pars/settings/modules/RegionVerificationSettings.h"
+#include "storm-pars/settings/modules/ScpSettings.h"
 #include "storm-pars/utility/FeasibilitySynthesisTask.h"
+#include "storm/exceptions/NotSupportedException.h"
+#include "storm/models/sparse/Dtmc.h"
+#include "storm/models/sparse/Mdp.h"
 
 namespace storm::pars {
 
@@ -103,7 +108,7 @@ void performFeasibility(std::shared_ptr<storm::models::sparse::Model<ValueType>>
         runFeasibilityWithPLA(model, task, omittedParameters, monotonicitySettings);
     } else {
         STORM_LOG_ASSERT(feasibilitySettings.getFeasibilityMethod() == storm::pars::FeasibilityMethod::SCP, "Remaining method must be SCP.");
-        STORM_LOG_THROW(false, storm::exceptions::NotImplementedException, "SCP is not yet implemented.");
+        runFeasibilityWithSCP(model, task, omittedParameters, monotonicitySettings);
     }
 }
 
@@ -250,6 +255,47 @@ void runFeasibilityWithPLA(std::shared_ptr<storm::models::sparse::Model<ValueTyp
     }
 }
 
+template<typename ValueType>
+void runFeasibilityWithSCP(std::shared_ptr<storm::models::sparse::Model<ValueType>> model,
+                           std::shared_ptr<storm::pars::FeasibilitySynthesisTask const> const& task,
+                           boost::optional<std::set<RationalFunctionVariable>> omittedParameters, storm::api::MonotonicitySetting monotonicitySettings) {
+    // The formula-shape/bound checks are left to SparseScpInstantiationSearcher::run() itself (no
+    // point duplicating them here); this guard is kept because it's load-bearing for the dispatch
+    // just below, not just an early-exit nicety.
+    STORM_LOG_THROW(model->isOfType(storm::models::ModelType::Mdp) || model->isOfType(storm::models::ModelType::Dtmc),
+                    storm::exceptions::NotSupportedException, "SCP is only supported for MDPs and DTMCs.");
+    // TODO handle omittedParameters (mirrors PLA, which has the same gap).
+
+    auto const& scpSettings = storm::settings::getModule<storm::settings::modules::ScpSettings>();
+    storm::pars::scp::ScpOptions options;
+    options.trustRegionInitial = scpSettings.getTrustRegionInitial();
+    options.trustRegionFactor = scpSettings.getTrustRegionFactor();
+    options.trustRegionMax = scpSettings.getTrustRegionMax();
+    options.trustRegionMinExcess = scpSettings.getTrustRegionMinExcess();
+    options.maxIterations = scpSettings.getMaxIterations();
+    options.useMaxViolationObjective = !scpSettings.isSumViolationObjectiveSet();
+
+    storm::utility::Stopwatch watch(true);
+    storm::pars::scp::ScpResult<double> result;
+    storm::Environment env;
+    if (model->isOfType(storm::models::ModelType::Mdp)) {
+        auto mdp = model->template as<storm::models::sparse::Mdp<ValueType>>();
+        storm::pars::scp::SparseScpInstantiationSearcher<storm::models::sparse::Mdp<ValueType>, double> searcher(*mdp, options);
+        result = searcher.run(env, task);
+    } else {
+        auto dtmc = model->template as<storm::models::sparse::Dtmc<ValueType>>();
+        storm::pars::scp::SparseScpInstantiationSearcher<storm::models::sparse::Dtmc<ValueType>, double> searcher(*dtmc, options);
+        result = searcher.run(env, task);
+    }
+    watch.stop();
+
+    std::pair<double, typename storm::storage::ParameterRegion<ValueType>::Valuation> valueValuationPair;
+    valueValuationPair.first = result.value;
+    valueValuationPair.second = result.valuation;
+
+    printFeasibilityResult(result.status == storm::pars::scp::ScpStatus::Feasible, valueValuationPair, watch);
+}
+
 template void performFeasibility(std::shared_ptr<storm::models::sparse::Model<storm::RationalFunction>> model,
                                  std::shared_ptr<storm::pars::FeasibilitySynthesisTask const> const& task,
                                  boost::optional<std::set<RationalFunctionVariable>> omittedParameters, storm::api::MonotonicitySetting monotonicitySettings);
@@ -259,6 +305,11 @@ template void runFeasibilityWithGD(std::shared_ptr<storm::models::sparse::Model<
                                    boost::optional<std::set<RationalFunctionVariable>> omittedParameters, storm::api::MonotonicitySetting monotonicitySettings);
 
 template void runFeasibilityWithPLA(std::shared_ptr<storm::models::sparse::Model<storm::RationalFunction>> const& model,
+                                    std::shared_ptr<storm::pars::FeasibilitySynthesisTask const> const& task,
+                                    boost::optional<std::set<RationalFunctionVariable>> omittedParameters,
+                                    storm::api::MonotonicitySetting monotonicitySettings);
+
+template void runFeasibilityWithSCP(std::shared_ptr<storm::models::sparse::Model<storm::RationalFunction>> model,
                                     std::shared_ptr<storm::pars::FeasibilitySynthesisTask const> const& task,
                                     boost::optional<std::set<RationalFunctionVariable>> omittedParameters,
                                     storm::api::MonotonicitySetting monotonicitySettings);
