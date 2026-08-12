@@ -169,7 +169,7 @@ void HighsLpSolver<ValueType, RawMode>::addConstraint(std::string const&, Constr
             STORM_LOG_ASSERT(false, "Illegal operator in LP solver constraint.");
     }
     highs.addRow(toHighsBound(lower), toHighsBound(upper), constraintData.variableIndices.size(), constraintData.variableIndices.data(),
-                constraintData.coefficients.data());
+                 constraintData.coefficients.data());
 }
 
 template<typename ValueType, bool RawMode>

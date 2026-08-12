@@ -181,9 +181,10 @@ class LpSolverTest : public ::testing::Test {
     // Builds a solver with a bounded continuous variable x in [0, 5] (with objective coefficient 1) and a binary variable b.
     // If fixedB has a value, b is fixed to that value via a regular constraint.
     // Adds the indicator constraint (b == indicatorValue) => (x rel rhs), optimizes in the given direction and returns the solver.
-    std::unique_ptr<storm::solver::LpSolver<ValueType>> solveIndicatorScenario(storm::OptimizationDirection dir, bool indicatorValue, std::optional<bool> fixedB,
-                                                                               storm::expressions::RelationType rel, std::string const& rhs,
-                                                                               storm::expressions::Variable& x, storm::expressions::Variable& b) {
+    std::unique_ptr<storm::solver::LpSolver<ValueType>> solveIndicatorScenario(storm::OptimizationDirection dir, bool indicatorValue,
+                                                                               std::optional<bool> fixedB, storm::expressions::RelationType rel,
+                                                                               std::string const& rhs, storm::expressions::Variable& x,
+                                                                               storm::expressions::Variable& b) {
         auto solver = this->factory()->create(this->env(), "");
         solver->setOptimizationDirection(dir);
         x = solver->addBoundedContinuousVariable("x", 0, this->parseNumber("5"), 1);
