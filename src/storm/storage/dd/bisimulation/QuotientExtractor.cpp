@@ -1078,7 +1078,9 @@ std::shared_ptr<storm::models::sparse::Model<ExportValueType>> QuotientExtractor
 
     // Collect the state-action rewards of the preserved reward models upfront, so that the extraction of the
     // transition matrix can distinguish choices that only differ in these rewards when removing redundant
-    // (duplicate) choices.
+    // (duplicate) choices. These raw (unreordered) vectors are consumed by extractTransitionMatrix and
+    // cleared afterward; they are not reused for the quotient reward models below, which are extracted
+    // separately via extractStateActionVector (applying the post-dedup row permutation reordering).
     std::vector<std::vector<ExportValueType>> stateActionRewards;
     for (auto const& rewardModelName : preservationInformation.getRewardModelNames()) {
         auto const& rewardModel = model.getRewardModel(rewardModelName);
