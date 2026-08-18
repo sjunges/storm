@@ -30,7 +30,8 @@ class ExplorationInformation {
     typedef typename IdToStateMap::const_iterator const_iterator;
     typedef std::vector<std::vector<storm::storage::MatrixEntry<StateType, ValueType>>> MatrixType;
 
-    ExplorationInformation(ExplorationEnvironment const& env, storm::OptimizationDirection const& direction, ActionType const& unexploredMarker = std::numeric_limits<ActionType>::max());
+    ExplorationInformation(ExplorationEnvironment const& env, storm::OptimizationDirection const& direction,
+                           ActionType const& unexploredMarker = std::numeric_limits<ActionType>::max());
 
     const_iterator findUnexploredState(StateType const& state) const;
 

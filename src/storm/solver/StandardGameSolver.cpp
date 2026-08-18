@@ -29,8 +29,7 @@ StandardGameSolver<ValueType>::StandardGameSolver(storm::storage::SparseMatrix<s
       localPlayer2Matrix(nullptr),
       player1Grouping(nullptr),
       player1Matrix(&player1Matrix),
-      player2Matrix(player2Matrix) {
-}
+      player2Matrix(player2Matrix) {}
 
 template<typename ValueType>
 StandardGameSolver<ValueType>::StandardGameSolver(storm::storage::SparseMatrix<storm::storage::sparse::state_type>&& player1Matrix,
@@ -42,8 +41,7 @@ StandardGameSolver<ValueType>::StandardGameSolver(storm::storage::SparseMatrix<s
       localPlayer2Matrix(std::make_unique<storm::storage::SparseMatrix<ValueType>>(std::move(player2Matrix))),
       player1Grouping(nullptr),
       player1Matrix(localPlayer1Matrix.get()),
-      player2Matrix(*localPlayer2Matrix) {
-}
+      player2Matrix(*localPlayer2Matrix) {}
 
 template<typename ValueType>
 StandardGameSolver<ValueType>::StandardGameSolver(std::vector<uint64_t> const& player1Grouping, storm::storage::SparseMatrix<ValueType> const& player2Matrix,
@@ -54,8 +52,7 @@ StandardGameSolver<ValueType>::StandardGameSolver(std::vector<uint64_t> const& p
       localPlayer2Matrix(nullptr),
       player1Grouping(&player1Grouping),
       player1Matrix(nullptr),
-      player2Matrix(player2Matrix) {
-}
+      player2Matrix(player2Matrix) {}
 
 template<typename ValueType>
 StandardGameSolver<ValueType>::StandardGameSolver(std::vector<uint64_t>&& player1Grouping, storm::storage::SparseMatrix<ValueType>&& player2Matrix,
@@ -66,8 +63,7 @@ StandardGameSolver<ValueType>::StandardGameSolver(std::vector<uint64_t>&& player
       localPlayer2Matrix(std::make_unique<storm::storage::SparseMatrix<ValueType>>(std::move(player2Matrix))),
       player1Grouping(localPlayer1Grouping.get()),
       player1Matrix(nullptr),
-      player2Matrix(*localPlayer2Matrix) {
-}
+      player2Matrix(*localPlayer2Matrix) {}
 
 template<typename ValueType>
 GameMethod StandardGameSolver<ValueType>::getMethod(Environment const& env, bool isExactMode) const {

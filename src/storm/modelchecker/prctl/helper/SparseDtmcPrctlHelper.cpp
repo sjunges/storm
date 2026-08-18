@@ -1,8 +1,8 @@
 #include "storm/modelchecker/prctl/helper/SparseDtmcPrctlHelper.h"
 
 #include "storm/adapters/RationalFunctionAdapter.h"
-#include "storm/environment/solver/SolverEnvironment.h"
 #include "storm/environment/modelchecker/ModelCheckerEnvironment.h"
+#include "storm/environment/solver/SolverEnvironment.h"
 #include "storm/exceptions/IllegalArgumentException.h"
 #include "storm/exceptions/InvalidPropertyException.h"
 #include "storm/exceptions/NotSupportedException.h"

@@ -9,7 +9,8 @@ namespace modelchecker {
 namespace exploration_detail {
 
 template<typename StateType, typename ValueType>
-ExplorationInformation<StateType, ValueType>::ExplorationInformation(ExplorationEnvironment const& env, storm::OptimizationDirection const& direction, ActionType const& unexploredMarker)
+ExplorationInformation<StateType, ValueType>::ExplorationInformation(ExplorationEnvironment const& env, storm::OptimizationDirection const& direction,
+                                                                     ActionType const& unexploredMarker)
     : unexploredMarker(unexploredMarker),
       optimizationDirection(direction),
       localPrecomputation(false),
