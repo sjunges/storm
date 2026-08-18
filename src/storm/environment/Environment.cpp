@@ -1,6 +1,7 @@
 #include "storm/environment/Environment.h"
 #include "storm/environment/SubEnvironment.h"
 #include "storm/environment/dd/DdEnvironment.h"
+#include "storm/environment/exploration/ExplorationEnvironment.h"
 #include "storm/environment/modelchecker/ModelCheckerEnvironment.h"
 #include "storm/environment/solver/SolverEnvironment.h"
 
@@ -37,6 +38,14 @@ ModelCheckerEnvironment& Environment::modelchecker() {
 
 ModelCheckerEnvironment const& Environment::modelchecker() const {
     return internalEnv.get().modelcheckerEnvironment.get();
+}
+
+ExplorationEnvironment& Environment::exploration() {
+    return internalEnv.get().explorationEnvironment.get();
+}
+
+ExplorationEnvironment const& Environment::exploration() const {
+    return internalEnv.get().explorationEnvironment.get();
 }
 
 DdEnvironment& Environment::dd() {

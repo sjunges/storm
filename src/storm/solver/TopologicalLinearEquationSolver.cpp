@@ -290,7 +290,9 @@ uint64_t TopologicalLinearEquationSolver<ValueType>::getMatrixColumnCount() cons
 
 template<typename ValueType>
 std::unique_ptr<storm::solver::LinearEquationSolver<ValueType>> TopologicalLinearEquationSolverFactory<ValueType>::create(Environment const& env) const {
-    return std::make_unique<storm::solver::TopologicalLinearEquationSolver<ValueType>>();
+    auto solver = std::make_unique<storm::solver::TopologicalLinearEquationSolver<ValueType>>();
+    solver->setShowProgress(env.solver().isVerboseSet(), env.solver().getShowProgressDelay());
+    return solver;
 }
 
 template<typename ValueType>

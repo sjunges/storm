@@ -20,11 +20,17 @@ ModelCheckerEnvironment::ModelCheckerEnvironment() {
     }
     auto const& ioSettings = storm::settings::getModule<storm::settings::modules::IOSettings>();
     steadyStateDistributionAlgorithm = ioSettings.getSteadyStateDistributionAlgorithm();
+
+    filterRewZero = mcSettings.isFilterRewZeroSet();
 }
 
 ModelCheckerEnvironment::~ModelCheckerEnvironment() {
     // Intentionally left empty
 }
+
+ModelCheckerEnvironment::ModelCheckerEnvironment(ModelCheckerEnvironment const& other) = default;
+
+ModelCheckerEnvironment& ModelCheckerEnvironment::operator=(ModelCheckerEnvironment const& other) = default;
 
 ConditionalModelCheckerEnvironment& ModelCheckerEnvironment::conditional() {
     return conditionalModelCheckerEnvironment.get();
@@ -64,6 +70,14 @@ void ModelCheckerEnvironment::setLtl2daTool(std::string const& value) {
 
 void ModelCheckerEnvironment::unsetLtl2daTool() {
     ltl2daTool = boost::none;
+}
+
+bool ModelCheckerEnvironment::isFilterRewZeroSet() const {
+    return filterRewZero;
+}
+
+void ModelCheckerEnvironment::setFilterRewZero(bool value) {
+    filterRewZero = value;
 }
 
 }  // namespace storm

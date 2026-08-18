@@ -17,6 +17,8 @@ class ModelCheckerEnvironment {
    public:
     ModelCheckerEnvironment();
     ~ModelCheckerEnvironment();
+    ModelCheckerEnvironment(ModelCheckerEnvironment const& other);
+    ModelCheckerEnvironment& operator=(ModelCheckerEnvironment const& other);
 
     ConditionalModelCheckerEnvironment& conditional();
     ConditionalModelCheckerEnvironment const& conditional() const;
@@ -32,10 +34,14 @@ class ModelCheckerEnvironment {
     void setLtl2daTool(std::string const& value);
     void unsetLtl2daTool();
 
+    bool isFilterRewZeroSet() const;
+    void setFilterRewZero(bool value);
+
    private:
     SubEnvironment<ConditionalModelCheckerEnvironment> conditionalModelCheckerEnvironment;
     SubEnvironment<MultiObjectiveModelCheckerEnvironment> multiObjectiveModelCheckerEnvironment;
     boost::optional<std::string> ltl2daTool;
     SteadyStateDistributionAlgorithm steadyStateDistributionAlgorithm;
+    bool filterRewZero;
 };
 }  // namespace storm

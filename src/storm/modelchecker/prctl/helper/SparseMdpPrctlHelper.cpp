@@ -1,6 +1,7 @@
 #include "storm/modelchecker/prctl/helper/SparseMdpPrctlHelper.h"
 
 #include "storm/adapters/IntervalAdapter.h"
+#include "storm/environment/modelchecker/ModelCheckerEnvironment.h"
 #include "storm/environment/solver/MinMaxSolverEnvironment.h"
 #include "storm/exceptions/IllegalArgumentException.h"
 #include "storm/exceptions/InvalidPropertyException.h"
@@ -19,7 +20,6 @@
 #include "storm/settings/SettingsManager.h"
 #include "storm/settings/modules/GeneralSettings.h"
 #include "storm/settings/modules/IOSettings.h"
-#include "storm/settings/modules/ModelCheckerSettings.h"
 #include "storm/solver/LpSolver.h"
 #include "storm/solver/MinMaxLinearEquationSolver.h"
 #include "storm/solver/multiplier/Multiplier.h"
@@ -1119,7 +1119,7 @@ QualitativeStateSetsReachabilityRewards getQualitativeStateSetsReachabilityRewar
 
 template<typename ValueType, typename SolutionType>
 QualitativeStateSetsReachabilityRewards computeQualitativeStateSetsReachabilityRewards(
-    storm::solver::SolveGoal<ValueType, SolutionType> const& goal, storm::storage::SparseMatrix<ValueType> const& transitionMatrix,
+    ModelCheckerEnvironment const& mcEnv, storm::solver::SolveGoal<ValueType, SolutionType> const& goal, storm::storage::SparseMatrix<ValueType> const& transitionMatrix,
     storm::storage::SparseMatrix<ValueType> const& backwardTransitions, storm::storage::BitVector const& targetStates,
     std::function<storm::storage::BitVector()> const& zeroRewardStatesGetter, std::function<storm::storage::BitVector()> const& zeroRewardChoicesGetter) {
     QualitativeStateSetsReachabilityRewards result;
@@ -1133,7 +1133,7 @@ QualitativeStateSetsReachabilityRewards computeQualitativeStateSetsReachabilityR
     }
     result.infinityStates.complement();
 
-    if (storm::settings::getModule<storm::settings::modules::ModelCheckerSettings>().isFilterRewZeroSet()) {
+    if (mcEnv.isFilterRewZeroSet()) {
         if (goal.minimize()) {
             result.rewardZeroStates = storm::utility::graph::performProb1E(transitionMatrix, transitionMatrix.getRowGroupIndices(), backwardTransitions,
                                                                            trueStates, targetStates, zeroRewardChoicesGetter());
@@ -1149,16 +1149,17 @@ QualitativeStateSetsReachabilityRewards computeQualitativeStateSetsReachabilityR
 }
 
 template<typename ValueType, typename SolutionType>
-QualitativeStateSetsReachabilityRewards getQualitativeStateSetsReachabilityRewards(storm::solver::SolveGoal<ValueType, SolutionType> const& goal,
-                                                                                   storm::storage::SparseMatrix<ValueType> const& transitionMatrix,
-                                                                                   storm::storage::SparseMatrix<ValueType> const& backwardTransitions,
-                                                                                   storm::storage::BitVector const& targetStates, ModelCheckerHint const& hint,
-                                                                                   std::function<storm::storage::BitVector()> const& zeroRewardStatesGetter,
-                                                                                   std::function<storm::storage::BitVector()> const& zeroRewardChoicesGetter) {
+QualitativeStateSetsReachabilityRewards getQualitativeStateSetsReachabilityRewards(ModelCheckerEnvironment const& mcEnv,
+                                                                                    storm::solver::SolveGoal<ValueType, SolutionType> const& goal,
+                                                                                    storm::storage::SparseMatrix<ValueType> const& transitionMatrix,
+                                                                                    storm::storage::SparseMatrix<ValueType> const& backwardTransitions,
+                                                                                    storm::storage::BitVector const& targetStates, ModelCheckerHint const& hint,
+                                                                                    std::function<storm::storage::BitVector()> const& zeroRewardStatesGetter,
+                                                                                    std::function<storm::storage::BitVector()> const& zeroRewardChoicesGetter) {
     if (hint.isExplicitModelCheckerHint() && hint.template asExplicitModelCheckerHint<ValueType>().getComputeOnlyMaybeStates()) {
         return getQualitativeStateSetsReachabilityRewardsFromHint<ValueType>(hint, targetStates);
     } else {
-        return computeQualitativeStateSetsReachabilityRewards(goal, transitionMatrix, backwardTransitions, targetStates, zeroRewardStatesGetter,
+        return computeQualitativeStateSetsReachabilityRewards(mcEnv, goal, transitionMatrix, backwardTransitions, targetStates, zeroRewardStatesGetter,
                                                               zeroRewardChoicesGetter);
     }
 }
@@ -1355,7 +1356,7 @@ MDPSparseModelCheckingHelperReturnType<SolutionType> SparseMdpPrctlHelper<ValueT
 
     // Determine which states have a reward that is infinity or less than infinity.
     QualitativeStateSetsReachabilityRewards qualitativeStateSets = getQualitativeStateSetsReachabilityRewards(
-        goal, transitionMatrix, backwardTransitions, targetStates, hint, zeroRewardStatesGetter, zeroRewardChoicesGetter);
+        env.modelchecker(), goal, transitionMatrix, backwardTransitions, targetStates, hint, zeroRewardStatesGetter, zeroRewardChoicesGetter);
 
     STORM_LOG_INFO("Preprocessing: " << qualitativeStateSets.infinityStates.getNumberOfSetBits() << " states with reward infinity, "
                                      << qualitativeStateSets.rewardZeroStates.getNumberOfSetBits() << " states with reward zero ("
