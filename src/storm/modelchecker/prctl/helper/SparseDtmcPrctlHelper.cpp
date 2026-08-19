@@ -16,7 +16,6 @@
 #include "storm/modelchecker/results/ExplicitQuantitativeCheckResult.h"
 #include "storm/settings/SettingsManager.h"
 #include "storm/settings/modules/GeneralSettings.h"
-#include "storm/settings/modules/IOSettings.h"
 #include "storm/solver/LinearEquationSolver.h"
 #include "storm/solver/multiplier/Multiplier.h"
 #include "storm/storage/StronglyConnectedComponentDecomposition.h"
@@ -73,7 +72,7 @@ std::map<storm::storage::sparse::state_type, SolutionType> SparseDtmcPrctlHelper
         storm::solver::GeneralLinearEquationSolverFactory<ValueType> linearEquationSolverFactory;
         rewardUnfolding.setEquationSystemFormatForEpochModel(linearEquationSolverFactory.getEquationProblemFormat(preciseEnv));
 
-        storm::utility::ProgressMeasurement progress("epochs");
+        storm::utility::ProgressMeasurement progress("epochs", env.solver().getShowProgressDelay());
         progress.setMaxCount(epochOrder.size());
         progress.startNewMeasurement(0);
         uint64_t numCheckedEpochs = 0;
@@ -84,8 +83,7 @@ std::map<storm::storage::sparse::state_type, SolutionType> SparseDtmcPrctlHelper
             swCheck.start();
             rewardUnfolding.setSolutionForCurrentEpoch(epochModel.analyzeSingleObjective(preciseEnv, x, b, linEqSolver, lowerBound, upperBound));
             swCheck.stop();
-            if (storm::settings::getModule<storm::settings::modules::IOSettings>().isExportCdfSet() &&
-                !rewardUnfolding.getEpochManager().hasBottomDimension(epoch)) {
+            if (env.modelchecker().isExportCdfSet() && !rewardUnfolding.getEpochManager().hasBottomDimension(epoch)) {
                 std::vector<ValueType> cdfEntry;
                 for (uint64_t i = 0; i < rewardUnfolding.getEpochManager().getDimensionCount(); ++i) {
                     uint64_t offset = rewardUnfolding.getDimension(i).boundType == helper::rewardbounded::DimensionBoundType::LowerBound ? 1 : 0;
@@ -109,14 +107,13 @@ std::map<storm::storage::sparse::state_type, SolutionType> SparseDtmcPrctlHelper
 
         swAll.stop();
 
-        if (storm::settings::getModule<storm::settings::modules::IOSettings>().isExportCdfSet()) {
+        if (env.modelchecker().isExportCdfSet()) {
             std::vector<std::string> headers;
             for (uint64_t i = 0; i < rewardUnfolding.getEpochManager().getDimensionCount(); ++i) {
                 headers.push_back(rewardUnfolding.getDimension(i).formula->toString());
             }
             headers.push_back("Result");
-            storm::io::exportDataToCSVFile<ValueType, std::string, std::string>(
-                storm::settings::getModule<storm::settings::modules::IOSettings>().getExportCdfDirectory() + "cdf.csv", cdfData, headers);
+            storm::io::exportDataToCSVFile<ValueType, std::string, std::string>(env.modelchecker().getExportCdfDirectory() + "cdf.csv", cdfData, headers);
         }
 
         STORM_LOG_STATISTICS("---------------------------------\n");

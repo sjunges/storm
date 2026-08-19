@@ -22,6 +22,9 @@ ModelCheckerEnvironment::ModelCheckerEnvironment() {
     steadyStateDistributionAlgorithm = ioSettings.getSteadyStateDistributionAlgorithm();
 
     filterRewZero = mcSettings.isFilterRewZeroSet();
+
+    exportCdfEnabled = ioSettings.isExportCdfSet();
+    exportCdfDirectory = ioSettings.getExportCdfDirectory();
 }
 
 ModelCheckerEnvironment::~ModelCheckerEnvironment() {
@@ -78,6 +81,22 @@ bool ModelCheckerEnvironment::isFilterRewZeroSet() const {
 
 void ModelCheckerEnvironment::setFilterRewZero(bool value) {
     filterRewZero = value;
+}
+
+bool ModelCheckerEnvironment::isExportCdfSet() const {
+    return exportCdfEnabled;
+}
+
+void ModelCheckerEnvironment::setExportCdf(bool value) {
+    exportCdfEnabled = value;
+}
+
+std::string const& ModelCheckerEnvironment::getExportCdfDirectory() const {
+    return exportCdfDirectory;
+}
+
+void ModelCheckerEnvironment::setExportCdfDirectory(std::string const& value) {
+    exportCdfDirectory = value;
 }
 
 }  // namespace storm

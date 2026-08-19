@@ -34,7 +34,11 @@ class Environment {
     DdEnvironment& dd();
     DdEnvironment const& dd() const;
 
+    double modelTolerance() const;
+    void setModelTolerance(double value);
+
    private:
     SubEnvironment<InternalEnvironment> internalEnv;
+    double modelToleranceValue;
 };
 }  // namespace storm
