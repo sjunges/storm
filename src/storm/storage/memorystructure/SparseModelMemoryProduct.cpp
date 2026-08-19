@@ -387,7 +387,7 @@ storm::models::sparse::StateLabeling SparseModelMemoryProduct<ValueType, RewardM
     storm::storage::BitVector initialStates(numResStates, false);
     auto memoryInitIt = memory.getInitialMemoryStates().begin();
     if (memory.isOnlyInitialStatesRelevantSet()) {
-        for (auto modelInit : model.getInitialStates()) {
+        for (uint64_t modelInit : model.getInitialStates()) {
             initialStates.set(getResultState(modelInit, *memoryInitIt), true);
             ++memoryInitIt;
         }
