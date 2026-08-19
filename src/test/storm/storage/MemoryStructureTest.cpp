@@ -103,12 +103,7 @@ TEST(MemoryStructure, ProductModelWithOnlyInitialStatesRelevantFalse) {
     auto productType = prodMem.product(*mdp);
     auto productModel = productType.build();
 
-    // The product should be reachable. With a 3-state chain 0->1->2(self-loop),
-    // memory state (0,0) for both sub-memories is reachable at states 0 and 1,
-    // and (1,1) is reachable at state 2.
-    EXPECT_LT(0u, productModel->getNumberOfStates());
-
-    // With onlyInitialStatesRelevant=false, one initial product state per model state.
+    EXPECT_EQ(4u, productModel->getNumberOfStates());
     EXPECT_EQ(3u, productModel->getInitialStates().getNumberOfSetBits());
 }
 
