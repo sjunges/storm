@@ -24,7 +24,9 @@ ModelCheckerEnvironment::ModelCheckerEnvironment() {
     filterRewZero = mcSettings.isFilterRewZeroSet();
 
     exportCdfEnabled = ioSettings.isExportCdfSet();
-    exportCdfDirectory = ioSettings.getExportCdfDirectory();
+    if (exportCdfEnabled) {
+        exportCdfDirectory = ioSettings.getExportCdfDirectory();
+    }
 }
 
 ModelCheckerEnvironment::~ModelCheckerEnvironment() {
