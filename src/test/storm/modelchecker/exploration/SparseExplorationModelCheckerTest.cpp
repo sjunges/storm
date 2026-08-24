@@ -18,7 +18,6 @@ class SparseExplorationModelCheckerTest : public ::testing::Test {
 #ifndef STORM_HAVE_Z3
         GTEST_SKIP() << "Z3 not available.";
 #endif
-        storm::settings::initializeAll("test", "test");
     }
 };
 
