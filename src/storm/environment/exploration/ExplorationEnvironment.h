@@ -1,7 +1,7 @@
 #pragma once
 
-#include <boost/optional.hpp>
 #include <cstdint>
+#include <optional>
 
 #include "storm/modelchecker/exploration/ExplorationTypes.h"
 
@@ -20,7 +20,7 @@ class ExplorationEnvironment {
     uint64_t getStepsUntilPrecomputation() const;
     void setStepsUntilPrecomputation(uint64_t value);
 
-    boost::optional<uint64_t> const& getSampledPathsUntilPrecomputation() const;
+    std::optional<uint64_t> const& getSampledPathsUntilPrecomputation() const;
     void setSampledPathsUntilPrecomputation(uint64_t value);
     void unsetSampledPathsUntilPrecomputation();
 
@@ -33,7 +33,7 @@ class ExplorationEnvironment {
    private:
     storm::modelchecker::exploration_detail::PrecomputationType precomputationType;
     uint64_t stepsUntilPrecomputation;
-    boost::optional<uint64_t> sampledPathsUntilPrecomputation;
+    std::optional<uint64_t> sampledPathsUntilPrecomputation;
     storm::modelchecker::exploration_detail::NextStateHeuristic nextStateHeuristic;
     double precision;
 };

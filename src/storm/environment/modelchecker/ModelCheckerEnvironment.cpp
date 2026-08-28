@@ -33,10 +33,6 @@ ModelCheckerEnvironment::~ModelCheckerEnvironment() {
     // Intentionally left empty
 }
 
-ModelCheckerEnvironment::ModelCheckerEnvironment(ModelCheckerEnvironment const& other) = default;
-
-ModelCheckerEnvironment& ModelCheckerEnvironment::operator=(ModelCheckerEnvironment const& other) = default;
-
 ConditionalModelCheckerEnvironment& ModelCheckerEnvironment::conditional() {
     return conditionalModelCheckerEnvironment.get();
 }

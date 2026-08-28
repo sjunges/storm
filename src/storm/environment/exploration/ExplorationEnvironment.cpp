@@ -40,7 +40,7 @@ void ExplorationEnvironment::setStepsUntilPrecomputation(uint64_t value) {
     stepsUntilPrecomputation = value;
 }
 
-boost::optional<uint64_t> const& ExplorationEnvironment::getSampledPathsUntilPrecomputation() const {
+std::optional<uint64_t> const& ExplorationEnvironment::getSampledPathsUntilPrecomputation() const {
     return sampledPathsUntilPrecomputation;
 }
 
@@ -49,7 +49,7 @@ void ExplorationEnvironment::setSampledPathsUntilPrecomputation(uint64_t value) 
 }
 
 void ExplorationEnvironment::unsetSampledPathsUntilPrecomputation() {
-    sampledPathsUntilPrecomputation = boost::none;
+    sampledPathsUntilPrecomputation = std::nullopt;
 }
 
 storm::modelchecker::exploration_detail::NextStateHeuristic ExplorationEnvironment::getNextStateHeuristic() const {

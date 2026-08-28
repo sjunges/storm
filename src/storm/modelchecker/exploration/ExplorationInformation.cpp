@@ -20,7 +20,7 @@ ExplorationInformation<StateType, ValueType>::ExplorationInformation(Exploration
     localPrecomputation = env.getPrecomputationType() == storm::modelchecker::exploration_detail::PrecomputationType::Local;
     numberOfExplorationStepsUntilPrecomputation = env.getStepsUntilPrecomputation();
     if (env.getSampledPathsUntilPrecomputation()) {
-        numberOfSampledPathsUntilPrecomputation = env.getSampledPathsUntilPrecomputation().get();
+        numberOfSampledPathsUntilPrecomputation = env.getSampledPathsUntilPrecomputation().value();
     }
     nextStateHeuristic = env.getNextStateHeuristic();
 }

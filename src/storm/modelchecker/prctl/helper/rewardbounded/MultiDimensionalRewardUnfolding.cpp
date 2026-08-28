@@ -408,9 +408,13 @@ EpochModel<ValueType, SingleObjectiveMode>& MultiDimensionalRewardUnfolding<Valu
     if (!currentEpoch || !epochManager.compareEpochClass(epoch, currentEpoch.get())) {
         setCurrentEpochClass(epoch);
         epochModel.epochMatrixChanged = true;
-        if (storm::utility::graph::hasCycle(epochModel.epochMatrix)) {
-            STORM_LOG_STATISTICS("Epoch model for epoch " << epochManager.toString(epoch) << " is cyclic.");
-        }
+        STORM_LOG_STATISTICS_LAZY([this, &epoch](std::ostream& stream) {
+            if (storm::utility::graph::hasCycle(epochModel.epochMatrix)) {
+                stream << "Epoch model for epoch " << epochManager.toString(epoch) << " is cyclic.";
+                return true;
+            }
+            return false;
+        });
     } else {
         epochModel.epochMatrixChanged = false;
     }

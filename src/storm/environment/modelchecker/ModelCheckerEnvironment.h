@@ -17,8 +17,6 @@ class ModelCheckerEnvironment {
    public:
     ModelCheckerEnvironment();
     ~ModelCheckerEnvironment();
-    ModelCheckerEnvironment(ModelCheckerEnvironment const& other);
-    ModelCheckerEnvironment& operator=(ModelCheckerEnvironment const& other);
 
     ConditionalModelCheckerEnvironment& conditional();
     ConditionalModelCheckerEnvironment const& conditional() const;
