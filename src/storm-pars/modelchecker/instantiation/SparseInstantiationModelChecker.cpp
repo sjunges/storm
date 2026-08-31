@@ -1,6 +1,7 @@
 #include "storm-pars/modelchecker/instantiation/SparseInstantiationModelChecker.h"
 
 #include "storm/adapters/RationalFunctionAdapter.h"
+#include "storm/environment/Environment.h"
 #include "storm/models/sparse/Ctmc.h"
 #include "storm/models/sparse/Dtmc.h"
 #include "storm/models/sparse/Mdp.h"

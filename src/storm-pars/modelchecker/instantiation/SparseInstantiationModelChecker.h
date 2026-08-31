@@ -1,6 +1,7 @@
 #pragma once
 
 #include "storm-pars/utility/parametric.h"
+#include "storm/environment/Environment.h"
 #include "storm/logic/Formulas.h"
 #include "storm/modelchecker/CheckTask.h"
 #include "storm/modelchecker/hints/ModelCheckerHint.h"
@@ -45,7 +46,7 @@ class SparseInstantiationModelChecker {
     SparseModelType const& getOriginalModel() const;
 
    protected:
-    Environment const& env;
+    Environment env;
     SparseModelType const& parametricModel;
     std::unique_ptr<CheckTask<storm::logic::Formula, ConstantType>> currentCheckTask;
 
