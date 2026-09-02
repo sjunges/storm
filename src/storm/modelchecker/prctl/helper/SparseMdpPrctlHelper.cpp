@@ -1116,10 +1116,9 @@ QualitativeStateSetsReachabilityRewards getQualitativeStateSetsReachabilityRewar
 
 template<typename ValueType, typename SolutionType>
 QualitativeStateSetsReachabilityRewards computeQualitativeStateSetsReachabilityRewards(
-    Environment const& env, storm::solver::SolveGoal<ValueType, SolutionType> const& goal,
-    storm::storage::SparseMatrix<ValueType> const& transitionMatrix, storm::storage::SparseMatrix<ValueType> const& backwardTransitions,
-    storm::storage::BitVector const& targetStates, std::function<storm::storage::BitVector()> const& zeroRewardStatesGetter,
-    std::function<storm::storage::BitVector()> const& zeroRewardChoicesGetter) {
+    Environment const& env, storm::solver::SolveGoal<ValueType, SolutionType> const& goal, storm::storage::SparseMatrix<ValueType> const& transitionMatrix,
+    storm::storage::SparseMatrix<ValueType> const& backwardTransitions, storm::storage::BitVector const& targetStates,
+    std::function<storm::storage::BitVector()> const& zeroRewardStatesGetter, std::function<storm::storage::BitVector()> const& zeroRewardChoicesGetter) {
     QualitativeStateSetsReachabilityRewards result;
     storm::storage::BitVector trueStates(transitionMatrix.getRowGroupCount(), true);
     if (goal.minimize()) {
@@ -1147,13 +1146,10 @@ QualitativeStateSetsReachabilityRewards computeQualitativeStateSetsReachabilityR
 }
 
 template<typename ValueType, typename SolutionType>
-QualitativeStateSetsReachabilityRewards getQualitativeStateSetsReachabilityRewards(Environment const& env,
-                                                                                   storm::solver::SolveGoal<ValueType, SolutionType> const& goal,
-                                                                                   storm::storage::SparseMatrix<ValueType> const& transitionMatrix,
-                                                                                   storm::storage::SparseMatrix<ValueType> const& backwardTransitions,
-                                                                                   storm::storage::BitVector const& targetStates, ModelCheckerHint const& hint,
-                                                                                   std::function<storm::storage::BitVector()> const& zeroRewardStatesGetter,
-                                                                                   std::function<storm::storage::BitVector()> const& zeroRewardChoicesGetter) {
+QualitativeStateSetsReachabilityRewards getQualitativeStateSetsReachabilityRewards(
+    Environment const& env, storm::solver::SolveGoal<ValueType, SolutionType> const& goal, storm::storage::SparseMatrix<ValueType> const& transitionMatrix,
+    storm::storage::SparseMatrix<ValueType> const& backwardTransitions, storm::storage::BitVector const& targetStates, ModelCheckerHint const& hint,
+    std::function<storm::storage::BitVector()> const& zeroRewardStatesGetter, std::function<storm::storage::BitVector()> const& zeroRewardChoicesGetter) {
     if (hint.isExplicitModelCheckerHint() && hint.template asExplicitModelCheckerHint<ValueType>().getComputeOnlyMaybeStates()) {
         return getQualitativeStateSetsReachabilityRewardsFromHint<ValueType>(hint, targetStates);
     } else {
