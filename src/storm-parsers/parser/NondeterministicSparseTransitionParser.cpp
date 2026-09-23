@@ -326,8 +326,8 @@ template STORM_PARSERS_API storm::storage::SparseMatrix<double> Nondeterministic
 
 template class STORM_PARSERS_API NondeterministicSparseTransitionParser<storm::Interval>;
 
-template STORM_PARSERS_API storm::storage::SparseMatrix<storm::Interval> NondeterministicSparseTransitionParser<storm::Interval>::parseNondeterministicTransitionRewards<double>(
-    std::string const& filename, storm::storage::SparseMatrix<double> const& modelInformation);
+template STORM_PARSERS_API storm::storage::SparseMatrix<storm::Interval> NondeterministicSparseTransitionParser<
+    storm::Interval>::parseNondeterministicTransitionRewards<double>(std::string const& filename, storm::storage::SparseMatrix<double> const& modelInformation);
 template STORM_PARSERS_API storm::storage::SparseMatrix<storm::Interval> NondeterministicSparseTransitionParser<storm::Interval>::parse<double>(
     std::string const& filename, bool isRewardFile, storm::storage::SparseMatrix<double> const& modelInformation, ExplicitModelParserOptions const& options);
 

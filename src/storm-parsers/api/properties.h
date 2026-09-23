@@ -43,9 +43,9 @@ STORM_PARSERS_API std::vector<storm::jani::Property> parsePropertiesForPrismProg
                                                                                     boost::optional<std::set<std::string>> const& propertyFilter = boost::none);
 STORM_PARSERS_API std::vector<storm::jani::Property> parsePropertiesForJaniModel(std::string const& inputString, storm::jani::Model const& model,
                                                                                  boost::optional<std::set<std::string>> const& propertyFilter = boost::none);
-STORM_PARSERS_API std::vector<storm::jani::Property> parsePropertiesForSymbolicModelDescription(std::string const& inputString,
-                                                                                                storm::storage::SymbolicModelDescription const& modelDescription,
-                                                                                                boost::optional<std::set<std::string>> const& propertyFilter = boost::none);
+STORM_PARSERS_API std::vector<storm::jani::Property> parsePropertiesForSymbolicModelDescription(
+    std::string const& inputString, storm::storage::SymbolicModelDescription const& modelDescription,
+    boost::optional<std::set<std::string>> const& propertyFilter = boost::none);
 
 }  // namespace api
 }  // namespace storm

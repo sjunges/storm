@@ -227,14 +227,14 @@ typename DeterministicSparseTransitionParser<ValueType>::FirstPassResult Determi
 template class STORM_PARSERS_API DeterministicSparseTransitionParser<double>;
 template STORM_PARSERS_API storm::storage::SparseMatrix<double> DeterministicSparseTransitionParser<double>::parseDeterministicTransitionRewards(
     std::string const& filename, storm::storage::SparseMatrix<double> const& transitionMatrix);
-template STORM_PARSERS_API storm::storage::SparseMatrix<double> DeterministicSparseTransitionParser<double>::parse(std::string const& filename, bool isRewardFile,
-                                                                                                                 storm::storage::SparseMatrix<double> const& transitionMatrix,
-                                                                                                                 ExplicitModelParserOptions const& options);
+template STORM_PARSERS_API storm::storage::SparseMatrix<double> DeterministicSparseTransitionParser<double>::parse(
+    std::string const& filename, bool isRewardFile, storm::storage::SparseMatrix<double> const& transitionMatrix, ExplicitModelParserOptions const& options);
 
 template class STORM_PARSERS_API DeterministicSparseTransitionParser<storm::Interval>;
 
-template STORM_PARSERS_API storm::storage::SparseMatrix<storm::Interval> DeterministicSparseTransitionParser<storm::Interval>::parseDeterministicTransitionRewards(
-    std::string const& filename, storm::storage::SparseMatrix<double> const& transitionMatrix);
+template STORM_PARSERS_API storm::storage::SparseMatrix<storm::Interval>
+DeterministicSparseTransitionParser<storm::Interval>::parseDeterministicTransitionRewards(std::string const& filename,
+                                                                                          storm::storage::SparseMatrix<double> const& transitionMatrix);
 template STORM_PARSERS_API storm::storage::SparseMatrix<storm::Interval> DeterministicSparseTransitionParser<storm::Interval>::parse(
     std::string const& filename, bool isRewardFile, storm::storage::SparseMatrix<double> const& transitionMatrix, ExplicitModelParserOptions const& options);
 }  // namespace parser

@@ -581,8 +581,8 @@ std::shared_ptr<storm::models::ModelBase> parseDirectEncodingModel(std::filesyst
 }
 
 // Template instantiations.
-template STORM_PARSERS_API std::shared_ptr<storm::models::sparse::Model<double>> parseDirectEncodingModel<double>(
-    std::filesystem::path const& file, DirectEncodingParserOptions const& options);
+template STORM_PARSERS_API std::shared_ptr<storm::models::sparse::Model<double>> parseDirectEncodingModel<double>(std::filesystem::path const& file,
+                                                                                                                  DirectEncodingParserOptions const& options);
 template STORM_PARSERS_API std::shared_ptr<storm::models::sparse::Model<storm::RationalNumber>> parseDirectEncodingModel<storm::RationalNumber>(
     std::filesystem::path const& file, DirectEncodingParserOptions const& options);
 template STORM_PARSERS_API std::shared_ptr<storm::models::sparse::Model<storm::Interval>> parseDirectEncodingModel<storm::Interval>(
