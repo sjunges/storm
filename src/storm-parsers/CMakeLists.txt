@@ -73,8 +73,11 @@ set_target_properties(storm-parsers PROPERTIES DEFINE_SYMBOL "")  # to avoid pro
 set_target_properties(storm-parsers PROPERTIES CXX_VISIBILITY_PRESET hidden VISIBILITY_INLINES_HIDDEN YES)
 # With most code hidden, drop everything that is not reachable from the exported symbols.
 if(APPLE)
+    # ld64's -dead_strip works on the .subsections_via_symbols that clang emits by default.
     target_link_options(storm-parsers PRIVATE "LINKER:-dead_strip")
 elseif(UNIX AND NOT APPLE)
+    # --gc-sections can only collect unused input sections, so each function/data object must live in its own section.
+    target_compile_options(storm-parsers PRIVATE -ffunction-sections -fdata-sections)
     target_link_options(storm-parsers PRIVATE "LINKER:--gc-sections")
 endif()
 # Strip symbols after linking to keep the binary small. Turn STORM_STRIP_PARSER_BINARY off if you want to debug
