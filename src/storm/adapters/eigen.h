@@ -25,9 +25,14 @@
 
 // Finally include the parts of Eigen we need.
 // Make sure to include our patched version of Eigen (and not a pre-installed one e.g. located at /usr/include)
+// Eigen is an internal implementation detail of storm's linear-algebra and solver backends: its templates are
+// instantiated in storm's translation units but are never part of storm's public API and never consumed by external
+// libraries. Compile it with hidden visibility so that none of its symbols leak out of libstorm.
+#pragma GCC visibility push(hidden)
 #include <StormEigen/Eigen/Dense>
 #include <StormEigen/Eigen/Sparse>
 #include <StormEigen/unsupported/Eigen/IterativeSolvers>
+#pragma GCC visibility pop
 
 #if defined(__clang__)
 #pragma clang diagnostic pop
