@@ -63,3 +63,23 @@ RationalFunctionVariable findRFVariable(std::string const& name);
 void clearRFVariablePool();
 
 }  // namespace storm
+
+// None of these carl/polynomial class templates carry an explicit visibility attribute of their own. Per the
+// Itanium ABI, a template instantiation's effective visibility is the *minimum* of the template's own visibility
+// and its template arguments' visibility -- so a consumer built with hidden symbol visibility (e.g. storm-parsers)
+// that instantiates, say, storm::RationalFunction as part of one of its own (correctly default-visibility-attributed)
+// public classes would still see that outer instantiation pulled down to hidden, because these carl types are
+// computed as ambient-hidden within that consumer's translation units. The fix has two parts, both required:
+//  1. An explicit __attribute__((visibility("default"))) redeclaration here, seen before any other translation unit
+//     uses these types, so their *declared* visibility -- the value the min-visibility rule reads -- is pinned to
+//     default regardless of any consumer's ambient -fvisibility flag. (`extern template` alone does not do this: it
+//     only suppresses local instantiation, it does not change what visibility a type is considered to declare.)
+//  2. A matching non-extern explicit instantiation, so consumers don't instantiate their own copy at all and instead
+//     link against the single definition below, provided by RationalFunctionAdapter.cpp as part of storm (which is
+//     not compiled with hidden visibility).
+namespace carl {
+extern template class __attribute__((visibility("default"))) MultivariatePolynomial<storm::RationalFunctionCoefficient>;
+extern template class __attribute__((visibility("default"))) FactorizedPolynomial<storm::RawPolynomial>;
+extern template class __attribute__((visibility("default"))) Cache<carl::PolynomialFactorizationPair<storm::RawPolynomial>>;
+extern template class __attribute__((visibility("default"))) RationalFunction<storm::Polynomial, true>;
+}  // namespace carl
