@@ -4,13 +4,7 @@
 #include <sstream>
 
 // Exceptions must be catchable across shared library boundaries even with hidden visibility.
-#ifdef _MSC_VER
-#define STORM_EXCEPTION_EXPORT_ATTRIBUTE
-#elif defined(__GNUC__) || defined(__clang__)
 #define STORM_EXCEPTION_EXPORT_ATTRIBUTE __attribute__((visibility("default")))
-#else
-#define STORM_EXCEPTION_EXPORT_ATTRIBUTE
-#endif
 
 /*!
  * Macro to generate descendant exception classes. As all classes are nearly the same, this makes changing common
