@@ -2,6 +2,15 @@
 
 #include "storm/adapters/IntervalForward.h"
 
+// Not currently load-bearing: <carl/interval/Interval.h> below already transitively pulls in the complete GMP/CLN
+// definitions (via its own numbers.h, which includes every number backend's adaptation layer unconditionally,
+// since Interval<Number> needs arithmetic/comparison operators for whatever Number turns out to be). But that's an
+// implementation detail of carl's header organization, not a documented guarantee, and this file's
+// isNan()/explicit-instantiation code below genuinely needs storm::RationalNumber to be a complete type. Including
+// this explicitly (as opposed to the lighter RationalNumberForward.h, which only forward-declares the type) makes
+// that dependency self-documenting and independent of carl's current include structure.
+#include "storm/adapters/RationalNumberAdapter.h"
+
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wundefined-reinterpret-cast"
 #pragma clang diagnostic ignored "-Wunused-template"
