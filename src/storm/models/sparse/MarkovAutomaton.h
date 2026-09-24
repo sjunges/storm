@@ -1,5 +1,8 @@
 #pragma once
 
+#include "storm/adapters/IntervalForward.h"
+#include "storm/adapters/RationalFunctionForward.h"
+#include "storm/adapters/RationalNumberForward.h"
 #include "storm/models/sparse/Ctmc.h"
 #include "storm/models/sparse/NondeterministicModel.h"
 
@@ -188,6 +191,18 @@ class MarkovAutomaton : public NondeterministicModel<ValueType, RewardModelType>
     // A flag indicating whether the Markov automaton contains Zeno cycles.
     mutable boost::optional<bool> hasZenoCycle;
 };
+
+// Explicit instantiations are provided in MarkovAutomaton.cpp. Without this declaration, any other translation unit
+// that uses MarkovAutomaton<ValueType> (e.g. storm-parsers, which builds these objects under hidden symbol
+// visibility) would implicitly instantiate its own copy of the vtable/RTTI, which is unsafe to hand across a shared
+// library boundary.
+extern template class MarkovAutomaton<double>;
+extern template class MarkovAutomaton<double, storm::models::sparse::StandardRewardModel<storm::Interval>>;
+extern template class MarkovAutomaton<storm::RationalNumber>;
+extern template class MarkovAutomaton<storm::RationalNumber, storm::models::sparse::StandardRewardModel<storm::RationalInterval>>;
+extern template class MarkovAutomaton<storm::Interval>;
+extern template class MarkovAutomaton<storm::RationalInterval>;
+extern template class MarkovAutomaton<storm::RationalFunction>;
 
 }  // namespace sparse
 }  // namespace models

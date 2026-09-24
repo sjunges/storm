@@ -4,6 +4,9 @@
 #include <unordered_map>
 #include <vector>
 
+#include "storm/adapters/IntervalForward.h"
+#include "storm/adapters/RationalFunctionForward.h"
+#include "storm/adapters/RationalNumberForward.h"
 #include "storm/models/Model.h"
 #include "storm/models/ModelRepresentation.h"
 #include "storm/models/sparse/ChoiceLabeling.h"
@@ -473,6 +476,24 @@ std::set<storm::RationalFunctionVariable> getRateParameters(Model<storm::Rationa
  * @return Set of parameters.
  */
 std::set<storm::RationalFunctionVariable> getAllParameters(Model<storm::RationalFunction> const& model);
+
+// Model.cpp provides an explicit specialization of writeJsonToStream for this instantiation. That specialization must
+// be declared before the extern template below, which would otherwise count as the point of instantiation for all
+// (non-specialized) members and make the later specialization in Model.cpp ill-formed.
+template<>
+void Model<double, storm::models::sparse::StandardRewardModel<storm::Interval>>::writeJsonToStream(std::ostream& outStream) const;
+
+// Explicit instantiations are provided in Model.cpp. Without this declaration, any other translation unit that uses
+// Model<ValueType> (e.g. storm-parsers, which builds these objects under hidden symbol visibility) would implicitly
+// instantiate its own copy of the vtable/RTTI, which is unsafe to hand across a shared library boundary.
+extern template class Model<double>;
+extern template class Model<double, storm::models::sparse::StandardRewardModel<storm::Interval>>;
+extern template class Model<storm::RationalNumber>;
+extern template class Model<storm::RationalNumber, storm::models::sparse::StandardRewardModel<storm::RationalInterval>>;
+extern template class Model<storm::Interval>;
+extern template class Model<storm::RationalInterval>;
+extern template class Model<storm::RationalFunction>;
+
 }  // namespace sparse
 }  // namespace models
 }  // namespace storm

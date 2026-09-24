@@ -1,5 +1,8 @@
 #pragma once
 
+#include "storm/adapters/IntervalForward.h"
+#include "storm/adapters/RationalFunctionForward.h"
+#include "storm/adapters/RationalNumberForward.h"
 #include "storm/models/sparse/DeterministicModel.h"
 
 namespace storm {
@@ -50,6 +53,17 @@ class Dtmc : public DeterministicModel<ValueType, RewardModelType> {
 
     virtual void reduceToStateBasedRewards() override;
 };
+
+// Explicit instantiations are provided in Dtmc.cpp. Without this declaration, any other translation unit that uses
+// Dtmc<ValueType> (e.g. storm-parsers, which builds these objects under hidden symbol visibility) would implicitly
+// instantiate its own copy of the vtable/RTTI, which is unsafe to hand across a shared library boundary.
+extern template class Dtmc<double>;
+extern template class Dtmc<double, storm::models::sparse::StandardRewardModel<storm::Interval>>;
+extern template class Dtmc<storm::RationalNumber>;
+extern template class Dtmc<storm::RationalNumber, storm::models::sparse::StandardRewardModel<storm::RationalInterval>>;
+extern template class Dtmc<storm::Interval>;
+extern template class Dtmc<storm::RationalInterval>;
+extern template class Dtmc<storm::RationalFunction>;
 
 }  // namespace sparse
 }  // namespace models
