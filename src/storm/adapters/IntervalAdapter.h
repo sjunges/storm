@@ -39,20 +39,18 @@ inline bool Interval<storm::RationalNumber>::isNan() const {
 }
 }  // namespace carl
 
-// carl::Interval, like storm::RationalFunction's dependency chain (see RationalFunctionAdapter.h), carries no
-// explicit visibility attribute of its own, and would in principle need the same pin. It deliberately does NOT get
-// one here: neither an attributed extern template of a specific instantiation, nor an attributed primary-template
-// redeclaration in IntervalForward.h, survives GCC's -Werror=attributes across the whole codebase -- confirmed by
-// hitting three independent, unrelated translation units (resources/3rdparty/sylvan/src/storm_wrapper.cpp,
-// src/storm/generator/CompressedState.cpp, src/storm/generator/TransientVariableInformation.cpp) where some other
-// header reaches carl::Interval first via a path storm doesn't control (e.g. carl's own
-// numbers/adaption_float/FLOAT_T.h independently forward-declares it). The attribute has to precede *every*
-// reference to the type in *every* translation unit that includes this header, which is not achievable from
-// storm's side against carl's own scattered, unattributed forward declarations. The real fix has to happen in carl
-// itself: attach the attribute directly to carl::Interval's own declaration(s), the same way this PR's isNan() fix
-// below already had to. Until that lands, storm::Interval/RationalInterval stay unpinned here: their
-// ValueParser/DirectEncodingParser explicit instantiations remain unexported from storm-parsers under hidden
-// visibility -- a pre-existing gap, not a regression introduced by this fix.
+// Unlike storm::RationalFunction's dependency chain (see RationalFunctionAdapter.h), carl::Interval itself does not
+// need a visibility pin: it is fully defined inline in carl's header, so any external consumer (storm-dft,
+// storm-pars, tests, ...) that uses it implicitly instantiates its own default-visibility copy of Interval's
+// methods locally -- there is nothing to link against in storm-parsers, hidden or not. What does need to stay
+// exported is the (out-of-line-defined) public API that hands Interval-typed values across the storm-parsers
+// boundary in the first place -- ValueParser<storm::Interval>/<storm::RationalInterval>'s explicit class
+// instantiations in ValueParser.cpp, and parseDirectEncodingModel<...>'s explicit instantiations in
+// DirectEncodingParser.cpp -- and those already carry their own STORM_PARSERS_API directly, unaffected by whatever
+// visibility Interval itself ends up with. (A GCC-incompatible attempt to pin Interval's visibility here anyway,
+// on the mistaken assumption that it was required, briefly existed in this file's history; it wasn't needed --
+// confirmed via nm on the built library and via storm's own DirectEncodingParserTest.{IntervalDtmcTest,
+// RationalIntervalDtmcTest}, which exercise exactly this cross-DSO path.)
 namespace carl {
 extern template class Interval<double>;
 extern template class Interval<storm::RationalNumber>;
