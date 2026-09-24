@@ -41,10 +41,17 @@
 // ones storm doesn't control the internals of (e.g. resources/3rdparty/sylvan/src/storm_wrapper.cpp, which is
 // storm's own file but built as part of Sylvan's fetched CMake project) -- so this must stay the first thing in the
 // file that touches these types, not just earlier than the specific declarations that used to precede it here.
+//
+// Cache<PolynomialFactorizationPair<RawPolynomial>> is deliberately not pinned here, even though
+// RationalFunctionAdapter.cpp explicitly instantiates it alongside the others below: it's never a *direct* template
+// argument anywhere in the ValueParser<RationalFunction> -> RationalFunction -> Polynomial -> RawPolynomial chain --
+// FactorizedPolynomial only ever holds/returns it through std::shared_ptr<Cache<...>> indirection -- so the
+// min-visibility rule this comment is about never needs its declared visibility pinned. Pinning it anyway is exactly
+// what broke storm_wrapper.cpp on GCC: something in <carl/core/FactorizedPolynomial.h>'s own include chain
+// instantiates it before this point is reached, and GCC rejects an attribute added after that.
 namespace carl {
 extern template class __attribute__((visibility("default"))) MultivariatePolynomial<storm::RationalFunctionCoefficient>;
 extern template class __attribute__((visibility("default"))) FactorizedPolynomial<storm::RawPolynomial>;
-extern template class __attribute__((visibility("default"))) Cache<carl::PolynomialFactorizationPair<storm::RawPolynomial>>;
 extern template class __attribute__((visibility("default"))) RationalFunction<storm::Polynomial, true>;
 }  // namespace carl
 

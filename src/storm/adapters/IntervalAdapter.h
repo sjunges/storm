@@ -28,24 +28,32 @@ using BoundType = carl::BoundType;
 namespace carl {
 // carl::Interval<Number>::isNan() calls std::isnan() on the interval's bounds, which has no overload for exact
 // rational types (GMP/CLN) -- a latent bug in carl that implicit instantiation never surfaces (nothing calls
-// isNan() on a rational interval), but that a full explicit class instantiation (below) would, since that forces
-// every member to be instantiated regardless of use. A rational number can never be NaN by construction, so this
-// specialization isn't a workaround, it's the mathematically correct answer, and it must be declared here, before
-// the explicit instantiation below, per the rule that an explicit specialization must precede any point of
-// instantiation of the specialized entity.
+// isNan() on a rational interval), but that a full explicit class instantiation (below and in IntervalAdapter.cpp)
+// would, since that forces every member to be instantiated regardless of use. A rational number can never be NaN by
+// construction, so this specialization isn't a workaround, it's the mathematically correct answer, and it must be
+// declared here, before the explicit instantiation below, per the rule that an explicit specialization must precede
+// any point of instantiation of the specialized entity.
 template<>
 inline bool Interval<storm::RationalNumber>::isNan() const {
     return false;
 }
 }  // namespace carl
 
-// See the matching comment in RationalFunctionAdapter.h for the full explanation. In short: __attribute__((
-// visibility("default"))) here pins these types' *declared* visibility (what the Itanium ABI's min-visibility rule
-// for template instantiations reads) so that a hidden-visibility consumer (e.g. storm-parsers) instantiating, say,
-// storm::Interval as part of one of its own public classes doesn't get that outer instantiation silently pulled
-// down to hidden; extern template then avoids a local, redundant instantiation, linking instead against the
-// definition in IntervalAdapter.cpp, part of storm (which is not compiled with hidden visibility).
+// carl::Interval, like storm::RationalFunction's dependency chain (see RationalFunctionAdapter.h), carries no
+// explicit visibility attribute of its own, and would in principle need the same pin. It deliberately does NOT get
+// one here: neither an attributed extern template of a specific instantiation, nor an attributed primary-template
+// redeclaration in IntervalForward.h, survives GCC's -Werror=attributes across the whole codebase -- confirmed by
+// hitting three independent, unrelated translation units (resources/3rdparty/sylvan/src/storm_wrapper.cpp,
+// src/storm/generator/CompressedState.cpp, src/storm/generator/TransientVariableInformation.cpp) where some other
+// header reaches carl::Interval first via a path storm doesn't control (e.g. carl's own
+// numbers/adaption_float/FLOAT_T.h independently forward-declares it). The attribute has to precede *every*
+// reference to the type in *every* translation unit that includes this header, which is not achievable from
+// storm's side against carl's own scattered, unattributed forward declarations. The real fix has to happen in carl
+// itself: attach the attribute directly to carl::Interval's own declaration(s), the same way this PR's isNan() fix
+// below already had to. Until that lands, storm::Interval/RationalInterval stay unpinned here: their
+// ValueParser/DirectEncodingParser explicit instantiations remain unexported from storm-parsers under hidden
+// visibility -- a pre-existing gap, not a regression introduced by this fix.
 namespace carl {
-extern template class __attribute__((visibility("default"))) Interval<double>;
-extern template class __attribute__((visibility("default"))) Interval<storm::RationalNumber>;
+extern template class Interval<double>;
+extern template class Interval<storm::RationalNumber>;
 }  // namespace carl
