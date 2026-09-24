@@ -83,9 +83,7 @@ class Ctmc : public DeterministicModel<ValueType, RewardModelType> {
     std::vector<ValueType> exitRates;
 };
 
-// Explicit instantiations are provided in Ctmc.cpp. Without this declaration, any other translation unit that uses
-// Ctmc<ValueType> (e.g. storm-parsers, which builds these objects under hidden symbol visibility) would implicitly
-// instantiate its own copy of the vtable/RTTI, which is unsafe to hand across a shared library boundary.
+// Instantiated in Ctmc.cpp; prevents hidden consumers from duplicating the vtable/RTTI.
 extern template class Ctmc<double>;
 extern template class Ctmc<storm::RationalNumber>;
 extern template class Ctmc<double, storm::models::sparse::StandardRewardModel<storm::Interval>>;

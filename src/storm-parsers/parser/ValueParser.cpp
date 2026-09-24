@@ -135,11 +135,8 @@ bool parseNumber(std::string const& value, NumberType& result) {
     }
 }
 
-// Template instantiations. ValueParser<storm::RationalFunction> does not repeat STORM_PARSERS_API here (unlike the
-// others): GCC's -Werror=attributes rejects it as "type attributes ignored after type is already defined", because
-// the explicit member specializations of addParameter/parseValue above (lines 35, 43) -- which do need the attribute
-// repeated, since specializations don't inherit it from the class -- already establish the type earlier in this
-// file. Clang accepts the redundant attribute here; GCC does not.
+// Template instantiations. ValueParser<storm::RationalFunction> omits STORM_PARSERS_API: GCC rejects it as redundant
+// after the member specializations above.
 template class STORM_PARSERS_API ValueParser<double>;
 template class STORM_PARSERS_API ValueParser<storm::RationalNumber>;
 template class ValueParser<storm::RationalFunction>;

@@ -477,15 +477,11 @@ std::set<storm::RationalFunctionVariable> getRateParameters(Model<storm::Rationa
  */
 std::set<storm::RationalFunctionVariable> getAllParameters(Model<storm::RationalFunction> const& model);
 
-// Model.cpp provides an explicit specialization of writeJsonToStream for this instantiation. That specialization must
-// be declared before the extern template below, which would otherwise count as the point of instantiation for all
-// (non-specialized) members and make the later specialization in Model.cpp ill-formed.
+// Must precede the extern template below, which would otherwise be the point of instantiation.
 template<>
 void Model<double, storm::models::sparse::StandardRewardModel<storm::Interval>>::writeJsonToStream(std::ostream& outStream) const;
 
-// Explicit instantiations are provided in Model.cpp. Without this declaration, any other translation unit that uses
-// Model<ValueType> (e.g. storm-parsers, which builds these objects under hidden symbol visibility) would implicitly
-// instantiate its own copy of the vtable/RTTI, which is unsafe to hand across a shared library boundary.
+// Instantiated in Model.cpp; prevents hidden consumers from duplicating the vtable/RTTI.
 extern template class Model<double>;
 extern template class Model<double, storm::models::sparse::StandardRewardModel<storm::Interval>>;
 extern template class Model<storm::RationalNumber>;

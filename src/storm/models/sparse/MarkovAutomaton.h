@@ -192,10 +192,7 @@ class MarkovAutomaton : public NondeterministicModel<ValueType, RewardModelType>
     mutable boost::optional<bool> hasZenoCycle;
 };
 
-// Explicit instantiations are provided in MarkovAutomaton.cpp. Without this declaration, any other translation unit
-// that uses MarkovAutomaton<ValueType> (e.g. storm-parsers, which builds these objects under hidden symbol
-// visibility) would implicitly instantiate its own copy of the vtable/RTTI, which is unsafe to hand across a shared
-// library boundary.
+// Instantiated in MarkovAutomaton.cpp; prevents hidden consumers from duplicating the vtable/RTTI.
 extern template class MarkovAutomaton<double>;
 extern template class MarkovAutomaton<double, storm::models::sparse::StandardRewardModel<storm::Interval>>;
 extern template class MarkovAutomaton<storm::RationalNumber>;

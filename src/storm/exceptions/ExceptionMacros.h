@@ -3,12 +3,7 @@
 #include <exception>
 #include <sstream>
 
-/*!
- * Exception classes are fully defined in the header (no out-of-line key function), so their typeinfo and vtable are
- * emitted as weak symbols in every translation unit that uses them. To allow catching these exceptions across shared
- * library boundaries even when libraries are compiled with hidden visibility, they must always be compiled with
- * default visibility.
- */
+// Exceptions must be catchable across shared library boundaries even with hidden visibility.
 #ifdef _MSC_VER
 #define STORM_EXCEPTION_EXPORT_ATTRIBUTE
 #elif defined(__GNUC__) || defined(__clang__)

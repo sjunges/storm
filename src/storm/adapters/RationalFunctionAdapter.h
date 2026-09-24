@@ -20,35 +20,9 @@
 #pragma GCC diagnostic pop
 #pragma clang diagnostic pop
 
-// None of these carl/polynomial class templates carry an explicit visibility attribute of their own. Per the
-// Itanium ABI, a template instantiation's effective visibility is the *minimum* of the template's own visibility
-// and its template arguments' visibility -- so a consumer built with hidden symbol visibility (e.g. storm-parsers)
-// that instantiates, say, storm::RationalFunction as part of one of its own (correctly default-visibility-attributed)
-// public classes would still see that outer instantiation pulled down to hidden, because these carl types are
-// computed as ambient-hidden within that consumer's translation units. The fix has two parts, both required:
-//  1. An explicit __attribute__((visibility("default"))) redeclaration here, seen before any other translation unit
-//     uses these types, so their *declared* visibility -- the value the min-visibility rule reads -- is pinned to
-//     default regardless of any consumer's ambient -fvisibility flag. (`extern template` alone does not do this: it
-//     only suppresses local instantiation, it does not change what visibility a type is considered to declare.)
-//  2. A matching non-extern explicit instantiation, so consumers don't instantiate their own copy at all and instead
-//     link against the single definition below, provided by RationalFunctionAdapter.cpp as part of storm (which is
-//     not compiled with hidden visibility).
-// This block must come immediately after the raw carl includes above and before anything else in this header (the
-// hash_value templates below are fine, they're generic and uninstantiated until called -- but the RawPolynomialCache
-// typedef that used to sit here is not: forming it is enough to instantiate Cache<PolynomialFactorizationPair<
-// RawPolynomial>>, and GCC rejects an attribute added after a type is already instantiated in the same translation
-// unit). The same rule applies transitively to every other translation unit that includes this header, including
-// ones storm doesn't control the internals of (e.g. resources/3rdparty/sylvan/src/storm_wrapper.cpp, which is
-// storm's own file but built as part of Sylvan's fetched CMake project) -- so this must stay the first thing in the
-// file that touches these types, not just earlier than the specific declarations that used to precede it here.
-//
-// Cache<PolynomialFactorizationPair<RawPolynomial>> is deliberately not pinned here, even though
-// RationalFunctionAdapter.cpp explicitly instantiates it alongside the others below: it's never a *direct* template
-// argument anywhere in the ValueParser<RationalFunction> -> RationalFunction -> Polynomial -> RawPolynomial chain --
-// FactorizedPolynomial only ever holds/returns it through std::shared_ptr<Cache<...>> indirection -- so the
-// min-visibility rule this comment is about never needs its declared visibility pinned. Pinning it anyway is exactly
-// what broke storm_wrapper.cpp on GCC: something in <carl/core/FactorizedPolynomial.h>'s own include chain
-// instantiates it before this point is reached, and GCC rejects an attribute added after that.
+// Pin these carl types' visibility: consumers built with hidden visibility would otherwise instantiate them hidden.
+// Must precede any instantiation (GCC rejects a later visibility attribute).
+// Cache<PolynomialFactorizationPair<RawPolynomial>> is intentionally unpinned: it is only ever used via shared_ptr.
 namespace carl {
 extern template class __attribute__((visibility("default"))) MultivariatePolynomial<storm::RationalFunctionCoefficient>;
 extern template class __attribute__((visibility("default"))) FactorizedPolynomial<storm::RawPolynomial>;

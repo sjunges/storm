@@ -53,9 +53,7 @@ class Mdp : public NondeterministicModel<ValueType, RewardModelType> {
     virtual ~Mdp() = default;
 };
 
-// Explicit instantiations are provided in Mdp.cpp. Without this declaration, any other translation unit that uses
-// Mdp<ValueType> (e.g. storm-parsers, which builds these objects under hidden symbol visibility) would implicitly
-// instantiate its own copy of the vtable/RTTI, which is unsafe to hand across a shared library boundary.
+// Instantiated in Mdp.cpp; prevents hidden consumers from duplicating the vtable/RTTI.
 extern template class Mdp<double>;
 extern template class Mdp<double, storm::models::sparse::StandardRewardModel<storm::Interval>>;
 extern template class Mdp<storm::RationalNumber>;
