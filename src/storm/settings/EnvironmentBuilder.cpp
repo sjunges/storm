@@ -66,8 +66,7 @@ namespace settings {
 storm::Environment EnvironmentBuilder::buildEnvironment() {
     storm::Environment env;
 
-    applyIfRegistered<storm::settings::modules::GeneralSettings>(
-        [&](auto const& generalSettings) { env.setModelTolerance(generalSettings.getPrecision()); });
+    applyIfRegistered<storm::settings::modules::GeneralSettings>([&](auto const& generalSettings) { env.setModelTolerance(generalSettings.getPrecision()); });
 
     setSolverEnvironment(env.solver());
     setModelcheckerEnvironment(env.modelchecker());

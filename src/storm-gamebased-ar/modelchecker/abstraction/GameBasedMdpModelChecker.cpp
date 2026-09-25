@@ -1182,12 +1182,12 @@ class ExplicitGameExporter {
 
 template<typename ValueType>
 void postProcessStrategies(Environment const& env, uint64_t iteration, storm::OptimizationDirection const& player1Direction,
-                           storage::ExplicitGameStrategyPair& minStrategyPair,
-                           storage::ExplicitGameStrategyPair& maxStrategyPair, std::vector<uint64_t> const& player1Groups,
-                           std::vector<uint64_t> const& player2Groups, storm::storage::SparseMatrix<ValueType> const& transitionMatrix,
-                           storm::storage::BitVector const& initialStates, storm::storage::BitVector const& constraintStates,
-                           storm::storage::BitVector const& targetStates, ExplicitQuantitativeResultMinMax<ValueType> const& quantitativeResult,
-                           bool redirectPlayer1, bool redirectPlayer2, bool sanityCheck) {
+                           storage::ExplicitGameStrategyPair& minStrategyPair, storage::ExplicitGameStrategyPair& maxStrategyPair,
+                           std::vector<uint64_t> const& player1Groups, std::vector<uint64_t> const& player2Groups,
+                           storm::storage::SparseMatrix<ValueType> const& transitionMatrix, storm::storage::BitVector const& initialStates,
+                           storm::storage::BitVector const& constraintStates, storm::storage::BitVector const& targetStates,
+                           ExplicitQuantitativeResultMinMax<ValueType> const& quantitativeResult, bool redirectPlayer1, bool redirectPlayer2,
+                           bool sanityCheck) {
     if (redirectPlayer1 || redirectPlayer2) {
         for (uint64_t state = 0; state < player1Groups.size() - 1; ++state) {
             STORM_LOG_ASSERT(targetStates.get(state) || minStrategyPair.getPlayer1Strategy().hasDefinedChoice(state),

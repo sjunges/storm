@@ -108,6 +108,5 @@ void analyzeMonotonicity(storm::Environment const& env, std::shared_ptr<storm::m
 }
 
 template void analyzeMonotonicity(storm::Environment const& env, std::shared_ptr<storm::models::sparse::Model<storm::RationalFunction>> const& model,
-                                  cli::SymbolicInput const& input,
-                                  std::vector<storm::storage::ParameterRegion<storm::RationalFunction>> const& regions);
+                                  cli::SymbolicInput const& input, std::vector<storm::storage::ParameterRegion<storm::RationalFunction>> const& regions);
 }  // namespace storm::pars

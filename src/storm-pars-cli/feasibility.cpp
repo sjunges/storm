@@ -173,8 +173,8 @@ void runFeasibilityWithGD(storm::Environment const& env, std::shared_ptr<storm::
     STORM_PRINT("Finding an extremum using Gradient Descent\n");
     storm::utility::Stopwatch derivativeWatch(true);
     storm::derivative::GradientDescentInstantiationSearcher<storm::RationalFunction, double> gdsearch(
-        env, *dtmc, *method, derSettings.getLearningRate(), derSettings.getAverageDecay(), derSettings.getSquaredAverageDecay(),
-        derSettings.getMiniBatchSize(), derSettings.getTerminationEpsilon(), startPoint, *constraintMethod, region, derSettings.isPrintJsonSet());
+        env, *dtmc, *method, derSettings.getLearningRate(), derSettings.getAverageDecay(), derSettings.getSquaredAverageDecay(), derSettings.getMiniBatchSize(),
+        derSettings.getTerminationEpsilon(), startPoint, *constraintMethod, region, derSettings.isPrintJsonSet());
 
     gdsearch.setup(env, task);
     auto instantiationAndValue = gdsearch.gradientDescent();
