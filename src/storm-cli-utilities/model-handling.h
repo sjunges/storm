@@ -3,6 +3,7 @@
 #include <boost/algorithm/string/join.hpp>
 #include <type_traits>
 
+#include "Qvbs.h"
 #include "storm-cli-utilities/AutomaticSettings.h"
 #include "storm-cli-utilities/print.h"
 #include "storm-parsers/api/storm-parsers.h"
@@ -24,6 +25,7 @@
 #include "storm/settings/modules/BuildSettings.h"
 #include "storm/settings/modules/CoreSettings.h"
 #include "storm/settings/modules/CounterexampleGeneratorSettings.h"
+#include "storm/settings/modules/GeneralSettings.h"
 #include "storm/settings/modules/HintSettings.h"
 #include "storm/settings/modules/IOSettings.h"
 #include "storm/settings/modules/ModelCheckerSettings.h"
@@ -31,7 +33,6 @@
 #include "storm/settings/modules/ResourceSettings.h"
 #include "storm/settings/modules/SylvanSettings.h"
 #include "storm/settings/modules/TransformationSettings.h"
-#include "storm/storage/Qvbs.h"
 #include "storm/storage/SymbolicModelDescription.h"
 #include "storm/storage/jani/Property.h"
 #include "storm/storage/jani/localeliminator/AutomaticAction.h"

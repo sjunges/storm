@@ -14,8 +14,6 @@
 #include "storm/modelchecker/prctl/helper/DsMpiUpperRewardBoundsComputer.h"
 #include "storm/modelchecker/prctl/helper/rewardbounded/MultiDimensionalRewardUnfolding.h"
 #include "storm/modelchecker/results/ExplicitQuantitativeCheckResult.h"
-#include "storm/settings/SettingsManager.h"
-#include "storm/settings/modules/GeneralSettings.h"
 #include "storm/solver/LinearEquationSolver.h"
 #include "storm/solver/multiplier/Multiplier.h"
 #include "storm/storage/StronglyConnectedComponentDecomposition.h"
@@ -61,8 +59,7 @@ std::map<storm::storage::sparse::state_type, SolutionType> SparseDtmcPrctlHelper
         std::unique_ptr<storm::solver::LinearEquationSolver<ValueType>> linEqSolver;
 
         Environment preciseEnv = env;
-        ValueType precision = rewardUnfolding.getRequiredEpochModelPrecision(
-            initEpoch, storm::utility::convertNumber<ValueType>(storm::settings::getModule<storm::settings::modules::GeneralSettings>().getPrecision()));
+        ValueType precision = rewardUnfolding.getRequiredEpochModelPrecision(initEpoch, storm::utility::convertNumber<ValueType>(env.modelTolerance()));
         preciseEnv.solver().setLinearEquationSolverPrecision(storm::utility::convertNumber<storm::RationalNumber>(precision));
 
         // In case of cdf export we store the necessary data.
