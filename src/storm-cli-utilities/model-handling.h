@@ -158,8 +158,9 @@ struct ModelProcessingInformation {
     // The Dd library to be used
     storm::dd::DdType ddType;
 
-    // The environment used during model checking
-    storm::Environment env = storm::settings::EnvironmentBuilder::buildEnvironment();
+    // The environment used during model checking.
+    // It is constructed explicitly in getModelProcessingInformation(), once the CLI settings are known to be finalized.
+    storm::Environment env;
 
     // A flag which is set to true, if the settings were detected to be compatible.
     // If this is false, it could be that the query can not be handled.
@@ -204,6 +205,7 @@ inline void getModelProcessingInformationAutomatic(SymbolicInput const& input, M
 inline ModelProcessingInformation getModelProcessingInformation(SymbolicInput const& input,
                                                                 std::shared_ptr<SymbolicInput> const& transformedJaniInput = nullptr) {
     ModelProcessingInformation mpi;
+    mpi.env = storm::settings::EnvironmentBuilder::buildEnvironment();
     auto ioSettings = storm::settings::getModule<storm::settings::modules::IOSettings>();
     auto coreSettings = storm::settings::getModule<storm::settings::modules::CoreSettings>();
     auto generalSettings = storm::settings::getModule<storm::settings::modules::GeneralSettings>();
