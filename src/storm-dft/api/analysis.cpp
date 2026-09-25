@@ -47,9 +47,9 @@ void analyzeDFTBdd(storm::dft::DftEnvironment const& env, std::shared_ptr<storm:
 #ifdef STORM_HAVE_SYLVAN
     if (calculateMttf) {
         if (mttfAlgorithmName == "proceeding") {
-            std::cout << "The numerically approximated MTTF is " << storm::dft::utility::MTTFHelperProceeding(dft, mttfStepsize, mttfPrecision) << '\n';
+            std::cout << "The numerically approximated MTTF is " << storm::dft::utility::MTTFHelperProceeding(env, dft, mttfStepsize, mttfPrecision) << '\n';
         } else if (mttfAlgorithmName == "variableChange") {
-            std::cout << "The numerically approximated MTTF is " << storm::dft::utility::MTTFHelperVariableChange(dft, mttfStepsize) << '\n';
+            std::cout << "The numerically approximated MTTF is " << storm::dft::utility::MTTFHelperVariableChange(env, dft, mttfStepsize) << '\n';
         }
     }
 
