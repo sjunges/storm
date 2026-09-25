@@ -24,6 +24,7 @@
 #include "storm/settings/modules/BuildSettings.h"
 #include "storm/settings/modules/CoreSettings.h"
 #include "storm/settings/modules/CounterexampleGeneratorSettings.h"
+#include "storm/settings/modules/GeneralSettings.h"
 #include "storm/settings/modules/HintSettings.h"
 #include "storm/settings/modules/IOSettings.h"
 #include "storm/settings/modules/ModelCheckerSettings.h"
