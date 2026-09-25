@@ -208,3 +208,12 @@ TEST(EnvironmentBuilderTest, BuildsEnvironmentFromSettings) {
     // Restore the default values so that the mutation of the global settings manager does not influence subsequent tests.
     storm::settings::mutableManager().getModule(storm::settings::modules::GeneralSettings::moduleName).restoreDefaults();
 }
+
+TEST(EnvironmentBuilderTest, SoundFlagIsResetByRestoreDefaults) {
+    storm::settings::mutableManager().setFromExplodedString({"--sound"});
+    ASSERT_TRUE(storm::settings::getModule<storm::settings::modules::GeneralSettings>().isSoundSet());
+
+    storm::settings::mutableManager().getModule(storm::settings::modules::GeneralSettings::moduleName).restoreDefaults();
+    EXPECT_FALSE(storm::settings::getModule<storm::settings::modules::GeneralSettings>().isSoundSet());
+    EXPECT_FALSE(buildFromSettings().solver().isForceSoundness());
+}
