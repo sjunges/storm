@@ -236,6 +236,78 @@ TEST(Cvc5SmtSolver, AddNotCurrentModel) {
     ASSERT_EQ(storm::solver::SmtSolver::CheckResult::Unsat, s.check());
 }
 
+TEST(Cvc5SmtSolver, ModelReferenceDescribesItsOwnModel) {
+    std::shared_ptr<storm::expressions::ExpressionManager> manager(new storm::expressions::ExpressionManager());
+
+    storm::solver::Cvc5SmtSolver s(*manager);
+
+    storm::expressions::Variable a = manager->declareIntegerVariable("a");
+    storm::expressions::Variable b = manager->declareBooleanVariable("b");
+    s.add(a == manager->integer(42) && b);
+
+    ASSERT_EQ(storm::solver::SmtSolver::CheckResult::Sat, s.check());
+    std::shared_ptr<storm::solver::SmtSolver::ModelReference> model = s.getModel();
+
+    // The string representation must describe the model that the reference holds.
+    std::string modelString = model->toString();
+    EXPECT_NE(modelString.find("a"), std::string::npos);
+    EXPECT_NE(modelString.find("b"), std::string::npos);
+    EXPECT_NE(modelString.find("42"), std::string::npos);
+
+    // The reference keeps describing that model, even after the solver has moved on.
+    s.addNotCurrentModel();
+    ASSERT_EQ(storm::solver::SmtSolver::CheckResult::Unsat, s.check());
+    EXPECT_EQ(modelString, model->toString());
+    EXPECT_EQ(42, model->getIntegerValue(a));
+    EXPECT_TRUE(model->getBooleanValue(b));
+}
+
+TEST(Cvc5SmtSolver, ModelReferenceOutlivesItsSolver) {
+    std::shared_ptr<storm::expressions::ExpressionManager> manager(new storm::expressions::ExpressionManager());
+
+    storm::expressions::Variable a = manager->declareIntegerVariable("a");
+    storm::expressions::Variable b = manager->declareBooleanVariable("b");
+    storm::expressions::Variable c = manager->declareRationalVariable("c");
+
+    std::shared_ptr<storm::solver::SmtSolver::ModelReference> model;
+    {
+        storm::solver::Cvc5SmtSolver s(*manager);
+        s.add(a == manager->integer(7) && b && c == manager->rational(0.5));
+        ASSERT_EQ(storm::solver::SmtSolver::CheckResult::Sat, s.check());
+        model = s.getModel();
+    }
+
+    // The solver (and its expression adapter) are gone, but the values are still readable.
+    EXPECT_EQ(7, model->getIntegerValue(a));
+    EXPECT_TRUE(model->getBooleanValue(b));
+    EXPECT_DOUBLE_EQ(0.5, model->getRationalValue(c));
+    EXPECT_NO_THROW(model->toString());
+}
+
+TEST(Cvc5SmtSolver, AddNotCurrentModelWithUnconstrainedVariable) {
+    std::shared_ptr<storm::expressions::ExpressionManager> manager(new storm::expressions::ExpressionManager());
+
+    storm::solver::Cvc5SmtSolver s(*manager);
+
+    storm::expressions::Variable x = manager->declareBooleanVariable("x");
+
+    // The tautology does not mention y, so the model does not constrain it. Ruling out the current
+    // model must not constrain y, otherwise models would be missed.
+    storm::expressions::Variable y = manager->declareBooleanVariable("y");
+    s.add(x || !x);
+
+    std::vector<bool> yValues;
+    while (s.check() == storm::solver::SmtSolver::CheckResult::Sat) {
+        yValues.push_back(s.getModelAsValuation().getBooleanValue(y));
+        s.addNotCurrentModel();
+    }
+
+    // x takes both values, and y is free to take both values in each case.
+    ASSERT_EQ(4ull, yValues.size());
+    EXPECT_NE(yValues[0], yValues[1]);
+    EXPECT_NE(yValues[2], yValues[3]);
+}
+
 TEST(Cvc5SmtSolver, UnsatAssumptions) {
     std::shared_ptr<storm::expressions::ExpressionManager> manager(new storm::expressions::ExpressionManager());
 

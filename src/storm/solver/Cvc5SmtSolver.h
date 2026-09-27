@@ -14,32 +14,30 @@ class Cvc5SmtSolver : public SmtSolver {
    public:
     class Cvc5ModelReference : public SmtSolver::ModelReference {
        public:
-#ifdef STORM_HAVE_CVC5
-        Cvc5ModelReference(storm::expressions::ExpressionManager const& manager,
-                           std::unordered_map<storm::expressions::Variable, cvc5::Term> const& variableValues, cvc5::Solver& solver,
-                           storm::adapters::Cvc5ExpressionAdapter& expressionAdapter);
-#endif
+        /*!
+         * Creates a new model reference that provides access to the values that the given model assigns.
+         *
+         * The values are taken over by the model reference. This way, the reference does not depend on the
+         * lifetime of the solver that produced the model, nor on the lifetime of an expression adapter.
+         *
+         * @param manager The manager responsible for the variables whose values can be requested.
+         * @param variableValues The values that the model assigns to the variables.
+         */
+        Cvc5ModelReference(storm::expressions::ExpressionManager const& manager, storm::expressions::SimpleValuation variableValues);
+
         virtual bool getBooleanValue(storm::expressions::Variable const& variable) const override;
         virtual int_fast64_t getIntegerValue(storm::expressions::Variable const& variable) const override;
         virtual double getRationalValue(storm::expressions::Variable const& variable) const override;
         virtual std::string toString() const override;
 
        private:
-#ifdef STORM_HAVE_CVC5
         /*!
-         * Retrieves the value that the model assigns to the given variable.
+         * Checks whether the given variable may be used with this model reference.
          */
-        cvc5::Term const& getValue(storm::expressions::Variable const& variable) const;
+        void checkVariable(storm::expressions::Variable const& variable) const;
 
         // The values that the model assigns to the variables.
-        std::unordered_map<storm::expressions::Variable, cvc5::Term> variableValues;
-
-        // The solver that generated the model. It is used to interpret the values.
-        cvc5::Solver& solver;
-
-        // The expression adapter that is used to translate the values.
-        storm::adapters::Cvc5ExpressionAdapter& expressionAdapter;
-#endif
+        storm::expressions::SimpleValuation variableValues;
     };
 
    public:
@@ -94,6 +92,15 @@ class Cvc5SmtSolver : public SmtSolver {
      * Collects the values that the current model assigns to all variables of the expression manager.
      */
     std::unordered_map<storm::expressions::Variable, cvc5::Term> collectVariableValues() const;
+
+    /*!
+     * Interprets the model that was found last as a valuation of the expression manager's variables.
+     *
+     * Variables that the model does not constrain are left at the valuation's default value.
+     *
+     * @return The values that the model assigns to the variables.
+     */
+    storm::expressions::SimpleValuation collectModelAsValuation() const;
 
     /*!
      * Creates a term that describes the model that was found last.

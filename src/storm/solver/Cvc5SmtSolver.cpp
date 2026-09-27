@@ -14,63 +14,35 @@
 namespace storm {
 namespace solver {
 #ifdef STORM_HAVE_CVC5
-Cvc5SmtSolver::Cvc5ModelReference::Cvc5ModelReference(storm::expressions::ExpressionManager const& manager,
-                                                      std::unordered_map<storm::expressions::Variable, cvc5::Term> const& variableValues, cvc5::Solver& solver,
-                                                      storm::adapters::Cvc5ExpressionAdapter& expressionAdapter)
-    : ModelReference(manager), variableValues(variableValues), solver(solver), expressionAdapter(expressionAdapter) {
+Cvc5SmtSolver::Cvc5ModelReference::Cvc5ModelReference(storm::expressions::ExpressionManager const& manager, storm::expressions::SimpleValuation variableValues)
+    : ModelReference(manager), variableValues(std::move(variableValues)) {
     // Intentionally left empty.
 }
 #endif
 
-cvc5::Term const& Cvc5SmtSolver::Cvc5ModelReference::getValue(storm::expressions::Variable const& variable) const {
-#ifdef STORM_HAVE_CVC5
+void Cvc5SmtSolver::Cvc5ModelReference::checkVariable(storm::expressions::Variable const& variable) const {
     STORM_LOG_ASSERT(variable.getManager() == this->getManager(), "Requested variable is managed by a different manager.");
-    auto const& variableValuePair = this->variableValues.find(variable);
-    STORM_LOG_ASSERT(variableValuePair != this->variableValues.end(), "Unable to find a value for the given variable in the model.");
-    return variableValuePair->second;
-#else
-    STORM_LOG_THROW(false, storm::exceptions::MissingLibraryException, "Storm is compiled without CVC5 support.");
-#endif
+    STORM_LOG_ASSERT(variable.getType().isBooleanType() || variable.getType().isIntegerType() || variable.getType().isRationalType(),
+                     "Cannot retrieve the value of a variable that is neither Boolean, integer, nor rational.");
 }
 
 bool Cvc5SmtSolver::Cvc5ModelReference::getBooleanValue(storm::expressions::Variable const& variable) const {
-#ifdef STORM_HAVE_CVC5
-    return this->getValue(variable) == this->solver.mkBoolean(true);
-#else
-    STORM_LOG_THROW(false, storm::exceptions::MissingLibraryException, "Storm is compiled without CVC5 support.");
-#endif
+    this->checkVariable(variable);
+    return this->variableValues.getBooleanValue(variable);
 }
 
 int_fast64_t Cvc5SmtSolver::Cvc5ModelReference::getIntegerValue(storm::expressions::Variable const& variable) const {
-#ifdef STORM_HAVE_CVC5
-    auto const& value = this->expressionAdapter.translateExpression(this->getValue(variable));
-    auto const* integerLiteral = dynamic_cast<storm::expressions::IntegerLiteralExpression const*>(&value.getBaseExpression());
-    STORM_LOG_ASSERT(integerLiteral != nullptr, "Model does not assign an integer value to the given variable.");
-    return integerLiteral->getValue();
-#else
-    STORM_LOG_THROW(false, storm::exceptions::MissingLibraryException, "Storm is compiled without CVC5 support.");
-#endif
+    this->checkVariable(variable);
+    return this->variableValues.getIntegerValue(variable);
 }
 
 double Cvc5SmtSolver::Cvc5ModelReference::getRationalValue(storm::expressions::Variable const& variable) const {
-#ifdef STORM_HAVE_CVC5
-    auto const& value = this->expressionAdapter.translateExpression(this->getValue(variable));
-    auto const* rationalLiteral = dynamic_cast<storm::expressions::RationalLiteralExpression const*>(&value.getBaseExpression());
-    STORM_LOG_ASSERT(rationalLiteral != nullptr, "Model does not assign a rational value to the given variable.");
-    return storm::utility::convertNumber<double>(rationalLiteral->getValue());
-#else
-    STORM_LOG_THROW(false, storm::exceptions::MissingLibraryException, "Storm is compiled without CVC5 support.");
-#endif
+    this->checkVariable(variable);
+    return this->variableValues.getRationalValue(variable);
 }
 
 std::string Cvc5SmtSolver::Cvc5ModelReference::toString() const {
-#ifdef STORM_HAVE_CVC5
-    std::stringstream sstr;
-    sstr << this->solver.getModel({}, {});
-    return sstr.str();
-#else
-    STORM_LOG_THROW(false, storm::exceptions::MissingLibraryException, "Storm is compiled without CVC5 support.");
-#endif
+    return this->variableValues.toString();
 }
 
 Cvc5SmtSolver::Cvc5SmtSolver(storm::expressions::ExpressionManager& manager)
@@ -204,11 +176,8 @@ SmtSolver::CheckResult Cvc5SmtSolver::checkWithAssumptions(std::initializer_list
 #endif
 }
 
-storm::expressions::SimpleValuation Cvc5SmtSolver::getModelAsValuation() {
 #ifdef STORM_HAVE_CVC5
-    STORM_LOG_THROW(this->lastResult == SmtSolver::CheckResult::Sat, storm::exceptions::InvalidStateException,
-                    "Unable to create model for formula that was not determined to be satisfiable.");
-
+storm::expressions::SimpleValuation Cvc5SmtSolver::collectModelAsValuation() const {
     storm::expressions::SimpleValuation stormModel(this->getManager().getSharedPointer());
     for (auto const& variableValuePair : this->collectVariableValues()) {
         storm::expressions::Variable const& variable = variableValuePair.first;
@@ -231,6 +200,14 @@ storm::expressions::SimpleValuation Cvc5SmtSolver::getModelAsValuation() {
     }
 
     return stormModel;
+}
+#endif
+
+storm::expressions::SimpleValuation Cvc5SmtSolver::getModelAsValuation() {
+#ifdef STORM_HAVE_CVC5
+    STORM_LOG_THROW(this->lastResult == SmtSolver::CheckResult::Sat, storm::exceptions::InvalidStateException,
+                    "Unable to create model for formula that was not determined to be satisfiable.");
+    return this->collectModelAsValuation();
 #else
     STORM_LOG_THROW(false, storm::exceptions::MissingLibraryException, "Storm is compiled without CVC5 support.");
 #endif
@@ -240,8 +217,7 @@ std::shared_ptr<SmtSolver::ModelReference> Cvc5SmtSolver::getModel() {
 #ifdef STORM_HAVE_CVC5
     STORM_LOG_THROW(this->lastResult == SmtSolver::CheckResult::Sat, storm::exceptions::InvalidStateException,
                     "Unable to create model for formula that was not determined to be satisfiable.");
-    return std::shared_ptr<SmtSolver::ModelReference>(
-        new Cvc5ModelReference(this->getManager(), this->collectVariableValues(), *this->solver, *this->expressionAdapter));
+    return std::shared_ptr<SmtSolver::ModelReference>(new Cvc5ModelReference(this->getManager(), this->collectModelAsValuation()));
 #else
     STORM_LOG_THROW(false, storm::exceptions::MissingLibraryException, "Storm is compiled without CVC5 support.");
 #endif
@@ -319,7 +295,7 @@ uint_fast64_t Cvc5SmtSolver::allSat(std::vector<storm::expressions::Variable> co
         ++numberOfModels;
 
         cvc5::Term modelExpr = this->createModelExpression(important);
-        Cvc5ModelReference modelRef(this->getManager(), this->collectVariableValues(), *this->solver, *this->expressionAdapter);
+        Cvc5ModelReference modelRef(this->getManager(), this->collectModelAsValuation());
 
         // Check if we are required to proceed, and if so rule out the current model.
         proceed = callback(modelRef);
@@ -387,6 +363,7 @@ std::string Cvc5SmtSolver::getSmtLibString() const {
 #endif
 }
 
+#ifdef STORM_HAVE_CVC5
 SmtSolver::CheckResult Cvc5SmtSolver::translateResult(cvc5::Result const& result) const {
     if (result.isSat()) {
         return SmtSolver::CheckResult::Sat;
@@ -414,14 +391,23 @@ std::unordered_map<storm::expressions::Variable, cvc5::Term> Cvc5SmtSolver::coll
 }
 
 cvc5::Term Cvc5SmtSolver::createModelExpression(std::vector<storm::expressions::Variable> const& variables) const {
+    // We describe the model only in terms of the variables whose value the model actually provides. For
+    // all other variables, CVC5 merely returns a default value, which is not part of the model.
+    auto const modelValues = this->collectVariableValues();
+
     cvc5::Term modelExpression = this->solver->mkBoolean(true);
     for (auto const& variable : variables) {
+        auto const& modelValue = modelValues.find(variable);
+        if (modelValue == modelValues.end()) {
+            // The model does not constrain this variable, so it must not be part of the model expression.
+            continue;
+        }
         cvc5::Term variableTerm = this->expressionAdapter->translateExpression(variable);
-        cvc5::Term value = this->solver->getValue(variableTerm);
-        modelExpression = this->solver->mkTerm(cvc5::Kind::AND, {modelExpression, this->solver->mkTerm(cvc5::Kind::EQUAL, {variableTerm, value})});
+        modelExpression = this->solver->mkTerm(cvc5::Kind::AND, {modelExpression, this->solver->mkTerm(cvc5::Kind::EQUAL, {variableTerm, modelValue->second})});
     }
     return modelExpression;
 }
+#endif
 
 }  // namespace solver
 }  // namespace storm
