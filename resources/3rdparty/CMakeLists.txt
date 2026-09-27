@@ -339,6 +339,49 @@ else()
     message(WARNING "Storm - Not linking with Z3. Building of Prism/JANI models will not be supported.")
 endif()
 
+#############################################################
+##
+##	CVC5 (optional)
+##
+#############################################################
+
+if(NOT STORM_DISABLE_CVC5)
+    # CVC5's own config file looks for the (lower case) cvc5_ROOT variable, whereas Storm uses upper case
+    # variable names for the roots of the different solvers.
+    if(CVC5_ROOT)
+        set(cvc5_ROOT "${CVC5_ROOT}")
+    endif()
+
+    # Recent versions of CVC5 provide a config file, so try that first.
+    find_package(cvc5 QUIET NO_MODULE)
+    if(TARGET cvc5::cvc5)
+        set(STORM_HAVE_CVC5 ON)
+        message(STATUS "Storm - Linking with cvc5 (version ${cvc5_VERSION}).")
+        list(APPEND STORM_DEP_IMP_TARGETS cvc5::cvc5)
+    else()
+        # For installations without a config file, we use a FindCVC5.cmake script.
+        find_package(CVC5 QUIET)
+
+        if(CVC5_FOUND)
+            set(STORM_HAVE_CVC5 ON)
+            message(STATUS "Storm - Linking with cvc5 (version ${CVC5_VERSION}).")
+
+            add_library(cvc5 SHARED IMPORTED)
+            set_target_properties(
+                    cvc5
+                    PROPERTIES
+                    IMPORTED_LOCATION ${CVC5_LIBRARIES}
+                    INTERFACE_INCLUDE_DIRECTORIES ${CVC5_INCLUDE_DIRS}
+            )
+            list(APPEND STORM_DEP_IMP_TARGETS cvc5)
+        else()
+            message(WARNING "Storm - cvc5 not found. CVC5 will not be available as an SMT solver backend.")
+        endif()
+    endif()
+else()
+    set(STORM_HAVE_CVC5 OFF)
+    message(STATUS "Storm - Not linking with cvc5.")
+endif()
 
 #############################################################
 ##

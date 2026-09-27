@@ -40,6 +40,18 @@ std::string getDefaultLpSolverAsString() {
 #endif
 }
 
+std::string getDefaultSmtSolverAsString() {
+#if defined STORM_HAVE_Z3
+    return "z3";
+#elif defined STORM_HAVE_MATHSAT
+    return "mathsat";
+#elif defined STORM_HAVE_CVC5
+    return "cvc5";
+#else
+    return "z3";
+#endif
+}
+
 CoreSettings::CoreSettings() : ModuleSettings(moduleName), engine(storm::utility::Engine::Sparse) {
     std::vector<std::string> engines;
     for (auto e : storm::utility::getEngines()) {
@@ -93,11 +105,20 @@ CoreSettings::CoreSettings() : ModuleSettings(moduleName), engine(storm::utility
                                          .build())
                         .build());
 
-    std::vector<std::string> smtSolvers = {"z3", "mathsat"};
+    std::vector<std::string> smtSolvers;
+#if defined STORM_HAVE_Z3
+    smtSolvers.push_back("z3");
+#endif
+#if defined STORM_HAVE_MATHSAT
+    smtSolvers.push_back("mathsat");
+#endif
+#if defined STORM_HAVE_CVC5
+    smtSolvers.push_back("cvc5");
+#endif
     this->addOption(storm::settings::OptionBuilder(moduleName, smtSolverOptionName, false, "Sets which SMT solver is preferred.")
                         .addArgument(storm::settings::ArgumentBuilder::createStringArgument("name", "The name of an SMT solver.")
                                          .addValidatorString(ArgumentValidatorFactory::createMultipleChoiceValidator(smtSolvers))
-                                         .setDefaultValueString("z3")
+                                         .setDefaultValueString(getDefaultSmtSolverAsString())
                                          .build())
                         .build());
     this->addOption(storm::settings::OptionBuilder(moduleName, statisticsOptionName, false, "Sets whether to display statistics if available.")
@@ -157,8 +178,15 @@ storm::solver::SmtSolverType CoreSettings::getSmtSolver() const {
         return storm::solver::SmtSolverType::Z3;
     } else if (smtSolverName == "mathsat") {
         return storm::solver::SmtSolverType::Mathsat;
+    } else if (smtSolverName == "cvc5") {
+        return storm::solver::SmtSolverType::Cvc5;
     }
     STORM_LOG_THROW_UNCONDITIONALLY(storm::exceptions::IllegalArgumentValueException, "Unknown SMT solver '" << smtSolverName << "'.");
+}
+
+bool CoreSettings::isSmtSolverSetFromDefaultValue() const {
+    return !this->getOption(smtSolverOptionName).getHasOptionBeenSet() ||
+           this->getOption(smtSolverOptionName).getArgumentByName("name").wasSetFromDefaultValue();
 }
 
 storm::dd::DdType CoreSettings::getDdLibraryType() const {

@@ -61,6 +61,7 @@
 // ############
 // Whether the libraries are available and to be used
 #cmakedefine STORM_HAVE_CUDD
+#cmakedefine STORM_HAVE_CVC5
 #cmakedefine STORM_HAVE_GMM
 #cmakedefine STORM_HAVE_GLPK
 #cmakedefine STORM_HAVE_GUROBI
