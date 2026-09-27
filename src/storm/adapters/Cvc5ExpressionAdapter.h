@@ -99,6 +99,29 @@ class Cvc5ExpressionAdapter : public storm::expressions::ExpressionVisitor {
      */
     cvc5::Term createRational(storm::RationalNumber const& value);
 
+    /*!
+     * Converts the given numerical term to a real number if it is an integer and a real number is expected.
+     *
+     * CVC5 does not coerce between integers and real numbers, so where Storm allows a mixed expression, such
+     * as the real number 1.0 and the integer 1, we have to insert the conversion ourselves.
+     *
+     * @param term The term to convert if necessary.
+     * @param isRealExpected Whether the context of the term expects a real number.
+     * @return The given term, converted to a real number if necessary.
+     */
+    cvc5::Term convertToRealIfExpected(cvc5::Term const& term, bool const& isRealExpected) const;
+
+    /*!
+     * Makes sure that the two given numerical terms are of the same type.
+     *
+     * If one of them is an integer and the other one is a real number, the integer is converted to a real
+     * number, as CVC5 requires the operands of a comparison to be of equal type.
+     *
+     * @param leftTerm The first term. May be replaced by its conversion to a real number.
+     * @param rightTerm The second term. May be replaced by its conversion to a real number.
+     */
+    void unifyNumericalTypes(cvc5::Term& leftTerm, cvc5::Term& rightTerm) const;
+
     // The manager that can be used to build expressions.
     storm::expressions::ExpressionManager& manager;
 

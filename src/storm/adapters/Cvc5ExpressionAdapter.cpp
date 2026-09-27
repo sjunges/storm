@@ -320,6 +320,21 @@ boost::any Cvc5ExpressionAdapter::visit(storm::expressions::BinaryBooleanFunctio
     return result;
 }
 
+cvc5::Term Cvc5ExpressionAdapter::convertToRealIfExpected(cvc5::Term const& term, bool const& isRealExpected) const {
+    if (isRealExpected && term.getSort().isInteger()) {
+        return this->solver.mkTerm(cvc5::Kind::TO_REAL, {term});
+    }
+    return term;
+}
+
+void Cvc5ExpressionAdapter::unifyNumericalTypes(cvc5::Term& leftTerm, cvc5::Term& rightTerm) const {
+    if (leftTerm.getSort().isInteger() && rightTerm.getSort().isReal()) {
+        leftTerm = this->solver.mkTerm(cvc5::Kind::TO_REAL, {leftTerm});
+    } else if (rightTerm.getSort().isInteger() && leftTerm.getSort().isReal()) {
+        rightTerm = this->solver.mkTerm(cvc5::Kind::TO_REAL, {rightTerm});
+    }
+}
+
 boost::any Cvc5ExpressionAdapter::visit(storm::expressions::BinaryNumericalFunctionExpression const& expression, boost::any const& data) {
     auto cacheIt = expressionCache.find(&expression);
     if (cacheIt != expressionCache.end()) {
@@ -328,6 +343,12 @@ boost::any Cvc5ExpressionAdapter::visit(storm::expressions::BinaryNumericalFunct
 
     cvc5::Term leftResult = boost::any_cast<cvc5::Term>(expression.getFirstOperand()->accept(*this, data));
     cvc5::Term rightResult = boost::any_cast<cvc5::Term>(expression.getSecondOperand()->accept(*this, data));
+
+    // CVC5 requires the operands of an arithmetic operation to be of the same type. Where Storm admits a
+    // mixed expression because the result is a real number, we convert the integer operand accordingly.
+    bool const isRealExpected = expression.getType().isRationalType();
+    leftResult = this->convertToRealIfExpected(leftResult, isRealExpected);
+    rightResult = this->convertToRealIfExpected(rightResult, isRealExpected);
 
     cvc5::Term result;
     switch (expression.getOperatorType()) {
@@ -340,22 +361,10 @@ boost::any Cvc5ExpressionAdapter::visit(storm::expressions::BinaryNumericalFunct
         case storm::expressions::BinaryNumericalFunctionExpression::OperatorType::Times:
             result = this->solver.mkTerm(cvc5::Kind::MULT, {leftResult, rightResult});
             break;
-        case storm::expressions::BinaryNumericalFunctionExpression::OperatorType::Divide: {
-            // CVC5 requires both operands of a division to be of the same type. Since Storm's division always
-            // yields a rational number, we convert integer operands to real numbers where necessary.
-            bool const leftIsInteger = leftResult.getSort().isInteger();
-            bool const rightIsInteger = rightResult.getSort().isInteger();
-            if (leftIsInteger && rightIsInteger) {
-                leftResult = this->solver.mkTerm(cvc5::Kind::TO_REAL, {leftResult});
-                rightResult = this->solver.mkTerm(cvc5::Kind::TO_REAL, {rightResult});
-            } else if (leftIsInteger) {
-                leftResult = this->solver.mkTerm(cvc5::Kind::TO_REAL, {leftResult});
-            } else if (rightIsInteger) {
-                rightResult = this->solver.mkTerm(cvc5::Kind::TO_REAL, {rightResult});
-            }
+        case storm::expressions::BinaryNumericalFunctionExpression::OperatorType::Divide:
+            // Both operands have already been converted above, since a Storm division always yields a real number.
             result = this->solver.mkTerm(cvc5::Kind::DIVISION, {leftResult, rightResult});
             break;
-        }
         case storm::expressions::BinaryNumericalFunctionExpression::OperatorType::Min:
             result = this->solver.mkTerm(cvc5::Kind::ITE, {this->solver.mkTerm(cvc5::Kind::LEQ, {leftResult, rightResult}), leftResult, rightResult});
             break;
@@ -363,18 +372,9 @@ boost::any Cvc5ExpressionAdapter::visit(storm::expressions::BinaryNumericalFunct
             result = this->solver.mkTerm(cvc5::Kind::ITE, {this->solver.mkTerm(cvc5::Kind::GEQ, {leftResult, rightResult}), leftResult, rightResult});
             break;
         case storm::expressions::BinaryNumericalFunctionExpression::OperatorType::Power:
-            // CVC5 requires both operands of a power to be of the same sort, so we convert integer operands to real
-            // numbers if the other operand is a real number.
-            if (leftResult.getSort().isInteger() && rightResult.getSort().isInteger()) {
-                if (!expression.getType().isIntegerType()) {
-                    leftResult = this->solver.mkTerm(cvc5::Kind::TO_REAL, {leftResult});
-                    rightResult = this->solver.mkTerm(cvc5::Kind::TO_REAL, {rightResult});
-                }
-            } else if (leftResult.getSort().isInteger()) {
-                leftResult = this->solver.mkTerm(cvc5::Kind::TO_REAL, {leftResult});
-            } else if (rightResult.getSort().isInteger()) {
-                rightResult = this->solver.mkTerm(cvc5::Kind::TO_REAL, {rightResult});
-            }
+            // CVC5 requires both operands of a power to be of the same sort. Integers have already been converted
+            // above if the power yields a real number, so we only have to take care of mixed operands.
+            this->unifyNumericalTypes(leftResult, rightResult);
             result = this->solver.mkTerm(cvc5::Kind::POW, {leftResult, rightResult});
             break;
         default:
@@ -395,6 +395,10 @@ boost::any Cvc5ExpressionAdapter::visit(storm::expressions::BinaryRelationExpres
 
     cvc5::Term leftResult = boost::any_cast<cvc5::Term>(expression.getFirstOperand()->accept(*this, data));
     cvc5::Term rightResult = boost::any_cast<cvc5::Term>(expression.getSecondOperand()->accept(*this, data));
+
+    // CVC5 requires the operands of a comparison to be of the same type, so a real number may be compared with an
+    // integer by converting the latter to a real number.
+    this->unifyNumericalTypes(leftResult, rightResult);
 
     cvc5::Kind kind;
     switch (expression.getRelationType()) {
