@@ -14,7 +14,7 @@ else()
 endif()
 
 # If library found, check the version
-if (CVC5_INCLUDE_DIR AND CVC5_LIBRARY AND CVC5_FIND_VERSION)
+if (CVC5_INCLUDE_DIR AND CVC5_LIBRARY)
     # Check the version by compiling and running a small test program. cvc5 exposes its version via
     # cvc5::Solver::getVersion(), which returns a string like "1.0.3".
     file(WRITE "${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/CMakeTmp/cvc5.cpp" "
@@ -51,12 +51,16 @@ if (CVC5_INCLUDE_DIR AND CVC5_LIBRARY AND CVC5_FIND_VERSION)
     else()
         if ("${VERSION_TEST_RUN_OUTPUT}" MATCHES "([0-9]+\\.[0-9]+\\.[0-9]+)")
             set(CVC5_VERSION "${CMAKE_MATCH_1}")
-            if ("${CVC5_VERSION}" VERSION_LESS "${CVC5_FIND_VERSION}")
-                unset(CVC5_INCLUDE_DIR CACHE)
-                unset(CVC5_LIBRARY CACHE)
-            elseif (CVC5_FIND_VERSION_EXACT AND NOT ("${CVC5_VERSION}" VERSION_EQUAL "${CVC5_FIND_VERSION}"))
-                unset(CVC5_INCLUDE_DIR CACHE)
-                unset(CVC5_LIBRARY CACHE)
+            # Only reject the library if the caller actually asked for a minimum version. Callers that need a
+            # particular version check CVC5_VERSION themselves.
+            if (CVC5_FIND_VERSION)
+                if ("${CVC5_VERSION}" VERSION_LESS "${CVC5_FIND_VERSION}")
+                    unset(CVC5_INCLUDE_DIR CACHE)
+                    unset(CVC5_LIBRARY CACHE)
+                elseif (CVC5_FIND_VERSION_EXACT AND NOT ("${CVC5_VERSION}" VERSION_EQUAL "${CVC5_FIND_VERSION}"))
+                    unset(CVC5_INCLUDE_DIR CACHE)
+                    unset(CVC5_LIBRARY CACHE)
+                endif()
             endif()
         else()
             unset(CVC5_INCLUDE_DIR CACHE)

@@ -141,7 +141,7 @@ storm::expressions::Expression translateNumericalConstant(storm::expressions::Ex
 }  // namespace
 
 Cvc5ExpressionAdapter::Cvc5ExpressionAdapter(storm::expressions::ExpressionManager& manager, cvc5::Solver& solver)
-    : manager(manager), solver(solver), variableToExpressionMapping() {
+    : manager(manager), termManager(solver.getTermManager()), variableToExpressionMapping() {
     // Intentionally left empty.
 }
 
@@ -167,9 +167,9 @@ cvc5::Term Cvc5ExpressionAdapter::translateExpression(storm::expressions::Variab
 storm::expressions::Expression Cvc5ExpressionAdapter::translateExpression(cvc5::Term const& term) {
     // First, deal with the boolean constants, as they do not have a symbol that we could look up.
     if (term.getSort().isBoolean()) {
-        if (term == this->solver.mkBoolean(true)) {
+        if (term == this->termManager.mkBoolean(true)) {
             return this->manager.boolean(true);
-        } else if (term == this->solver.mkBoolean(false)) {
+        } else if (term == this->termManager.mkBoolean(false)) {
             return this->manager.boolean(false);
         }
     }
@@ -185,7 +185,7 @@ storm::expressions::Expression Cvc5ExpressionAdapter::translateExpression(cvc5::
 
     switch (term.getKind()) {
         case cvc5::Kind::CONST_BOOLEAN:
-            return term == this->solver.mkBoolean(true) ? this->manager.boolean(true) : this->manager.boolean(false);
+            return term == this->termManager.mkBoolean(true) ? this->manager.boolean(true) : this->manager.boolean(false);
         case cvc5::Kind::EQUAL:
             return this->translateExpression(term[0]) == this->translateExpression(term[1]);
         case cvc5::Kind::DISTINCT: {
@@ -314,7 +314,7 @@ boost::any Cvc5ExpressionAdapter::visit(storm::expressions::BinaryBooleanFunctio
                                                                                             << "' in expression " << expression << ".");
     }
 
-    cvc5::Term result = this->solver.mkTerm(kind, {leftResult, rightResult});
+    cvc5::Term result = this->termManager.mkTerm(kind, {leftResult, rightResult});
 
     expressionCache.emplace(&expression, result);
     return result;
@@ -322,16 +322,16 @@ boost::any Cvc5ExpressionAdapter::visit(storm::expressions::BinaryBooleanFunctio
 
 cvc5::Term Cvc5ExpressionAdapter::convertToRealIfExpected(cvc5::Term const& term, bool const& isRealExpected) const {
     if (isRealExpected && term.getSort().isInteger()) {
-        return this->solver.mkTerm(cvc5::Kind::TO_REAL, {term});
+        return this->termManager.mkTerm(cvc5::Kind::TO_REAL, {term});
     }
     return term;
 }
 
 void Cvc5ExpressionAdapter::unifyNumericalTypes(cvc5::Term& leftTerm, cvc5::Term& rightTerm) const {
     if (leftTerm.getSort().isInteger() && rightTerm.getSort().isReal()) {
-        leftTerm = this->solver.mkTerm(cvc5::Kind::TO_REAL, {leftTerm});
+        leftTerm = this->termManager.mkTerm(cvc5::Kind::TO_REAL, {leftTerm});
     } else if (rightTerm.getSort().isInteger() && leftTerm.getSort().isReal()) {
-        rightTerm = this->solver.mkTerm(cvc5::Kind::TO_REAL, {rightTerm});
+        rightTerm = this->termManager.mkTerm(cvc5::Kind::TO_REAL, {rightTerm});
     }
 }
 
@@ -353,29 +353,29 @@ boost::any Cvc5ExpressionAdapter::visit(storm::expressions::BinaryNumericalFunct
     cvc5::Term result;
     switch (expression.getOperatorType()) {
         case storm::expressions::BinaryNumericalFunctionExpression::OperatorType::Plus:
-            result = this->solver.mkTerm(cvc5::Kind::ADD, {leftResult, rightResult});
+            result = this->termManager.mkTerm(cvc5::Kind::ADD, {leftResult, rightResult});
             break;
         case storm::expressions::BinaryNumericalFunctionExpression::OperatorType::Minus:
-            result = this->solver.mkTerm(cvc5::Kind::SUB, {leftResult, rightResult});
+            result = this->termManager.mkTerm(cvc5::Kind::SUB, {leftResult, rightResult});
             break;
         case storm::expressions::BinaryNumericalFunctionExpression::OperatorType::Times:
-            result = this->solver.mkTerm(cvc5::Kind::MULT, {leftResult, rightResult});
+            result = this->termManager.mkTerm(cvc5::Kind::MULT, {leftResult, rightResult});
             break;
         case storm::expressions::BinaryNumericalFunctionExpression::OperatorType::Divide:
             // Both operands have already been converted above, since a Storm division always yields a real number.
-            result = this->solver.mkTerm(cvc5::Kind::DIVISION, {leftResult, rightResult});
+            result = this->termManager.mkTerm(cvc5::Kind::DIVISION, {leftResult, rightResult});
             break;
         case storm::expressions::BinaryNumericalFunctionExpression::OperatorType::Min:
-            result = this->solver.mkTerm(cvc5::Kind::ITE, {this->solver.mkTerm(cvc5::Kind::LEQ, {leftResult, rightResult}), leftResult, rightResult});
+            result = this->termManager.mkTerm(cvc5::Kind::ITE, {this->termManager.mkTerm(cvc5::Kind::LEQ, {leftResult, rightResult}), leftResult, rightResult});
             break;
         case storm::expressions::BinaryNumericalFunctionExpression::OperatorType::Max:
-            result = this->solver.mkTerm(cvc5::Kind::ITE, {this->solver.mkTerm(cvc5::Kind::GEQ, {leftResult, rightResult}), leftResult, rightResult});
+            result = this->termManager.mkTerm(cvc5::Kind::ITE, {this->termManager.mkTerm(cvc5::Kind::GEQ, {leftResult, rightResult}), leftResult, rightResult});
             break;
         case storm::expressions::BinaryNumericalFunctionExpression::OperatorType::Power:
             // CVC5 requires both operands of a power to be of the same sort. Integers have already been converted
             // above if the power yields a real number, so we only have to take care of mixed operands.
             this->unifyNumericalTypes(leftResult, rightResult);
-            result = this->solver.mkTerm(cvc5::Kind::POW, {leftResult, rightResult});
+            result = this->termManager.mkTerm(cvc5::Kind::POW, {leftResult, rightResult});
             break;
         default:
             STORM_LOG_THROW(false, storm::exceptions::ExpressionEvaluationException,
@@ -426,7 +426,7 @@ boost::any Cvc5ExpressionAdapter::visit(storm::expressions::BinaryRelationExpres
                                                                                             << "' in expression " << expression << ".");
     }
 
-    cvc5::Term result = this->solver.mkTerm(kind, {leftResult, rightResult});
+    cvc5::Term result = this->termManager.mkTerm(kind, {leftResult, rightResult});
 
     expressionCache.emplace(&expression, result);
     return result;
@@ -438,7 +438,7 @@ boost::any Cvc5ExpressionAdapter::visit(storm::expressions::BooleanLiteralExpres
         return cacheIt->second;
     }
 
-    cvc5::Term result = this->solver.mkBoolean(expression.getValue());
+    cvc5::Term result = this->termManager.mkBoolean(expression.getValue());
 
     expressionCache.emplace(&expression, result);
     return result;
@@ -462,7 +462,7 @@ boost::any Cvc5ExpressionAdapter::visit(storm::expressions::IntegerLiteralExpres
         return cacheIt->second;
     }
 
-    cvc5::Term result = this->solver.mkInteger(static_cast<int64_t>(expression.getValue()));
+    cvc5::Term result = this->termManager.mkInteger(static_cast<int64_t>(expression.getValue()));
 
     expressionCache.emplace(&expression, result);
     return result;
@@ -478,7 +478,7 @@ boost::any Cvc5ExpressionAdapter::visit(storm::expressions::UnaryBooleanFunction
 
     switch (expression.getOperatorType()) {
         case storm::expressions::UnaryBooleanFunctionExpression::OperatorType::Not:
-            result = this->solver.mkTerm(cvc5::Kind::NOT, {result});
+            result = this->termManager.mkTerm(cvc5::Kind::NOT, {result});
             break;
         default:
             STORM_LOG_THROW(false, storm::exceptions::ExpressionEvaluationException,
@@ -500,16 +500,17 @@ boost::any Cvc5ExpressionAdapter::visit(storm::expressions::UnaryNumericalFuncti
 
     switch (expression.getOperatorType()) {
         case storm::expressions::UnaryNumericalFunctionExpression::OperatorType::Minus:
-            result = this->solver.mkTerm(cvc5::Kind::NEG, {result});
+            result = this->termManager.mkTerm(cvc5::Kind::NEG, {result});
             break;
         case storm::expressions::UnaryNumericalFunctionExpression::OperatorType::Floor: {
             // CVC5's to_int operation converts a real number to an integer using the floor function.
-            result = this->solver.mkTerm(cvc5::Kind::TO_INTEGER, {result});
+            result = this->termManager.mkTerm(cvc5::Kind::TO_INTEGER, {result});
             break;
         }
         case storm::expressions::UnaryNumericalFunctionExpression::OperatorType::Ceil: {
             // The ceiling of a real number is the negation of the floor of its negation.
-            result = this->solver.mkTerm(cvc5::Kind::NEG, {this->solver.mkTerm(cvc5::Kind::TO_INTEGER, {this->solver.mkTerm(cvc5::Kind::NEG, {result})})});
+            result = this->termManager.mkTerm(cvc5::Kind::NEG,
+                                              {this->termManager.mkTerm(cvc5::Kind::TO_INTEGER, {this->termManager.mkTerm(cvc5::Kind::NEG, {result})})});
             break;
         }
         default:
@@ -531,7 +532,7 @@ boost::any Cvc5ExpressionAdapter::visit(storm::expressions::IfThenElseExpression
     cvc5::Term conditionResult = boost::any_cast<cvc5::Term>(expression.getCondition()->accept(*this, data));
     cvc5::Term thenResult = boost::any_cast<cvc5::Term>(expression.getThenExpression()->accept(*this, data));
     cvc5::Term elseResult = boost::any_cast<cvc5::Term>(expression.getElseExpression()->accept(*this, data));
-    cvc5::Term result = this->solver.mkTerm(cvc5::Kind::ITE, {conditionResult, thenResult, elseResult});
+    cvc5::Term result = this->termManager.mkTerm(cvc5::Kind::ITE, {conditionResult, thenResult, elseResult});
 
     expressionCache.emplace(&expression, result);
     return result;
@@ -545,24 +546,24 @@ cvc5::Term Cvc5ExpressionAdapter::createRational(storm::RationalNumber const& va
     // CVC5 accepts rationals in the SMT-LIB format, which is exactly the format in which GMP prints them.
     std::stringstream fractionStream;
     fractionStream << value;
-    return this->solver.mkReal(fractionStream.str());
+    return this->termManager.mkReal(fractionStream.str());
 }
 
 cvc5::Term Cvc5ExpressionAdapter::createVariable(storm::expressions::Variable const& variable) {
     cvc5::Sort sort;
     if (variable.getType().isBooleanType()) {
-        sort = this->solver.getBooleanSort();
+        sort = this->termManager.getBooleanSort();
     } else if (variable.getType().isIntegerType()) {
-        sort = this->solver.getIntegerSort();
+        sort = this->termManager.getIntegerSort();
     } else if (variable.getType().isBitVectorType()) {
-        sort = this->solver.mkBitVectorSort(variable.getType().getWidth());
+        sort = this->termManager.mkBitVectorSort(variable.getType().getWidth());
     } else if (variable.getType().isRationalType()) {
-        sort = this->solver.getRealSort();
+        sort = this->termManager.getRealSort();
     } else {
         STORM_LOG_THROW(false, storm::exceptions::InvalidTypeException,
                         "Encountered variable '" << variable.getName() << "' with unknown type while trying to create solver variables.");
     }
-    cvc5::Term cvc5Variable = this->solver.mkConst(sort, variable.getName());
+    cvc5::Term cvc5Variable = this->termManager.mkConst(sort, variable.getName());
     variableToExpressionMapping.insert(std::make_pair(variable, cvc5Variable));
     expressionToVariableMapping.insert(std::make_pair(cvc5Variable, variable));
     return cvc5Variable;

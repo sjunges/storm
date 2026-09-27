@@ -111,6 +111,8 @@ mark_as_advanced(Z3_ROOT)
 option(STORM_DISABLE_CVC5 "Sets whether linking with CVC5 should be disabled." OFF)
 set(CVC5_ROOT "" CACHE STRING "A hint to the root directory of CVC5.")
 mark_as_advanced(CVC5_ROOT)
+# Storm builds terms through cvc5::TermManager, which it passes to the cvc5::Solver constructor.
+set(STORM_CVC5_MIN_VERSION "1.2")
 
 option(STORM_DEBUG_CUDD "Build CUDD in debug mode." OFF)
 MARK_AS_ADVANCED(STORM_DEBUG_CUDD)

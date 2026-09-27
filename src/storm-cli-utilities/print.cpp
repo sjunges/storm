@@ -103,7 +103,8 @@ void printVersion() {
     STORM_PRINT("Not linked with CUDD.\n");
 #endif
 #ifdef STORM_HAVE_CVC5
-    cvc5::Solver cvc5Solver;
+    cvc5::TermManager cvc5TermManager;
+    cvc5::Solver cvc5Solver(cvc5TermManager);
     STORM_PRINT("Linked with cvc5 v" << cvc5Solver.getVersion() << ".\n");
 #else
     STORM_PRINT("Not linked with cvc5.\n");

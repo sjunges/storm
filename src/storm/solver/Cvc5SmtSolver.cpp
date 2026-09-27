@@ -49,6 +49,7 @@ Cvc5SmtSolver::Cvc5SmtSolver(storm::expressions::ExpressionManager& manager)
     : SmtSolver(manager)
 #ifdef STORM_HAVE_CVC5
       ,
+      termManager(nullptr),
       solver(nullptr),
       expressionAdapter(nullptr),
       lastCheckAssumptions(false),
@@ -56,7 +57,8 @@ Cvc5SmtSolver::Cvc5SmtSolver(storm::expressions::ExpressionManager& manager)
 #endif
 {
 #ifdef STORM_HAVE_CVC5
-    this->solver = std::make_unique<cvc5::Solver>();
+    this->termManager = std::make_unique<cvc5::TermManager>();
+    this->solver = std::make_unique<cvc5::Solver>(*this->termManager);
     this->solver->setOption("produce-models", "true");
     this->solver->setOption("produce-unsat-assumptions", "true");
     this->solver->setOption("incremental", "true");
@@ -121,7 +123,7 @@ void Cvc5SmtSolver::addNotCurrentModel(bool performSolverReset) {
     }
 
     cvc5::Term notThisModel = this->createModelExpression(variables);
-    notThisModel = this->solver->mkTerm(cvc5::Kind::NOT, {notThisModel});
+    notThisModel = this->termManager->mkTerm(cvc5::Kind::NOT, {notThisModel});
 
     // Similar to Z3, CVC5 does not necessarily search for a different model when new assertions are added
     // in incremental mode. To circumvent this, we reset the solver and re-assert all assertions.
@@ -183,7 +185,7 @@ storm::expressions::SimpleValuation Cvc5SmtSolver::collectModelAsValuation() con
         storm::expressions::Variable const& variable = variableValuePair.first;
         cvc5::Term const& value = variableValuePair.second;
         if (variable.getType().isBooleanType()) {
-            stormModel.setBooleanValue(variable, value == this->solver->mkBoolean(true));
+            stormModel.setBooleanValue(variable, value == this->termManager->mkBoolean(true));
         } else if (variable.getType().isIntegerType()) {
             auto const& interpretation = this->expressionAdapter->translateExpression(value);
             auto const* integerLiteral = dynamic_cast<storm::expressions::IntegerLiteralExpression const*>(&interpretation.getBaseExpression());
@@ -259,13 +261,13 @@ uint_fast64_t Cvc5SmtSolver::allSat(std::vector<storm::expressions::Variable> co
 
         for (storm::expressions::Variable const& importantAtom : important) {
             cvc5::Term value = this->solver->getValue(this->expressionAdapter->translateExpression(importantAtom));
-            valuation.setBooleanValue(importantAtom, value == this->solver->mkBoolean(true));
+            valuation.setBooleanValue(importantAtom, value == this->termManager->mkBoolean(true));
         }
 
         // Check if we are required to proceed, and if so rule out the current model.
         proceed = callback(valuation);
         if (proceed) {
-            this->solver->assertFormula(this->solver->mkTerm(cvc5::Kind::NOT, {modelExpr}));
+            this->solver->assertFormula(this->termManager->mkTerm(cvc5::Kind::NOT, {modelExpr}));
         }
     }
 
@@ -300,7 +302,7 @@ uint_fast64_t Cvc5SmtSolver::allSat(std::vector<storm::expressions::Variable> co
         // Check if we are required to proceed, and if so rule out the current model.
         proceed = callback(modelRef);
         if (proceed) {
-            this->solver->assertFormula(this->solver->mkTerm(cvc5::Kind::NOT, {modelExpr}));
+            this->solver->assertFormula(this->termManager->mkTerm(cvc5::Kind::NOT, {modelExpr}));
         }
     }
 
@@ -395,7 +397,7 @@ cvc5::Term Cvc5SmtSolver::createModelExpression(std::vector<storm::expressions::
     // all other variables, CVC5 merely returns a default value, which is not part of the model.
     auto const modelValues = this->collectVariableValues();
 
-    cvc5::Term modelExpression = this->solver->mkBoolean(true);
+    cvc5::Term modelExpression = this->termManager->mkBoolean(true);
     for (auto const& variable : variables) {
         auto const& modelValue = modelValues.find(variable);
         if (modelValue == modelValues.end()) {
@@ -403,7 +405,8 @@ cvc5::Term Cvc5SmtSolver::createModelExpression(std::vector<storm::expressions::
             continue;
         }
         cvc5::Term variableTerm = this->expressionAdapter->translateExpression(variable);
-        modelExpression = this->solver->mkTerm(cvc5::Kind::AND, {modelExpression, this->solver->mkTerm(cvc5::Kind::EQUAL, {variableTerm, modelValue->second})});
+        modelExpression =
+            this->termManager->mkTerm(cvc5::Kind::AND, {modelExpression, this->termManager->mkTerm(cvc5::Kind::EQUAL, {variableTerm, modelValue->second})});
     }
     return modelExpression;
 }

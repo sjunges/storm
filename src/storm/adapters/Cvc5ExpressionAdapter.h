@@ -29,8 +29,9 @@ class Cvc5ExpressionAdapter : public storm::expressions::ExpressionVisitor {
      * Creates an expression adapter that can translate expressions to the format of CVC5.
      *
      * @param manager The manager that can be used to build expressions.
-     * @param solver A reference to the CVC5 solver over which to build the expressions. The lifetime of the
-     * solver needs to be guaranteed as long as the instance of this adapter is used.
+     * @param solver A reference to the CVC5 solver over which to build the expressions. Its term manager is used
+     * for all terms and sorts, so the lifetime of the solver needs to be guaranteed as long as the instance of
+     * this adapter is used.
      */
     Cvc5ExpressionAdapter(storm::expressions::ExpressionManager& manager, cvc5::Solver& solver);
 
@@ -125,8 +126,8 @@ class Cvc5ExpressionAdapter : public storm::expressions::ExpressionVisitor {
     // The manager that can be used to build expressions.
     storm::expressions::ExpressionManager& manager;
 
-    // The solver that is used to translate the expressions.
-    cvc5::Solver& solver;
+    // The manager of the solver the adapter translates for, which is where terms and sorts are built.
+    cvc5::TermManager& termManager;
 
     // A mapping from variables to their CVC5 equivalent.
     std::unordered_map<storm::expressions::Variable, cvc5::Term> variableToExpressionMapping;

@@ -110,6 +110,10 @@ class Cvc5SmtSolver : public SmtSolver {
      */
     cvc5::Term createModelExpression(std::vector<storm::expressions::Variable> const& variables) const;
 
+    // The manager that terms and sorts are built with, which is also passed to the cvc5::Solver constructor. It
+    // is declared before the solver so that it outlives it, as the terms of the solver refer to it.
+    std::unique_ptr<cvc5::TermManager> termManager;
+
     // The actual solver object.
     std::unique_ptr<cvc5::Solver> solver;
 

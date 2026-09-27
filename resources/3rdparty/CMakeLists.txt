@@ -352,20 +352,36 @@ if(NOT STORM_DISABLE_CVC5)
         set(cvc5_ROOT "${CVC5_ROOT}")
     endif()
 
-    # Recent versions of CVC5 provide a config file, so try that first.
+    # Recent versions of CVC5 provide a config file, so try that first. Note that we cannot request a minimum
+    # version here, because cvc5's own version file uses the ExactVersion strategy and would accept nothing but that
+    # exact version. We compare the version we find ourselves further below instead.
     find_package(cvc5 QUIET NO_MODULE)
     if(TARGET cvc5::cvc5)
-        set(STORM_HAVE_CVC5 ON)
-        message(STATUS "Storm - Linking with cvc5 (version ${cvc5_VERSION}).")
-        list(APPEND STORM_DEP_IMP_TARGETS cvc5::cvc5)
+        set(cvc5_FOUND_VERSION "${cvc5_VERSION}")
+        set(cvc5_FOUND_WITH_CONFIG_FILE TRUE)
     else()
         # For installations without a config file, we use a FindCVC5.cmake script.
         find_package(CVC5 QUIET)
 
         if(CVC5_FOUND)
-            set(STORM_HAVE_CVC5 ON)
-            message(STATUS "Storm - Linking with cvc5 (version ${CVC5_VERSION}).")
+            set(cvc5_FOUND_VERSION "${CVC5_VERSION}")
+        endif()
+    endif()
 
+    if(NOT cvc5_FOUND_VERSION)
+        message(WARNING "Storm - cvc5 not found, or its version could not be determined."
+                " CVC5 will not be available as an SMT solver backend.")
+    elseif(cvc5_FOUND_VERSION VERSION_LESS STORM_CVC5_MIN_VERSION)
+        message(WARNING "Storm - Found cvc5 ${cvc5_FOUND_VERSION}, but ${STORM_CVC5_MIN_VERSION} or newer is required."
+                " Storm builds terms through cvc5::TermManager, which it passes to the cvc5::Solver constructor."
+                " CVC5 will not be available as an SMT solver backend.")
+    else()
+        set(STORM_HAVE_CVC5 ON)
+        message(STATUS "Storm - Linking with cvc5 (version ${cvc5_FOUND_VERSION}).")
+
+        if(cvc5_FOUND_WITH_CONFIG_FILE)
+            list(APPEND STORM_DEP_IMP_TARGETS cvc5::cvc5)
+        else()
             add_library(cvc5 SHARED IMPORTED)
             set_target_properties(
                     cvc5
@@ -374,8 +390,6 @@ if(NOT STORM_DISABLE_CVC5)
                     INTERFACE_INCLUDE_DIRECTORIES ${CVC5_INCLUDE_DIRS}
             )
             list(APPEND STORM_DEP_IMP_TARGETS cvc5)
-        else()
-            message(WARNING "Storm - cvc5 not found. CVC5 will not be available as an SMT solver backend.")
         endif()
     endif()
 else()
