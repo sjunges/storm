@@ -9,6 +9,9 @@
 #include "storm/storage/expressions/ExpressionManager.h"
 #include "storm/utility/solver.h"
 
+#ifdef STORM_HAVE_MATHSAT
+#include "storm/solver/MathsatSmtSolver.h"
+#endif
 #ifdef STORM_HAVE_CVC5
 #include "storm/solver/Cvc5SmtSolver.h"
 #endif
@@ -42,18 +45,35 @@ TEST(SmtSolverFactory, EnvironmentOverridesSmtSolver) {
 #endif
 
 #if defined STORM_HAVE_CVC5 && defined STORM_HAVE_Z3
-TEST(SmtSolverFactory, EnvironmentDoesNotOverrideSmtSolverWhenSetFromDefault) {
+TEST(SmtSolverFactory, EnvironmentSelectionIsUsedEvenIfSeededFromDefault) {
     storm::Environment env;
     std::shared_ptr<storm::expressions::ExpressionManager> manager(new storm::expressions::ExpressionManager());
 
-    // Without an explicit selection, the core setting (Z3 by default) is used.
+    // The environment is the single place where the core setting is turned into a solver selection, so
+    // the solver stored in it is used even if the value was seeded from the default of the setting.
     env.solver().setSmtSolverType(storm::solver::SmtSolverType::Cvc5, true);
     EXPECT_EQ(env.solver().getSmtSolverType(), storm::solver::SmtSolverType::Cvc5);
     EXPECT_TRUE(env.solver().isSmtSolverTypeSetFromDefaultValue());
 
     std::unique_ptr<storm::solver::SmtSolver> solver = storm::utility::solver::getSmtSolver(env, *manager);
     ASSERT_NE(solver, nullptr);
-    EXPECT_EQ(dynamic_cast<storm::solver::Z3SmtSolver*>(solver.get()) != nullptr,
-              storm::settings::getModule<storm::settings::modules::CoreSettings>().getSmtSolver() == storm::solver::SmtSolverType::Z3);
+    EXPECT_NE(dynamic_cast<storm::solver::Cvc5SmtSolver*>(solver.get()), nullptr);
 }
 #endif
+
+TEST(SmtSolverFactory, WithoutEnvironmentTheCompileTimeDefaultIsUsed) {
+    std::shared_ptr<storm::expressions::ExpressionManager> manager(new storm::expressions::ExpressionManager());
+
+    // Without an environment, there is no setting to consult, so the compile-time default is used.
+    std::unique_ptr<storm::solver::SmtSolver> solver = storm::utility::solver::getSmtSolver(*manager);
+    ASSERT_NE(solver, nullptr);
+#ifdef STORM_DEFAULT_SMT_SOLVER_Z3
+    EXPECT_NE(dynamic_cast<storm::solver::Z3SmtSolver*>(solver.get()), nullptr);
+#elif defined STORM_DEFAULT_SMT_SOLVER_MATHSAT
+    EXPECT_NE(dynamic_cast<storm::solver::MathsatSmtSolver*>(solver.get()), nullptr);
+#elif defined STORM_DEFAULT_SMT_SOLVER_CVC5
+    EXPECT_NE(dynamic_cast<storm::solver::Cvc5SmtSolver*>(solver.get()), nullptr);
+#else
+    FAIL() << "No compile-time default SMT solver was configured.";
+#endif
+}

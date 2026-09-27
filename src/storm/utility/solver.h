@@ -103,8 +103,8 @@ class SmtSolverFactory {
     /*!
      * Creates a new SMT solver instance.
      *
-     * The SMT solver is determined by the ``smtsolver`` core setting (or, if the settings manager
-     * does not provide the core settings, by the solvers Storm was built with).
+     * The SMT solver is the one that was selected at compile time (see the CMake option
+     * STORM_DEFAULT_SMT_SOLVER).
      *
      * @param manager The expression manager responsible for the expressions that will be given to the SMT
      * solver.
@@ -115,9 +115,8 @@ class SmtSolverFactory {
     /*!
      * Creates a new SMT solver instance, taking the SMT solver selected in the given environment into account.
      *
-     * If the given environment holds an SMT solver that was selected explicitly (i.e., not seeded from the
-     * default of the ``smtsolver`` core setting), that solver is used. Otherwise, the core setting is
-     * consulted, just as in the overload without an environment.
+     * The environment takes precedence: the SMT solver stored in it is used, no matter whether it was
+     * selected explicitly or seeded from the ``smtsolver`` core setting.
      *
      * @param env The environment determining the SMT solver to use.
      * @param manager The expression manager responsible for the expressions that will be given to the SMT
@@ -127,19 +126,25 @@ class SmtSolverFactory {
     virtual std::unique_ptr<storm::solver::SmtSolver> create(storm::Environment const& env, storm::expressions::ExpressionManager& manager) const;
 };
 
+// The factory for the compile-time chosen default SMT solver (see the CMake option STORM_DEFAULT_SMT_SOLVER).
+using DefaultSmtSolverFactory = SmtSolverFactory;
+
 class Z3SmtSolverFactory : public SmtSolverFactory {
    public:
     virtual std::unique_ptr<storm::solver::SmtSolver> create(storm::expressions::ExpressionManager& manager) const;
+    virtual std::unique_ptr<storm::solver::SmtSolver> create(storm::Environment const& env, storm::expressions::ExpressionManager& manager) const;
 };
 
 class MathsatSmtSolverFactory : public SmtSolverFactory {
    public:
     virtual std::unique_ptr<storm::solver::SmtSolver> create(storm::expressions::ExpressionManager& manager) const;
+    virtual std::unique_ptr<storm::solver::SmtSolver> create(storm::Environment const& env, storm::expressions::ExpressionManager& manager) const;
 };
 
 class Cvc5SmtSolverFactory : public SmtSolverFactory {
    public:
     virtual std::unique_ptr<storm::solver::SmtSolver> create(storm::expressions::ExpressionManager& manager) const;
+    virtual std::unique_ptr<storm::solver::SmtSolver> create(storm::Environment const& env, storm::expressions::ExpressionManager& manager) const;
 };
 
 std::unique_ptr<storm::solver::SmtSolver> getSmtSolver(storm::expressions::ExpressionManager& manager);
