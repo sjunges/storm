@@ -5,6 +5,7 @@
 #include "storm/environment/solver/SolverEnvironment.h"
 #include "storm/settings/SettingsManager.h"
 #include "storm/settings/modules/CoreSettings.h"
+#include "storm/solver/SmtSolver.h"
 #include "storm/solver/SolverSelectionOptions.h"
 #include "storm/storage/expressions/ExpressionManager.h"
 #include "storm/utility/solver.h"
@@ -25,23 +26,19 @@ TEST(SmtSolverFactory, EnvironmentIsSeededFromSettings) {
               storm::settings::getModule<storm::settings::modules::CoreSettings>().isSmtSolverSetFromDefaultValue());
 }
 
-// These two need a solver that differs from the compile-time default, so that a solver of that type can
-// only be the result of the selection made in the environment.
-#if defined STORM_HAVE_MATHSAT
+// These two need an SMT solver that is available and differs from the compile-time default, so that a
+// solver of that type can only be the result of the selection made in the environment. Both the
+// enumeration value and the concrete type are only defined when that solver is actually compiled in.
+#if defined STORM_HAVE_MATHSAT && !defined STORM_DEFAULT_SMT_SOLVER_MATHSAT
 #define STORM_TEST_ALTERNATIVE_SMT_SOLVER storm::solver::SmtSolverType::Mathsat
 #define STORM_TEST_ALTERNATIVE_SMT_SOLVER_TYPE storm::solver::MathsatSmtSolver
-#define STORM_TEST_HAVE_ALTERNATIVE_SMT_SOLVER true
-#else
+#elif defined STORM_HAVE_Z3 && !defined STORM_DEFAULT_SMT_SOLVER_Z3
 #define STORM_TEST_ALTERNATIVE_SMT_SOLVER storm::solver::SmtSolverType::Z3
 #define STORM_TEST_ALTERNATIVE_SMT_SOLVER_TYPE storm::solver::Z3SmtSolver
-#define STORM_TEST_HAVE_ALTERNATIVE_SMT_SOLVER false
 #endif
 
+#ifdef STORM_TEST_ALTERNATIVE_SMT_SOLVER
 TEST(SmtSolverFactory, EnvironmentOverridesSmtSolver) {
-    // The default is Z3 wherever Z3 is available, so overriding it needs a second solver.
-    if (!STORM_TEST_HAVE_ALTERNATIVE_SMT_SOLVER) {
-        GTEST_SKIP() << "requires a second SMT solver";
-    }
     storm::Environment env;
     std::shared_ptr<storm::expressions::ExpressionManager> manager(new storm::expressions::ExpressionManager());
 
@@ -56,9 +53,6 @@ TEST(SmtSolverFactory, EnvironmentOverridesSmtSolver) {
 }
 
 TEST(SmtSolverFactory, EnvironmentSelectionIsUsedEvenIfSeededFromDefault) {
-    if (!STORM_TEST_HAVE_ALTERNATIVE_SMT_SOLVER) {
-        GTEST_SKIP() << "requires a second SMT solver";
-    }
     storm::Environment env;
     std::shared_ptr<storm::expressions::ExpressionManager> manager(new storm::expressions::ExpressionManager());
 
@@ -72,7 +66,9 @@ TEST(SmtSolverFactory, EnvironmentSelectionIsUsedEvenIfSeededFromDefault) {
     ASSERT_NE(solver, nullptr);
     EXPECT_NE(dynamic_cast<STORM_TEST_ALTERNATIVE_SMT_SOLVER_TYPE*>(solver.get()), nullptr);
 }
+#endif
 
+#if defined STORM_DEFAULT_SMT_SOLVER_Z3 || defined STORM_DEFAULT_SMT_SOLVER_MATHSAT
 TEST(SmtSolverFactory, WithoutEnvironmentTheCompileTimeDefaultIsUsed) {
     std::shared_ptr<storm::expressions::ExpressionManager> manager(new storm::expressions::ExpressionManager());
 
@@ -81,9 +77,8 @@ TEST(SmtSolverFactory, WithoutEnvironmentTheCompileTimeDefaultIsUsed) {
     ASSERT_NE(solver, nullptr);
 #ifdef STORM_DEFAULT_SMT_SOLVER_Z3
     EXPECT_NE(dynamic_cast<storm::solver::Z3SmtSolver*>(solver.get()), nullptr);
-#elif defined STORM_DEFAULT_SMT_SOLVER_MATHSAT
-    EXPECT_NE(dynamic_cast<storm::solver::MathsatSmtSolver*>(solver.get()), nullptr);
 #else
-    FAIL() << "No compile-time default SMT solver was configured.";
+    EXPECT_NE(dynamic_cast<storm::solver::MathsatSmtSolver*>(solver.get()), nullptr);
 #endif
 }
+#endif

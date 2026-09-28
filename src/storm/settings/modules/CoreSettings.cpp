@@ -41,9 +41,9 @@ std::string getDefaultLpSolverAsString() {
 }
 
 std::string getDefaultSmtSolverAsString() {
-#if defined STORM_HAVE_Z3
+#if defined STORM_DEFAULT_SMT_SOLVER_Z3
     return "z3";
-#elif defined STORM_HAVE_MATHSAT
+#elif defined STORM_DEFAULT_SMT_SOLVER_MATHSAT
     return "mathsat";
 #else
     return "z3";
@@ -110,6 +110,12 @@ CoreSettings::CoreSettings() : ModuleSettings(moduleName), engine(storm::utility
 #if defined STORM_HAVE_MATHSAT
     smtSolvers.push_back("mathsat");
 #endif
+    if (smtSolvers.empty()) {
+        // The option always exists, since the solver environment reads it while it is constructed. Without
+        // any SMT solver compiled in there is no valid choice, so accept the empty list and let asking for
+        // a solver fail when one is actually requested.
+        smtSolvers.push_back(getDefaultSmtSolverAsString());
+    }
     this->addOption(storm::settings::OptionBuilder(moduleName, smtSolverOptionName, false, "Sets which SMT solver is preferred.")
                         .addArgument(storm::settings::ArgumentBuilder::createStringArgument("name", "The name of an SMT solver.")
                                          .addValidatorString(ArgumentValidatorFactory::createMultipleChoiceValidator(smtSolvers))
