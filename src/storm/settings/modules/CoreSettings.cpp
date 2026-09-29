@@ -114,7 +114,7 @@ CoreSettings::CoreSettings() : ModuleSettings(moduleName), engine(storm::utility
     // holds when no SMT solver is compiled in at all: in that case smtSolvers is empty above, but the
     // choice list must not stay empty because the default value below has to be a valid choice. We thus
     // keep the (unavailable) compile-time default solver as a placeholder, so the option stays consistent
-    // and asking for a solver only fails when one is actually requested (MissingLibraryException).
+    // and asking for a solver only fails when one is actually requested.
     if (smtSolvers.empty()) {
         smtSolvers.push_back(getDefaultSmtSolverAsString());
     }
