@@ -110,10 +110,12 @@ CoreSettings::CoreSettings() : ModuleSettings(moduleName), engine(storm::utility
 #if defined STORM_HAVE_MATHSAT
     smtSolvers.push_back("mathsat");
 #endif
+    // The option always exists, since the solver environment reads it while it is constructed. This also
+    // holds when no SMT solver is compiled in at all: in that case smtSolvers is empty above, but the
+    // choice list must not stay empty because the default value below has to be a valid choice. We thus
+    // keep the (unavailable) compile-time default solver as a placeholder, so the option stays consistent
+    // and asking for a solver only fails when one is actually requested (MissingLibraryException).
     if (smtSolvers.empty()) {
-        // The option always exists, since the solver environment reads it while it is constructed. Without
-        // any SMT solver compiled in there is no valid choice, so accept the empty list and let asking for
-        // a solver fail when one is actually requested.
         smtSolvers.push_back(getDefaultSmtSolverAsString());
     }
     this->addOption(storm::settings::OptionBuilder(moduleName, smtSolverOptionName, false, "Sets which SMT solver is preferred.")
