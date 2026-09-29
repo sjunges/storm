@@ -6,13 +6,6 @@
 file(GLOB_RECURSE STORM_SOURCES ${PROJECT_SOURCE_DIR}/src/storm/*/*.cpp)
 file(GLOB_RECURSE STORM_HEADERS RELATIVE "${PROJECT_SOURCE_DIR}/src/storm" ${PROJECT_SOURCE_DIR}/src/storm/*.h )
 
-# IntervalAdapter.cpp provides the explicit instantiations that back the extern template declarations in
-# IntervalAdapter.h; consumers (storm-parsers, storm-pomdp, ...) link against libstorm to obtain
-# carl::Interval's copy constructors. Under LTO these inline ctors are otherwise internalized to local
-# symbols, breaking the extern-template contract; compile this TU without LTO so they are emitted as proper
-# exported symbols. When LTO is disabled, -fno-lto is a no-op.
-set_source_files_properties(${PROJECT_SOURCE_DIR}/src/storm/adapters/IntervalAdapter.cpp PROPERTIES COMPILE_OPTIONS -fno-lto)
-
 # Additional include files like the storm-config.h
 file(GLOB_RECURSE STORM_BUILD_HEADERS ${PROJECT_BINARY_DIR}/include/storm-config.h)
 
