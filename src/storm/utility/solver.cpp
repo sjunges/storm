@@ -173,7 +173,7 @@ std::unique_ptr<storm::solver::SmtSolver> SmtSolverFactory::create(storm::expres
 #elif defined STORM_DEFAULT_SMT_SOLVER_MATHSAT
     return createSmtSolver(storm::solver::SmtSolverType::Mathsat, manager);
 #else
-    STORM_LOG_THROW(false, storm::exceptions::MissingLibraryException, "Requested an SMT solver but none was installed.");
+    STORM_LOG_THROW_UNCONDITIONALLY(storm::exceptions::MissingLibraryException, "Requested an SMT solver but none was installed.");
 #endif
 }
 
