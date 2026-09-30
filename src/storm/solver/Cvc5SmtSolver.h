@@ -79,8 +79,6 @@ class Cvc5SmtSolver : public SmtSolver {
 
     virtual bool unsetTimeout() override;
 
-    virtual std::string getSmtLibString() const override;
-
    private:
 #ifdef STORM_HAVE_CVC5
     /*!
