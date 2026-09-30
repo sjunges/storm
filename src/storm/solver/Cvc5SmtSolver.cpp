@@ -1,7 +1,6 @@
 #include "storm/solver/Cvc5SmtSolver.h"
 
 #include <memory>
-#include <sstream>
 
 #include "storm/exceptions/ExpressionEvaluationException.h"
 #include "storm/exceptions/InvalidArgumentException.h"
@@ -344,22 +343,6 @@ bool Cvc5SmtSolver::unsetTimeout() {
 #ifdef STORM_HAVE_CVC5
     this->solver->setOption("tlimit-per", "0");
     return true;
-#else
-    STORM_LOG_THROW(false, storm::exceptions::MissingLibraryException, "Storm is compiled without CVC5 support.");
-#endif
-}
-
-std::string Cvc5SmtSolver::getSmtLibString() const {
-#ifdef STORM_HAVE_CVC5
-    std::stringstream sstr;
-    std::vector<cvc5::Term> const& assertions = this->solver->getAssertions();
-    for (auto assertionIt = assertions.begin(); assertionIt != assertions.end(); ++assertionIt) {
-        if (assertionIt != assertions.begin()) {
-            sstr << "\n";
-        }
-        sstr << assertionIt->toString();
-    }
-    return sstr.str();
 #else
     STORM_LOG_THROW(false, storm::exceptions::MissingLibraryException, "Storm is compiled without CVC5 support.");
 #endif
