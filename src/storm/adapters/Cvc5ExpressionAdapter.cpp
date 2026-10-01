@@ -248,14 +248,36 @@ storm::expressions::Expression Cvc5ExpressionAdapter::translateExpression(cvc5::
             return this->translateExpression(term[0]) < this->translateExpression(term[1]);
         case cvc5::Kind::GT:
             return this->translateExpression(term[0]) > this->translateExpression(term[1]);
-        case cvc5::Kind::ADD:
-            return this->translateExpression(term[0]) + this->translateExpression(term[1]);
+        case cvc5::Kind::ADD: {
+            STORM_LOG_THROW(term.getNumChildren() != 0, storm::exceptions::ExpressionEvaluationException,
+                            "Failed to convert CVC5 expression. 0-ary ADD is assumed to be an error.");
+            if (term.getNumChildren() == 1) {
+                return this->translateExpression(term[0]);
+            } else {
+                storm::expressions::Expression retVal = this->translateExpression(term[0]);
+                for (size_t i = 1; i < term.getNumChildren(); ++i) {
+                    retVal = retVal + this->translateExpression(term[i]);
+                }
+                return retVal;
+            }
+        }
         case cvc5::Kind::SUB:
             return this->translateExpression(term[0]) - this->translateExpression(term[1]);
         case cvc5::Kind::NEG:
             return -this->translateExpression(term[0]);
-        case cvc5::Kind::MULT:
-            return this->translateExpression(term[0]) * this->translateExpression(term[1]);
+        case cvc5::Kind::MULT: {
+            STORM_LOG_THROW(term.getNumChildren() != 0, storm::exceptions::ExpressionEvaluationException,
+                            "Failed to convert CVC5 expression. 0-ary MULT is assumed to be an error.");
+            if (term.getNumChildren() == 1) {
+                return this->translateExpression(term[0]);
+            } else {
+                storm::expressions::Expression retVal = this->translateExpression(term[0]);
+                for (size_t i = 1; i < term.getNumChildren(); ++i) {
+                    retVal = retVal * this->translateExpression(term[i]);
+                }
+                return retVal;
+            }
+        }
         case cvc5::Kind::DIVISION:
         case cvc5::Kind::INTS_DIVISION:
             return this->translateExpression(term[0]) / this->translateExpression(term[1]);
@@ -350,6 +372,19 @@ boost::any Cvc5ExpressionAdapter::visit(storm::expressions::BinaryNumericalFunct
     leftResult = this->convertToRealIfExpected(leftResult, isRealExpected);
     rightResult = this->convertToRealIfExpected(rightResult, isRealExpected);
 
+    // Storm assigns the type of the operands to the quotient, so the division of two integers is an integer in
+    // Storm. CVC5, in contrast, always divides over the rational numbers. We therefore convert the operands of a
+    // division to real numbers explicitly. Otherwise, the resulting real term would be combined with the
+    // surrounding integer terms of a parent expression, which CVC5 rejects in comparisons and ITEs.
+    if (expression.getOperatorType() == storm::expressions::BinaryNumericalFunctionExpression::OperatorType::Divide) {
+        leftResult = this->convertToRealIfExpected(leftResult, true);
+        rightResult = this->convertToRealIfExpected(rightResult, true);
+    }
+
+    // Since the sort of a translated operand may deviate from the type that Storm assigned to it (consider the
+    // division above), we always unify the sorts of the operands before constructing the term.
+    this->unifyNumericalTypes(leftResult, rightResult);
+
     cvc5::Term result;
     switch (expression.getOperatorType()) {
         case storm::expressions::BinaryNumericalFunctionExpression::OperatorType::Plus:
@@ -362,7 +397,6 @@ boost::any Cvc5ExpressionAdapter::visit(storm::expressions::BinaryNumericalFunct
             result = this->termManager.mkTerm(cvc5::Kind::MULT, {leftResult, rightResult});
             break;
         case storm::expressions::BinaryNumericalFunctionExpression::OperatorType::Divide:
-            // Both operands have already been converted above, since a Storm division always yields a real number.
             result = this->termManager.mkTerm(cvc5::Kind::DIVISION, {leftResult, rightResult});
             break;
         case storm::expressions::BinaryNumericalFunctionExpression::OperatorType::Min:
@@ -372,9 +406,6 @@ boost::any Cvc5ExpressionAdapter::visit(storm::expressions::BinaryNumericalFunct
             result = this->termManager.mkTerm(cvc5::Kind::ITE, {this->termManager.mkTerm(cvc5::Kind::GEQ, {leftResult, rightResult}), leftResult, rightResult});
             break;
         case storm::expressions::BinaryNumericalFunctionExpression::OperatorType::Power:
-            // CVC5 requires both operands of a power to be of the same sort. Integers have already been converted
-            // above if the power yields a real number, so we only have to take care of mixed operands.
-            this->unifyNumericalTypes(leftResult, rightResult);
             result = this->termManager.mkTerm(cvc5::Kind::POW, {leftResult, rightResult});
             break;
         default:
@@ -532,6 +563,11 @@ boost::any Cvc5ExpressionAdapter::visit(storm::expressions::IfThenElseExpression
     cvc5::Term conditionResult = boost::any_cast<cvc5::Term>(expression.getCondition()->accept(*this, data));
     cvc5::Term thenResult = boost::any_cast<cvc5::Term>(expression.getThenExpression()->accept(*this, data));
     cvc5::Term elseResult = boost::any_cast<cvc5::Term>(expression.getElseExpression()->accept(*this, data));
+
+    // CVC5 requires both branches of an ITE to be of the same type. Storm, in contrast, admits an expression that
+    // selects between an integer and a rational number, so we convert the integer branch if necessary.
+    this->unifyNumericalTypes(thenResult, elseResult);
+
     cvc5::Term result = this->termManager.mkTerm(cvc5::Kind::ITE, {conditionResult, thenResult, elseResult});
 
     expressionCache.emplace(&expression, result);
@@ -553,15 +589,16 @@ cvc5::Term Cvc5ExpressionAdapter::createVariable(storm::expressions::Variable co
     cvc5::Sort sort;
     if (variable.getType().isBooleanType()) {
         sort = this->termManager.getBooleanSort();
-    } else if (variable.getType().isIntegerType()) {
-        sort = this->termManager.getIntegerSort();
-    } else if (variable.getType().isBitVectorType()) {
-        sort = this->termManager.mkBitVectorSort(variable.getType().getWidth());
     } else if (variable.getType().isRationalType()) {
         sort = this->termManager.getRealSort();
     } else {
-        STORM_LOG_THROW(false, storm::exceptions::InvalidTypeException,
-                        "Encountered variable '" << variable.getName() << "' with unknown type while trying to create solver variables.");
+        // Note that a bitvector type is an integer type in Storm. Since this backend does not implement
+        // bitvector semantics, we map such a variable onto an unbounded integer, which is also what the other
+        // backends do (see Z3ExpressionAdapter). Callers rely on this, for example IterativePolicySearch reads
+        // the value of a bitvector scheduler variable with the integer getter of a model.
+        STORM_LOG_ASSERT(variable.getType().isIntegerType(),
+                         "Encountered variable '" << variable.getName() << "' with unknown type while trying to create solver variables.");
+        sort = this->termManager.getIntegerSort();
     }
     cvc5::Term cvc5Variable = this->termManager.mkConst(sort, variable.getName());
     variableToExpressionMapping.insert(std::make_pair(variable, cvc5Variable));
