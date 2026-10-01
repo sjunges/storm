@@ -9,6 +9,7 @@
 #include "storm/exceptions/MissingLibraryException.h"
 #include "storm/storage/expressions/ExpressionManager.h"
 #include "storm/utility/constants.h"
+#include "storm/utility/logging.h"
 #include "storm/utility/macros.h"
 
 namespace storm {
@@ -121,11 +122,12 @@ void Cvc5SmtSolver::addNotCurrentModel(bool performSolverReset) {
     STORM_LOG_THROW(this->lastResult == SmtSolver::CheckResult::Sat, storm::exceptions::InvalidStateException,
                     "Unable to create model for formula that was not determined to be satisfiable.");
 
+    // Note that bitvector variables are part of the model just like the other ones. They are represented as
+    // integers in this backend, so createModelExpression can describe them without further ado. Leaving them out
+    // would result in an empty conjunction, i.e., in a blocking clause that is simply false.
     std::vector<storm::expressions::Variable> variables;
     for (auto const& variable : this->getManager().getVariables()) {
-        if (!variable.getType().isBitVectorType()) {
-            variables.push_back(variable);
-        }
+        variables.push_back(variable);
     }
 
     cvc5::Term notThisModel = this->createModelExpression(variables);
@@ -198,10 +200,20 @@ storm::expressions::SimpleValuation Cvc5SmtSolver::collectModelAsValuation() con
             STORM_LOG_ASSERT(integerLiteral != nullptr, "Variable interpretation in model is not an integer.");
             stormModel.setIntegerValue(variable, integerLiteral->getValue());
         } else if (variable.getType().isRationalType()) {
-            auto const& interpretation = this->expressionAdapter->translateExpression(value);
+            // CVC5 reports a value that is not a rational number, such as the positive root of x^2 = 2, as a real
+            // algebraic number. Since a SimpleValuation holds a double, we approximate such a value by its lower
+            // bound, just like the Z3 backend does.
+            cvc5::Term approximableValue = value;
+            if (value.isRealAlgebraicNumber()) {
+                STORM_LOG_WARN("Interpreting algebraic numbers as rational numbers. This is not an exact computation.");
+                approximableValue = value.getRealAlgebraicNumberLowerBound();
+            }
+            auto const& interpretation = this->expressionAdapter->translateExpression(approximableValue);
             auto const* rationalLiteral = dynamic_cast<storm::expressions::RationalLiteralExpression const*>(&interpretation.getBaseExpression());
             STORM_LOG_ASSERT(rationalLiteral != nullptr, "Variable interpretation in model is not a rational number.");
-            stormModel.setRationalValue(variable, storm::utility::convertNumber<double>(rationalLiteral->getValue()));
+            if (rationalLiteral != nullptr) {
+                stormModel.setRationalValue(variable, storm::utility::convertNumber<double>(rationalLiteral->getValue()));
+            }
         } else {
             STORM_LOG_THROW(false, storm::exceptions::ExpressionEvaluationException, "Variable interpretation in model is not of type bool, int or rational.");
         }
