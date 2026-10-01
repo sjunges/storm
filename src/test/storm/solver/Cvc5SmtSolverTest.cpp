@@ -2,6 +2,7 @@
 #include "test/storm_gtest.h"
 
 #ifdef STORM_HAVE_CVC5
+#include "storm/exceptions/InvalidTypeException.h"
 #include "storm/solver/Cvc5SmtSolver.h"
 #include "storm/storage/expressions/OperatorType.h"
 
@@ -260,6 +261,49 @@ TEST(Cvc5SmtSolver, ModelReferenceDescribesItsOwnModel) {
     EXPECT_EQ(modelString, model->toString());
     EXPECT_EQ(42, model->getIntegerValue(a));
     EXPECT_TRUE(model->getBooleanValue(b));
+}
+
+TEST(Cvc5SmtSolver, ModelReferenceRejectsValuesOfTheWrongType) {
+    std::shared_ptr<storm::expressions::ExpressionManager> manager(new storm::expressions::ExpressionManager());
+
+    storm::solver::Cvc5SmtSolver s(*manager);
+
+    storm::expressions::Variable a = manager->declareIntegerVariable("a");
+    storm::expressions::Variable b = manager->declareBooleanVariable("b");
+    storm::expressions::Variable c = manager->declareRationalVariable("c");
+    s.add(a == manager->integer(42) && b && c == manager->rational(0.5));
+    ASSERT_EQ(storm::solver::SmtSolver::CheckResult::Sat, s.check());
+    std::shared_ptr<storm::solver::SmtSolver::ModelReference> model = s.getModel();
+
+    // The values are stored per type, so reading a variable with the wrong getter would access an unrelated
+    // entry instead of reporting the mistake.
+    EXPECT_THROW(model->getBooleanValue(a), storm::exceptions::InvalidTypeException);
+    EXPECT_THROW(model->getBooleanValue(c), storm::exceptions::InvalidTypeException);
+    EXPECT_THROW(model->getIntegerValue(b), storm::exceptions::InvalidTypeException);
+    EXPECT_THROW(model->getIntegerValue(c), storm::exceptions::InvalidTypeException);
+    EXPECT_THROW(model->getRationalValue(a), storm::exceptions::InvalidTypeException);
+    EXPECT_THROW(model->getRationalValue(b), storm::exceptions::InvalidTypeException);
+
+    // The matching getters still work.
+    EXPECT_EQ(42, model->getIntegerValue(a));
+    EXPECT_TRUE(model->getBooleanValue(b));
+    EXPECT_DOUBLE_EQ(0.5, model->getRationalValue(c));
+}
+
+TEST(Cvc5SmtSolver, ModelReferenceReadsBitVectorVariableAsInteger) {
+    std::shared_ptr<storm::expressions::ExpressionManager> manager(new storm::expressions::ExpressionManager());
+
+    storm::solver::Cvc5SmtSolver s(*manager);
+
+    // A bitvector is an integer type in Storm, and IterativePolicySearch reads the value of such a scheduler
+    // variable with the integer getter of a model.
+    storm::expressions::Variable bv = manager->declareBitVectorVariable("bv", 8);
+    s.add(bv == manager->integer(3));
+    ASSERT_EQ(storm::solver::SmtSolver::CheckResult::Sat, s.check());
+    std::shared_ptr<storm::solver::SmtSolver::ModelReference> model = s.getModel();
+
+    EXPECT_EQ(3, model->getIntegerValue(bv));
+    EXPECT_THROW(model->getBooleanValue(bv), storm::exceptions::InvalidTypeException);
 }
 
 TEST(Cvc5SmtSolver, ModelReferenceOutlivesItsSolver) {

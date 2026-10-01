@@ -5,6 +5,7 @@
 #include "storm/exceptions/ExpressionEvaluationException.h"
 #include "storm/exceptions/InvalidArgumentException.h"
 #include "storm/exceptions/InvalidStateException.h"
+#include "storm/exceptions/InvalidTypeException.h"
 #include "storm/exceptions/MissingLibraryException.h"
 #include "storm/storage/expressions/ExpressionManager.h"
 #include "storm/utility/constants.h"
@@ -21,22 +22,28 @@ Cvc5SmtSolver::Cvc5ModelReference::Cvc5ModelReference(storm::expressions::Expres
 
 void Cvc5SmtSolver::Cvc5ModelReference::checkVariable(storm::expressions::Variable const& variable) const {
     STORM_LOG_ASSERT(variable.getManager() == this->getManager(), "Requested variable is managed by a different manager.");
-    STORM_LOG_ASSERT(variable.getType().isBooleanType() || variable.getType().isIntegerType() || variable.getType().isRationalType(),
-                     "Cannot retrieve the value of a variable that is neither Boolean, integer, nor rational.");
 }
 
 bool Cvc5SmtSolver::Cvc5ModelReference::getBooleanValue(storm::expressions::Variable const& variable) const {
     this->checkVariable(variable);
+    STORM_LOG_THROW(variable.getType().isBooleanType(), storm::exceptions::InvalidTypeException,
+                    "Cannot retrieve the Boolean value of variable '" << variable.getName() << "' of non-Boolean type.");
     return this->variableValues.getBooleanValue(variable);
 }
 
 int_fast64_t Cvc5SmtSolver::Cvc5ModelReference::getIntegerValue(storm::expressions::Variable const& variable) const {
     this->checkVariable(variable);
+    // Note that a bitvector variable is an integer type in Storm, and its value is stored among the integer
+    // values. We therefore accept it here just like SimpleValuation does.
+    STORM_LOG_THROW(variable.getType().isIntegerType(), storm::exceptions::InvalidTypeException,
+                    "Cannot retrieve the integer value of variable '" << variable.getName() << "' of non-integer type.");
     return this->variableValues.getIntegerValue(variable);
 }
 
 double Cvc5SmtSolver::Cvc5ModelReference::getRationalValue(storm::expressions::Variable const& variable) const {
     this->checkVariable(variable);
+    STORM_LOG_THROW(variable.getType().isRationalType(), storm::exceptions::InvalidTypeException,
+                    "Cannot retrieve the rational value of variable '" << variable.getName() << "' of non-rational type.");
     return this->variableValues.getRationalValue(variable);
 }
 

@@ -119,6 +119,32 @@ TEST(Cvc5ExpressionAdapter, StormToCvc5MixedNumericalTypes) {
     cvc5::Term cvc5IntVar2 = adapter.translateExpression(intVar2);
     assertEquivalent(intVar / intVar2, termManager.mkTerm(cvc5::Kind::DIVISION, {cvc5ToReal, termManager.mkTerm(cvc5::Kind::TO_REAL, {cvc5IntVar2})}),
                      termManager, solver, adapter);
+
+    // Storm types the quotient of two integers as an integer, whereas CVC5 divides over the rational numbers.
+    // Surrounding integer terms must therefore still be translated into a term CVC5 accepts.
+    storm::expressions::Variable intVar3 = manager->declareIntegerVariable("intVar3");
+    cvc5::Term cvc5IntVar3 = adapter.translateExpression(intVar3);
+    assertEquivalent(intVar / intVar2 + intVar3 == manager->integer(0),
+                     termManager.mkTerm(cvc5::Kind::EQUAL,
+                                        {termManager.mkTerm(cvc5::Kind::ADD,
+                                                            {termManager.mkTerm(cvc5::Kind::DIVISION, {termManager.mkTerm(cvc5::Kind::TO_REAL, {cvc5IntVar}),
+                                                                                                       termManager.mkTerm(cvc5::Kind::TO_REAL, {cvc5IntVar2})}),
+                                                             termManager.mkTerm(cvc5::Kind::TO_REAL, {cvc5IntVar3})}),
+                                         termManager.mkReal(0)}),
+                     termManager, solver, adapter);
+
+    // The same holds for the built-in min and max, which CVC5 expresses as an ITE.
+    assertEquivalent(
+        storm::expressions::minimum(intVar / intVar2, intVar3),
+        termManager.mkTerm(
+            cvc5::Kind::ITE,
+            {termManager.mkTerm(cvc5::Kind::LEQ, {termManager.mkTerm(cvc5::Kind::DIVISION, {termManager.mkTerm(cvc5::Kind::TO_REAL, {cvc5IntVar}),
+                                                                                            termManager.mkTerm(cvc5::Kind::TO_REAL, {cvc5IntVar2})}),
+                                                  termManager.mkTerm(cvc5::Kind::TO_REAL, {cvc5IntVar3})}),
+             termManager.mkTerm(cvc5::Kind::DIVISION,
+                                {termManager.mkTerm(cvc5::Kind::TO_REAL, {cvc5IntVar}), termManager.mkTerm(cvc5::Kind::TO_REAL, {cvc5IntVar2})}),
+             termManager.mkTerm(cvc5::Kind::TO_REAL, {cvc5IntVar3})}),
+        termManager, solver, adapter);
 }
 
 TEST(Cvc5ExpressionAdapter, StormToCvc5FloorAndCeil) {
@@ -145,6 +171,12 @@ TEST(Cvc5ExpressionAdapter, StormToCvc5FloorAndCeil) {
     assertEquivalent(storm::expressions::ceil(x),
                      termManager.mkTerm(cvc5::Kind::NEG, {termManager.mkTerm(cvc5::Kind::TO_INTEGER, {termManager.mkTerm(cvc5::Kind::NEG, {cvc5X})})}),
                      termManager, solver, adapter);
+
+    // The floor and the ceiling of an integer are the integer itself.
+    storm::expressions::Variable intVar = manager->declareIntegerVariable("intVar");
+    cvc5::Term cvc5IntVar = adapter.translateExpression(intVar);
+    assertEquivalent(storm::expressions::floor(intVar), cvc5IntVar, termManager, solver, adapter);
+    assertEquivalent(storm::expressions::ceil(intVar), cvc5IntVar, termManager, solver, adapter);
 }
 
 TEST(Cvc5ExpressionAdapter, StormToCvc5IfThenElse) {
@@ -163,6 +195,13 @@ TEST(Cvc5ExpressionAdapter, StormToCvc5IfThenElse) {
     cvc5::Term cvc5Z = adapter.translateExpression(z);
 
     assertEquivalent(storm::expressions::ite(x, y, z), termManager.mkTerm(cvc5::Kind::ITE, {cvc5X, cvc5Y, cvc5Z}), termManager, solver, adapter);
+
+    // Storm admits an ITE that selects between an integer and a rational number, so the integer branch has to be
+    // converted before the term can be handed to CVC5.
+    storm::expressions::Variable r = manager->declareRationalVariable("r");
+    cvc5::Term cvc5R = adapter.translateExpression(r);
+    assertEquivalent(storm::expressions::ite(x, y, r), termManager.mkTerm(cvc5::Kind::ITE, {cvc5X, termManager.mkTerm(cvc5::Kind::TO_REAL, {cvc5Y}), cvc5R}),
+                     termManager, solver, adapter);
 }
 
 TEST(Cvc5ExpressionAdapter, Cvc5ToStorm) {
@@ -227,5 +266,16 @@ TEST(Cvc5ExpressionAdapter, Cvc5ToStorm) {
     auto const* zeroLiteral = dynamic_cast<storm::expressions::IntegerLiteralExpression const*>(&translatedLess.getOperand(1).getBaseExpression());
     ASSERT_TRUE(zeroLiteral != nullptr);
     ASSERT_EQ(0, zeroLiteral->getValue());
+
+    // CVC5 admits sums and products with more than two operands, so all of them have to be taken into account.
+    cvc5::Term cvc5ThreeWaySum = termManager.mkTerm(cvc5::Kind::ADD, {cvc5X, cvc5Y, adapter.translateExpression(manager->integer(3))});
+    storm::expressions::Expression translatedThreeWaySum = adapter.translateExpression(cvc5ThreeWaySum);
+    ASSERT_EQ(storm::expressions::OperatorType::Plus, translatedThreeWaySum.getOperator());
+    EXPECT_EQ((translatedSum + manager->integer(3)).toString(), translatedThreeWaySum.toString());
+
+    cvc5::Term cvc5ThreeWayProduct = termManager.mkTerm(cvc5::Kind::MULT, {cvc5X, cvc5Y, adapter.translateExpression(manager->integer(3))});
+    storm::expressions::Expression translatedThreeWayProduct = adapter.translateExpression(cvc5ThreeWayProduct);
+    ASSERT_EQ(storm::expressions::OperatorType::Times, translatedThreeWayProduct.getOperator());
+    EXPECT_EQ((translatedSum.getOperand(0) * translatedSum.getOperand(1) * manager->integer(3)).toString(), translatedThreeWayProduct.toString());
 }
 #endif
