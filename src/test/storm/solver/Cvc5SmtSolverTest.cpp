@@ -352,6 +352,26 @@ TEST(Cvc5SmtSolver, AddNotCurrentModelWithUnconstrainedVariable) {
     EXPECT_NE(yValues[2], yValues[3]);
 }
 
+TEST(Cvc5SmtSolver, AddNotCurrentModelWithOnlyBitVectorVariables) {
+    std::shared_ptr<storm::expressions::ExpressionManager> manager(new storm::expressions::ExpressionManager());
+
+    storm::solver::Cvc5SmtSolver s(*manager);
+
+    // The bitvector is the only variable, so the blocking clause must not degenerate to "false".
+    storm::expressions::Variable bv = manager->declareBitVectorVariable("bv", 8);
+    s.add(bv == manager->integer(0) || bv == manager->integer(1));
+
+    std::vector<int64_t> values;
+    while (s.check() == storm::solver::SmtSolver::CheckResult::Sat) {
+        values.push_back(s.getModelAsValuation().getIntegerValue(bv));
+        s.addNotCurrentModel();
+    }
+
+    // Both models are found instead of the second check being unsatisfiable right away.
+    ASSERT_EQ(2ull, values.size());
+    EXPECT_NE(values[0], values[1]);
+}
+
 TEST(Cvc5SmtSolver, UnsatAssumptions) {
     std::shared_ptr<storm::expressions::ExpressionManager> manager(new storm::expressions::ExpressionManager());
 
