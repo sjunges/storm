@@ -217,7 +217,7 @@ TEST(Cvc5ExpressionAdapter, Cvc5ToStorm) {
     ASSERT_TRUE(adapter.translateExpression(termManager.mkBoolean(false)).isFalse());
 
     // CVC5 prints negative integers in the SMT-LIB notation, i.e., as "(- 42)".
-    auto const assertIntegerLiteral = [&adapter, &termManager](int_fast64_t value) {
+    auto const assertIntegerLiteral = [&adapter, &termManager](int64_t value) {
         storm::expressions::Expression translated = adapter.translateExpression(termManager.mkInteger(value));
         auto const* integerLiteral = dynamic_cast<storm::expressions::IntegerLiteralExpression const*>(&translated.getBaseExpression());
         EXPECT_TRUE(integerLiteral != nullptr);

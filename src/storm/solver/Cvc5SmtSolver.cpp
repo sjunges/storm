@@ -252,7 +252,7 @@ uint_fast64_t Cvc5SmtSolver::allSat(std::vector<storm::expressions::Variable> co
         STORM_LOG_THROW(variable.hasBooleanType(), storm::exceptions::InvalidArgumentException, "The important atoms for AllSat must be boolean variables.");
     }
 
-    uint_fast64_t numberOfModels = 0;
+    uint64_t numberOfModels = 0;
     bool proceed = true;
 
     // Save the current assertion stack, to be able to backtrack after the procedure.
@@ -292,7 +292,7 @@ uint_fast64_t Cvc5SmtSolver::allSat(std::vector<storm::expressions::Variable> co
         STORM_LOG_THROW(variable.hasBooleanType(), storm::exceptions::InvalidArgumentException, "The important atoms for AllSat must be boolean variables.");
     }
 
-    uint_fast64_t numberOfModels = 0;
+    uint64_t numberOfModels = 0;
     bool proceed = true;
 
     // Save the current assertion stack, to be able to backtrack after the procedure.

@@ -159,9 +159,9 @@ TEST(Cvc5SmtSolver, GenerateModel) {
     result = s.check();
     ASSERT_TRUE(result == storm::solver::SmtSolver::CheckResult::Sat);
     std::shared_ptr<storm::solver::SmtSolver::ModelReference> model = s.getModel();
-    int_fast64_t aEval = model->getIntegerValue(a);
-    int_fast64_t bEval = model->getIntegerValue(b);
-    int_fast64_t cEval = model->getIntegerValue(c);
+    int64_t aEval = model->getIntegerValue(a);
+    int64_t bEval = model->getIntegerValue(b);
+    int64_t cEval = model->getIntegerValue(c);
     ASSERT_TRUE(cEval == aEval + bEval - 1);
 }
 
