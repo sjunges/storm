@@ -85,7 +85,7 @@ storm::expressions::Expression translateNumericalConstant(storm::expressions::Ex
                         "Failed to convert CVC5 expression. Encountered malformed integer constant " << stringRepresentation << ".");
 
         // Note that we negate the string instead of the parsed value because the latter may not be representable.
-        int_fast64_t value = 0;
+        int64_t value = 0;
         try {
             value = std::stoll(isNegative ? "-" + number : number);
         } catch (std::logic_error const&) {
