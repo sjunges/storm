@@ -87,6 +87,7 @@ void EnvironmentBuilder::setSolverEnvironment(storm::SolverEnvironment& solver) 
     applyIfRegistered<storm::settings::modules::CoreSettings>([&](auto const& coreSettings) {
         solver.setLinearEquationSolverType(coreSettings.getEquationSolver(), coreSettings.isEquationSolverSetFromDefaultValue());
         solver.setLpSolverType(coreSettings.getLpSolver(), coreSettings.isLpSolverSetFromDefaultValue());
+        solver.setSmtSolverType(coreSettings.getSmtSolver(), coreSettings.isSmtSolverSetFromDefaultValue());
     });
 
     applyIfRegistered<storm::settings::modules::EigenEquationSolverSettings>([&](auto const& eigenSettings) {

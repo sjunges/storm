@@ -27,7 +27,19 @@
 #include "storm/environment/solver/TopologicalSolverEnvironment.h"
 #include "storm/settings/EnvironmentBuilder.h"
 #include "storm/settings/SettingsManager.h"
+#include "storm/settings/modules/CoreSettings.h"
 #include "storm/settings/modules/GeneralSettings.h"
+
+// The SMT solver that the builder is asked to select has to differ from the compile-time default,
+// otherwise the selection is indistinguishable from the default. Only defined when such a solver is
+// actually compiled in.
+#if defined STORM_HAVE_MATHSAT && !defined STORM_DEFAULT_SMT_SOLVER_MATHSAT
+#define STORM_TEST_ALTERNATIVE_SMT_SOLVER "mathsat"
+#define STORM_TEST_ALTERNATIVE_SMT_SOLVER_TYPE storm::solver::SmtSolverType::Mathsat
+#elif defined STORM_HAVE_Z3 && !defined STORM_DEFAULT_SMT_SOLVER_Z3
+#define STORM_TEST_ALTERNATIVE_SMT_SOLVER "z3"
+#define STORM_TEST_ALTERNATIVE_SMT_SOLVER_TYPE storm::solver::SmtSolverType::Z3
+#endif
 
 namespace {
 
@@ -217,3 +229,19 @@ TEST(EnvironmentBuilderTest, SoundFlagIsResetByRestoreDefaults) {
     EXPECT_FALSE(storm::settings::getModule<storm::settings::modules::GeneralSettings>().isSoundSet());
     EXPECT_FALSE(buildFromSettings().solver().isForceSoundness());
 }
+
+#ifdef STORM_TEST_ALTERNATIVE_SMT_SOLVER
+TEST(EnvironmentBuilderTest, SmtSolverSelectionIsAppliedToTheBuiltEnvironment) {
+    storm::settings::mutableManager().setFromExplodedString({"--smtsolver", STORM_TEST_ALTERNATIVE_SMT_SOLVER});
+
+    storm::Environment const builtEnv = buildFromSettings();
+    EXPECT_EQ(builtEnv.solver().getSmtSolverType(), STORM_TEST_ALTERNATIVE_SMT_SOLVER_TYPE);
+    EXPECT_FALSE(builtEnv.solver().isSmtSolverTypeSetFromDefaultValue());
+
+    // A default-constructed environment applies hardcoded defaults and must therefore not follow the settings.
+    storm::Environment const defaultEnv;
+    EXPECT_NE(defaultEnv.solver().getSmtSolverType(), STORM_TEST_ALTERNATIVE_SMT_SOLVER_TYPE);
+
+    storm::settings::mutableManager().getModule(storm::settings::modules::CoreSettings::moduleName).restoreDefaults();
+}
+#endif

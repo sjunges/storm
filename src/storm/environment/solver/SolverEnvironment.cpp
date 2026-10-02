@@ -24,6 +24,14 @@ SolverEnvironment::SolverEnvironment() {
     lpSolverType = storm::solver::LpSolverType::Z3;
 #endif
     lpSolverTypeSetFromDefault = true;
+#if defined STORM_DEFAULT_SMT_SOLVER_Z3
+    smtSolverType = storm::solver::SmtSolverType::Z3;
+#elif defined STORM_DEFAULT_SMT_SOLVER_MATHSAT
+    smtSolverType = storm::solver::SmtSolverType::Mathsat;
+#else
+    smtSolverType = storm::solver::SmtSolverType::Z3;
+#endif
+    smtSolverTypeSetFromDefault = true;
     debug = false;
     verbose = false;
     showProgressDelay = 5;
@@ -177,6 +185,19 @@ void SolverEnvironment::setLpSolverType(storm::solver::LpSolverType const& value
 
 bool SolverEnvironment::isLpSolverTypeSetFromDefaultValue() const {
     return lpSolverTypeSetFromDefault;
+}
+
+storm::solver::SmtSolverType const& SolverEnvironment::getSmtSolverType() const {
+    return smtSolverType;
+}
+
+void SolverEnvironment::setSmtSolverType(storm::solver::SmtSolverType const& value, bool isSetFromDefault) {
+    smtSolverTypeSetFromDefault = isSetFromDefault;
+    smtSolverType = value;
+}
+
+bool SolverEnvironment::isSmtSolverTypeSetFromDefaultValue() const {
+    return smtSolverTypeSetFromDefault;
 }
 
 std::pair<boost::optional<storm::RationalNumber>, boost::optional<bool>> SolverEnvironment::getPrecisionOfLinearEquationSolver(
