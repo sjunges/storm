@@ -79,10 +79,7 @@ MARK_AS_ADVANCED(STORM_QVBS_ROOT)
 set(STORM_CARL_GIT_REPO "https://github.com/stormchecker/carl-storm.git" CACHE STRING "For fetching carl: which git repo to use")
 set(STORM_CARL_GIT_TAG "14.36" CACHE STRING "For fetching carl: which git tag to use")
 
-# This variable used to be declared with option(), which turned it into a BOOL and silently discarded the tag.
-# Since a cache entry that is already present is not overwritten by set(... CACHE ...), build trees configured
-# before the fix still hold that BOOL entry and would keep building against the tip of carl's default branch.
-# Correct those entries, while leaving a tag that was set deliberately (which is a STRING) untouched.
+# Correct a non-STRING cache entry, while leaving a tag that was set deliberately untouched.
 get_property(STORM_CARL_GIT_TAG_TYPE CACHE STORM_CARL_GIT_TAG PROPERTY TYPE)
 if(STORM_CARL_GIT_TAG_TYPE STREQUAL "BOOL")
     message(STATUS "Storm - Correcting the boolean cache entry of STORM_CARL_GIT_TAG.")
