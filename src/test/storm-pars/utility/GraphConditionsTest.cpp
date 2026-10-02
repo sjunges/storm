@@ -35,14 +35,15 @@ std::shared_ptr<storm::models::sparse::Dtmc<storm::RationalFunction>> buildParam
 }
 
 /*!
- * Collects the string representations of the given constraints. The collector keys its constraints by that very
- * string, so iterating over the keys yields them in their (reproducible) order.
+ * Collects the string representations of the given constraints, sorted. The collector returns the constraints in
+ * the order in which it discovered them, so sorting here keeps the assertions independent of that order.
  */
 std::vector<std::string> asStrings(storm::analysis::ConstraintCollector::ConstraintSet const& constraints) {
     std::vector<std::string> result;
     for (auto const& entry : constraints) {
-        result.push_back(entry.first);
+        result.push_back(entry.toString());
     }
+    std::sort(result.begin(), result.end());
     return result;
 }
 
@@ -168,7 +169,8 @@ TEST_F(GraphConditionsTest, ExportToFile) {
     EXPECT_NE(std::string::npos, content.find("$Well-formed Constraints: \n"));
     EXPECT_NE(std::string::npos, content.find("$Graph-preserving Constraints: \n"));
 
-    // The exported constraints must be listed in a reproducible, sorted order.
+    // The export must list exactly the collected constraints. The collector returns them in the order in which it
+    // discovered them, so both sides are sorted before comparing.
     std::vector<std::string> wellformedLines;
     std::string currentSection;
     std::istringstream contentStream(content);
@@ -182,6 +184,7 @@ TEST_F(GraphConditionsTest, ExportToFile) {
             wellformedLines.push_back(line);
         }
     }
+    std::sort(wellformedLines.begin(), wellformedLines.end());
     EXPECT_EQ(asStrings(collector.getWellformedConstraints()), wellformedLines);
 
     std::remove(temporaryFile.c_str());

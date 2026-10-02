@@ -11,6 +11,18 @@
 namespace storm::pars {
 namespace api {
 
+namespace {
+
+void writeConstraints(std::ostream& filestream, storm::analysis::ConstraintCollector::ConstraintSet const& constraints) {
+    std::vector<std::string> stringConstraints;
+    stringConstraints.reserve(constraints.size());
+    std::transform(constraints.begin(), constraints.end(), std::back_inserter(stringConstraints),
+                   [](storm::expressions::Expression const& c) -> std::string { return c.toString(); });
+    std::copy(stringConstraints.begin(), stringConstraints.end(), std::ostream_iterator<std::string>(filestream, "\n"));
+}
+
+}  // namespace
+
 template<>
 void exportParametricResultToFile(std::optional<storm::RationalFunction> result,
                                   storm::OptionalRef<storm::analysis::ConstraintCollector const> const& constraintCollector, std::string const& path) {
@@ -33,18 +45,10 @@ void exportParametricResultToFile(std::optional<storm::RationalFunction> result,
         filestream << "$Result: " << result->toString(false, true) << '\n';
     }
     if (constraintCollector.has_value()) {
-        // The constraints are keyed by their string representation, so iterating over the keys yields both the
-        // constraints themselves and a reproducible order for them.
         filestream << "$Well-formed Constraints: \n";
-        std::vector<std::string> stringConstraints;
-        std::transform(constraintCollector->getWellformedConstraints().begin(), constraintCollector->getWellformedConstraints().end(),
-                       std::back_inserter(stringConstraints), [](auto const& c) -> std::string { return c.first; });
-        std::copy(stringConstraints.begin(), stringConstraints.end(), std::ostream_iterator<std::string>(filestream, "\n"));
+        writeConstraints(filestream, constraintCollector->getWellformedConstraints());
         filestream << "$Graph-preserving Constraints: \n";
-        stringConstraints.clear();
-        std::transform(constraintCollector->getGraphPreservingConstraints().begin(), constraintCollector->getGraphPreservingConstraints().end(),
-                       std::back_inserter(stringConstraints), [](auto const& c) -> std::string { return c.first; });
-        std::copy(stringConstraints.begin(), stringConstraints.end(), std::ostream_iterator<std::string>(filestream, "\n"));
+        writeConstraints(filestream, constraintCollector->getGraphPreservingConstraints());
     }
     storm::io::closeFile(filestream);
 }

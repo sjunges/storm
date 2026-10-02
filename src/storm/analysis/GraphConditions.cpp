@@ -1,5 +1,7 @@
 #include "storm/analysis/GraphConditions.h"
 
+#include <algorithm>
+
 #include "storm/exceptions/UnexpectedException.h"
 #include "storm/models/sparse/Ctmc.h"
 #include "storm/models/sparse/MarkovAutomaton.h"
@@ -59,11 +61,17 @@ storm::expressions::Expression ConstraintCollector::relateToZero(storm::RawPolyn
 }
 
 void ConstraintCollector::addWellformedConstraint(storm::expressions::Expression const& constraint) {
-    this->wellformedConstraintSet.emplace(constraint.toString(), constraint);
+    if (std::none_of(this->wellformedConstraintSet.begin(), this->wellformedConstraintSet.end(),
+                     [&constraint](storm::expressions::Expression const& existing) { return existing.isSyntacticallyEqual(constraint); })) {
+        this->wellformedConstraintSet.push_back(constraint);
+    }
 }
 
 void ConstraintCollector::addGraphPreservingConstraint(storm::expressions::Expression const& constraint) {
-    this->graphPreservingConstraintSet.emplace(constraint.toString(), constraint);
+    if (std::none_of(this->graphPreservingConstraintSet.begin(), this->graphPreservingConstraintSet.end(),
+                     [&constraint](storm::expressions::Expression const& existing) { return existing.isSyntacticallyEqual(constraint); })) {
+        this->graphPreservingConstraintSet.push_back(constraint);
+    }
 }
 
 void ConstraintCollector::wellformedRequiresNonNegativeEntries(storm::RationalFunction const& value) {

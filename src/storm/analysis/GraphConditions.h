@@ -1,8 +1,8 @@
 #pragma once
 
-#include <map>
 #include <memory>
 #include <set>
+#include <vector>
 
 #include "storm/adapters/RationalFunctionAdapter.h"
 #include "storm/models/sparse/Model.h"
@@ -19,18 +19,17 @@ namespace analysis {
  * The collected constraints are stored as expressions in a Storm expression manager. In particular, this avoids a
  * dependency on a dedicated logical formula representation.
  *
- * The constraints are keyed by their string representation. Storm's expressions hash and compare by identity of
- * their underlying node, so a container keyed by expressions themselves would not deduplicate structurally equal
- * constraints. Keying by the string representation does deduplicate them and, because a std::map is ordered, also
- * yields a reproducible order of the constraints. Since all constraints are built by this class in a canonical
- * form, equal strings correspond to equal constraints.
+ * Structurally equal constraints are deduplicated with `Expression::isSyntacticallyEqual`. Note that Storm's
+ * expressions hash and compare by identity of their underlying node, so a container keyed by expressions themselves
+ * would not deduplicate them. The constraints are kept in the order in which they are discovered, which is
+ * determined by the traversal of the model.
  */
 class ConstraintCollector {
    public:
     /*!
-     * The type of the collected constraints, keyed by their string representation.
+     * The type of the collected constraints.
      */
-    using ConstraintSet = std::map<std::string, storm::expressions::Expression>;
+    using ConstraintSet = std::vector<storm::expressions::Expression>;
 
    private:
     // The expression manager owning the collected constraints.
@@ -64,14 +63,16 @@ class ConstraintCollector {
     storm::expressions::Expression relateToZero(storm::RawPolynomial const& polynomial, storm::expressions::RelationType relation) const;
 
     /*!
-     * Adds the given constraint to the set of well-formedness constraints.
+     * Adds the given constraint to the set of well-formedness constraints, unless the set already contains a
+     * structurally equal constraint.
      *
      * @param constraint The constraint to add.
      */
     void addWellformedConstraint(storm::expressions::Expression const& constraint);
 
     /*!
-     * Adds the given constraint to the set of graph-preserving constraints.
+     * Adds the given constraint to the set of graph-preserving constraints, unless the set already contains a
+     * structurally equal constraint.
      *
      * @param constraint The constraint to add.
      */
