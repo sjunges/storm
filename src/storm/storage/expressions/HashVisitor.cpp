@@ -22,6 +22,7 @@ std::size_t const TypeUnaryNumericalFunction = 0xd7;
 std::size_t const TypeBooleanLiteral = 0xe8;
 std::size_t const TypeIntegerLiteral = 0xe9;
 std::size_t const TypeRationalLiteral = 0xea;
+std::size_t const TypePredicate = 0xfb;
 
 template<typename T>
 std::size_t hashValue(T const& value) {
@@ -107,6 +108,15 @@ boost::any HashVisitor::visit(IntegerLiteralExpression const& expression, boost:
 boost::any HashVisitor::visit(RationalLiteralExpression const& expression, boost::any const& data) {
     std::size_t result = TypeRationalLiteral;
     boost::hash_combine(result, hashValue(expression.getValue()));
+    return result;
+}
+
+boost::any HashVisitor::visit(PredicateExpression const& expression, boost::any const& data) {
+    std::size_t result = TypePredicate;
+    boost::hash_combine(result, hashValue(expression.getPredicateType()));
+    for (uint_fast64_t i = 0; i < expression.getArity(); ++i) {
+        boost::hash_combine(result, hashExpression(*expression.getOperand(i)));
+    }
     return result;
 }
 

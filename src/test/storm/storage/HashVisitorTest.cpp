@@ -81,6 +81,48 @@ TEST_F(HashVisitorTest, NestedExpressionsPropagateChangesFromChildren) {
     EXPECT_NE(hash((x && x) || (x && x)), hash((x && y) || (x && y)));
 }
 
+TEST_F(HashVisitorTest, PredicateExpressionsAreHashed) {
+    auto manager = std::make_shared<storm::expressions::ExpressionManager>();
+    auto x = manager->declareBooleanVariable("x");
+    auto y = manager->declareBooleanVariable("y");
+    auto p = manager->declareRationalVariable("p");
+
+    // Syntactically equal predicates must hash equally, also across distinct nodes.
+    EXPECT_EQ(hash(storm::expressions::atLeastOneOf({x, y})), hash(storm::expressions::atLeastOneOf({x, y})));
+    EXPECT_EQ(hash(storm::expressions::exactlyOneOf({x, y})), hash(storm::expressions::exactlyOneOf({x, y})));
+
+    // The predicate type is part of the hash.
+    EXPECT_NE(hash(storm::expressions::atLeastOneOf({x, y})), hash(storm::expressions::atMostOneOf({x, y})));
+    EXPECT_NE(hash(storm::expressions::atLeastOneOf({x, y})), hash(storm::expressions::exactlyOneOf({x, y})));
+
+    // The operands are part of the hash, and their order matters.
+    EXPECT_NE(hash(storm::expressions::atLeastOneOf({x, y})), hash(storm::expressions::atLeastOneOf({y, x})));
+    EXPECT_NE(hash(storm::expressions::atLeastOneOf({x, y})), hash(storm::expressions::atLeastOneOf({x, p})));
+
+    // The arity is part of the hash.
+    EXPECT_NE(hash(storm::expressions::atLeastOneOf({x})), hash(storm::expressions::atLeastOneOf({x, y})));
+
+    // A predicate must not collide with a plain variable or literal of the same operands.
+    EXPECT_NE(hash(storm::expressions::atLeastOneOf({x, y})), hash(x));
+}
+
+TEST_F(HashVisitorTest, PredicateExpressionsCompareSyntactically) {
+    auto manager = std::make_shared<storm::expressions::ExpressionManager>();
+    auto x = manager->declareBooleanVariable("x");
+    auto y = manager->declareBooleanVariable("y");
+
+    // SyntacticalEqualityCheckVisitor must support predicates as well; otherwise the hash above is
+    // unusable, because the two must agree.
+    EXPECT_TRUE(storm::expressions::atLeastOneOf({x, y}).isSyntacticallyEqual(storm::expressions::atLeastOneOf({x, y})));
+    EXPECT_FALSE(storm::expressions::atLeastOneOf({x, y}).isSyntacticallyEqual(storm::expressions::atMostOneOf({x, y})));
+    EXPECT_FALSE(storm::expressions::atLeastOneOf({x, y}).isSyntacticallyEqual(storm::expressions::atLeastOneOf({y, x})));
+    EXPECT_FALSE(storm::expressions::atLeastOneOf({x, y}).isSyntacticallyEqual(storm::expressions::atLeastOneOf({x})));
+    EXPECT_FALSE(storm::expressions::atLeastOneOf({x, y}).isSyntacticallyEqual(x));
+
+    // Predicates nested inside other expressions work too.
+    EXPECT_TRUE((x && storm::expressions::atLeastOneOf({x, y})).isSyntacticallyEqual(x && storm::expressions::atLeastOneOf({x, y})));
+}
+
 TEST_F(HashVisitorTest, HashIsStableAcrossCalls) {
     auto manager = std::make_shared<storm::expressions::ExpressionManager>();
     auto p = manager->declareRationalVariable("p");
