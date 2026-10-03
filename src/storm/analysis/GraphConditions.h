@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <set>
+#include <unordered_set>
 #include <vector>
 
 #include "storm/adapters/RationalFunctionAdapter.h"
@@ -19,10 +20,11 @@ namespace analysis {
  * The collected constraints are stored as expressions in a Storm expression manager. In particular, this avoids a
  * dependency on a dedicated logical formula representation.
  *
- * Structurally equal constraints are deduplicated with `Expression::isSyntacticallyEqual`. Note that Storm's
- * expressions hash and compare by identity of their underlying node, so a container keyed by expressions themselves
- * would not deduplicate them. The constraints are kept in the order in which they are discovered, which is
- * determined by the traversal of the model.
+ * Structurally equal constraints are deduplicated. Note that Storm's expressions hash and compare by identity of
+ * their underlying node, so a container keyed by expressions themselves would not deduplicate them. We therefore
+ * pair a structural hash (`storm::expressions::HashVisitor`) with `Expression::isSyntacticallyEqual`, which allows
+ * looking up an existing constraint without scanning all of the collected ones. The constraints themselves are kept
+ * in the order in which they are discovered, which is determined by the traversal of the model.
  */
 class ConstraintCollector {
    public:
@@ -32,15 +34,41 @@ class ConstraintCollector {
     using ConstraintSet = std::vector<storm::expressions::Expression>;
 
    private:
+    /*!
+     * Hashes an expression by its structure instead of by the identity of its underlying node.
+     */
+    struct ExpressionStructuralHash {
+        std::size_t operator()(storm::expressions::Expression const& expression) const;
+    };
+
+    /*!
+     * Considers two expressions equal if they are syntactically equal. This is the counterpart of
+     * ExpressionStructuralHash, so that syntactically equal expressions end up in the same bucket.
+     */
+    struct ExpressionSyntacticalEquality {
+        bool operator()(storm::expressions::Expression const& first, storm::expressions::Expression const& second) const;
+    };
+
+    /*!
+     * An index over a set of constraints, used to detect duplicates without scanning all of them.
+     */
+    using ConstraintIndex = std::unordered_set<storm::expressions::Expression, ExpressionStructuralHash, ExpressionSyntacticalEquality>;
+
     // The expression manager owning the collected constraints.
     std::shared_ptr<storm::expressions::ExpressionManager> expressionManager;
 
     // A set of constraints that says that the DTMC actually has valid probability distributions in all states.
     ConstraintSet wellformedConstraintSet;
 
+    // An index over the wellformed constraints. It mirrors wellformedConstraintSet.
+    ConstraintIndex wellformedConstraintIndex;
+
     // A set of constraints that makes sure that the underlying graph of the model does not change depending
     // on the parameter values.
     ConstraintSet graphPreservingConstraintSet;
+
+    // An index over the graph preserving constraints. It mirrors graphPreservingConstraintSet.
+    ConstraintIndex graphPreservingConstraintIndex;
 
     // A set of variables
     std::set<storm::RationalFunctionVariable> variableSet;

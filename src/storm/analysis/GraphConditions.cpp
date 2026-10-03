@@ -1,11 +1,10 @@
 #include "storm/analysis/GraphConditions.h"
 
-#include <algorithm>
-
 #include "storm/exceptions/UnexpectedException.h"
 #include "storm/models/sparse/Ctmc.h"
 #include "storm/models/sparse/MarkovAutomaton.h"
 #include "storm/models/sparse/StandardRewardModel.h"
+#include "storm/storage/expressions/HashVisitor.h"
 #include "storm/storage/expressions/PolynomialToExpression.h"
 #include "storm/utility/constants.h"
 
@@ -60,16 +59,24 @@ storm::expressions::Expression ConstraintCollector::relateToZero(storm::RawPolyn
     STORM_LOG_THROW(false, storm::exceptions::UnexpectedException, "Unhandled relation.");
 }
 
+std::size_t ConstraintCollector::ExpressionStructuralHash::operator()(storm::expressions::Expression const& expression) const {
+    storm::expressions::HashVisitor visitor;
+    return visitor.hash(expression);
+}
+
+bool ConstraintCollector::ExpressionSyntacticalEquality::operator()(storm::expressions::Expression const& first,
+                                                                    storm::expressions::Expression const& second) const {
+    return first.isSyntacticallyEqual(second);
+}
+
 void ConstraintCollector::addWellformedConstraint(storm::expressions::Expression const& constraint) {
-    if (std::none_of(this->wellformedConstraintSet.begin(), this->wellformedConstraintSet.end(),
-                     [&constraint](storm::expressions::Expression const& existing) { return existing.isSyntacticallyEqual(constraint); })) {
+    if (this->wellformedConstraintIndex.insert(constraint).second) {
         this->wellformedConstraintSet.push_back(constraint);
     }
 }
 
 void ConstraintCollector::addGraphPreservingConstraint(storm::expressions::Expression const& constraint) {
-    if (std::none_of(this->graphPreservingConstraintSet.begin(), this->graphPreservingConstraintSet.end(),
-                     [&constraint](storm::expressions::Expression const& existing) { return existing.isSyntacticallyEqual(constraint); })) {
+    if (this->graphPreservingConstraintIndex.insert(constraint).second) {
         this->graphPreservingConstraintSet.push_back(constraint);
     }
 }
