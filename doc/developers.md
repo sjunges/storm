@@ -38,7 +38,7 @@ non-inline, externally visible function or class of that library with `STORM_PAR
 ```cpp
 #include "storm-parsers/storm-parsers-api.h"
 
-STORM_PARSERS_API void storm::parser::SomeParser::SomeParser::doSomething();
+STORM_PARSERS_API void storm::parser::SomeParser::doSomething();
 ```
 
 Header-only functions need no annotation: they are instantiated in the consuming translation unit. Code that is generic over
