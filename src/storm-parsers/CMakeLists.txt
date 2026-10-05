@@ -79,8 +79,8 @@ elseif(UNIX)
     target_compile_options(storm-parsers PRIVATE -ffunction-sections -fdata-sections)
     target_link_options(storm-parsers PRIVATE "LINKER:--gc-sections")
 endif()
-# Strip symbols to keep the binary small. Off by default in developer mode, where the debug symbols are wanted;
-# pass -DSTORM_STRIP_PARSER_BINARY=ON to strip anyway. On Linux -S drops DWARF sections.
+# Strip symbols to keep the binary small. STORM_DEVELOPER forces this off, since it also switches on the debug build
+# whose symbols we would then remove. On Linux -S drops DWARF sections.
 if(STORM_STRIP_PARSER_BINARY)
     if(APPLE)
         add_custom_command(TARGET storm-parsers POST_BUILD COMMAND ${CMAKE_STRIP} -x "$<TARGET_FILE:storm-parsers>" COMMENT "Stripping storm-parsers")
