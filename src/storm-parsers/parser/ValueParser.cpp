@@ -135,8 +135,8 @@ bool parseNumber(std::string const& value, NumberType& result) {
     }
 }
 
-// Template instantiations. ValueParser<storm::RationalFunction> omits STORM_PARSERS_API: GCC rejects it as redundant
-// after the member specializations above.
+// Template instantiations. STORM_PARSERS_API for ValueParser<storm::RationalFunction> would trigger a GCC warning because the member
+// specializations above already instantiated the class. The visibility is already ensured through the annotation on the class template.
 template class STORM_PARSERS_API ValueParser<double>;
 template class STORM_PARSERS_API ValueParser<storm::RationalNumber>;
 template class ValueParser<storm::RationalFunction>;

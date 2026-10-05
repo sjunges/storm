@@ -1,5 +1,5 @@
-file(GLOB_RECURSE STORM_PARSER_SOURCES ${PROJECT_SOURCE_DIR}/src/storm-parsers/*/*.cpp)
-file(GLOB_RECURSE STORM_PARSER_HEADERS RELATIVE "${PROJECT_SOURCE_DIR}/src/storm-parsers" ${PROJECT_SOURCE_DIR}/src/storm-parsers/*.h ${PROJECT_SOURCE_DIR}/src/storm-parsers/*/*.h)
+file(GLOB_RECURSE STORM_PARSER_SOURCES ${PROJECT_SOURCE_DIR}/src/storm-parsers/*.cpp)
+file(GLOB_RECURSE STORM_PARSER_HEADERS RELATIVE "${PROJECT_SOURCE_DIR}/src/storm-parsers" ${PROJECT_SOURCE_DIR}/src/storm-parsers/*.h)
 
 # The heaviest parser translation units (esp. the boost::spirit grammars) compile close to the memory limit already in
 # parallel builds. Disable the Debug compiler flags for them to lessen memory consumption during compilation; the
@@ -71,14 +71,16 @@ set_target_properties(storm-parsers PROPERTIES DEFINE_SYMBOL "")  # to avoid pro
 set_target_properties(storm-parsers PROPERTIES CXX_VISIBILITY_PRESET hidden VISIBILITY_INLINES_HIDDEN YES)
 # Drop code not reachable from the exported symbols.
 if(APPLE)
-    # ld64's -dead_strip works on clang's default .subsections_via_symbols.
+    # ld64's -dead_strip works on clang's default .subsections_via_symbols. GCC does not emit that section, so with
+    # GCC the flag is still accepted but dead-stripping is far less effective; hidden visibility remains the main lever.
     target_link_options(storm-parsers PRIVATE "LINKER:-dead_strip")
-elseif(UNIX AND NOT APPLE)
+elseif(UNIX)
     # --gc-sections needs each function/data object in its own section.
     target_compile_options(storm-parsers PRIVATE -ffunction-sections -fdata-sections)
     target_link_options(storm-parsers PRIVATE "LINKER:--gc-sections")
 endif()
-# Strip symbols to keep the binary small; disable STORM_STRIP_PARSER_BINARY for debugging. On Linux -S drops DWARF sections.
+# Strip symbols to keep the binary small. Off by default in developer mode, where the debug symbols are wanted;
+# pass -DSTORM_STRIP_PARSER_BINARY=ON to strip anyway. On Linux -S drops DWARF sections.
 if(STORM_STRIP_PARSER_BINARY)
     if(APPLE)
         add_custom_command(TARGET storm-parsers POST_BUILD COMMAND ${CMAKE_STRIP} -x "$<TARGET_FILE:storm-parsers>" COMMENT "Stripping storm-parsers")
