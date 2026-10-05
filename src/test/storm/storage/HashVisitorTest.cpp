@@ -123,6 +123,35 @@ TEST_F(HashVisitorTest, PredicateExpressionsCompareSyntactically) {
     EXPECT_TRUE((x && storm::expressions::atLeastOneOf({x, y})).isSyntacticallyEqual(x && storm::expressions::atLeastOneOf({x, y})));
 }
 
+TEST_F(HashVisitorTest, PredicatesNestedInExpressionsAreHashed) {
+    auto manager = std::make_shared<storm::expressions::ExpressionManager>();
+    auto x = manager->declareBooleanVariable("x");
+    auto y = manager->declareBooleanVariable("y");
+    auto z = manager->declareBooleanVariable("z");
+    auto p = manager->declareRationalVariable("p");
+
+    // A predicate that is reached through the recursion instead of being the root of the traversal must
+    // be hashed as well, otherwise the hash would still reach the unimplemented base visitor here.
+    EXPECT_EQ(hash(x && storm::expressions::atLeastOneOf({x, y})), hash(x && storm::expressions::atLeastOneOf({x, y})));
+    EXPECT_EQ(hash((x && storm::expressions::atLeastOneOf({x, y})) || z), hash((x && storm::expressions::atLeastOneOf({x, y})) || z));
+
+    // The nested predicate keeps contributing its type, its operands and their order.
+    EXPECT_NE(hash(x && storm::expressions::atLeastOneOf({x, y})), hash(x && storm::expressions::atMostOneOf({x, y})));
+    EXPECT_NE(hash(x && storm::expressions::atLeastOneOf({x, y})), hash(x && storm::expressions::atLeastOneOf({y, x})));
+    EXPECT_NE(hash(x && storm::expressions::atLeastOneOf({x, y})), hash(x && storm::expressions::atLeastOneOf({x, z})));
+
+    // Higher arity.
+    EXPECT_NE(hash(x && storm::expressions::atLeastOneOf({x, y, z})), hash(x && storm::expressions::atLeastOneOf({x, y})));
+
+    // A predicate nested inside a predicate is not expressible, because the factories only accept plain boolean
+    // operands. What matters here is that the operands are hashed recursively, which the arithmetic operand
+    // already covers.
+    EXPECT_EQ(hash(storm::expressions::atLeastOneOf({x && (p <= manager->integer(1)), y})),
+              hash(storm::expressions::atLeastOneOf({x && (p <= manager->integer(1)), y})));
+    EXPECT_NE(hash(storm::expressions::atLeastOneOf({x && (p <= manager->integer(1)), y})),
+              hash(storm::expressions::atLeastOneOf({x && (p <= manager->integer(2)), y})));
+}
+
 TEST_F(HashVisitorTest, HashIsStableAcrossCalls) {
     auto manager = std::make_shared<storm::expressions::ExpressionManager>();
     auto p = manager->declareRationalVariable("p");
