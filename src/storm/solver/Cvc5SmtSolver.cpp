@@ -14,12 +14,13 @@
 
 namespace storm {
 namespace solver {
-#ifdef STORM_HAVE_CVC5
+// Deliberately not guarded by STORM_HAVE_CVC5: the header declares this constructor unconditionally, and it only
+// touches Storm's valuation types. Guarding it would leave the definition out in a build without CVC5, so any
+// client constructing a Cvc5ModelReference there would compile but fail to link.
 Cvc5SmtSolver::Cvc5ModelReference::Cvc5ModelReference(storm::expressions::ExpressionManager const& manager, storm::expressions::SimpleValuation variableValues)
     : ModelReference(manager), variableValues(std::move(variableValues)) {
     // Intentionally left empty.
 }
-#endif
 
 void Cvc5SmtSolver::Cvc5ModelReference::checkVariable(storm::expressions::Variable const& variable) const {
     STORM_LOG_ASSERT(variable.getManager() == this->getManager(), "Requested variable is managed by a different manager.");

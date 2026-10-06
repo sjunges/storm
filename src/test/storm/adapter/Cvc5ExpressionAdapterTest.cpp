@@ -277,5 +277,15 @@ TEST(Cvc5ExpressionAdapter, Cvc5ToStorm) {
     storm::expressions::Expression translatedThreeWayProduct = adapter.translateExpression(cvc5ThreeWayProduct);
     ASSERT_EQ(storm::expressions::OperatorType::Times, translatedThreeWayProduct.getOperator());
     EXPECT_EQ((translatedSum.getOperand(0) * translatedSum.getOperand(1) * manager->integer(3)).toString(), translatedThreeWayProduct.toString());
+
+    // CVC5 also uses EQUAL for boolean equivalence. Translating such a term back has to yield an iff, because storm's
+    // operator== only accepts numerical operands and throws otherwise. This matters for getUnsatAssumptions(), which
+    // translates every assumption of the returned core back.
+    storm::expressions::Variable aVar = manager->declareBooleanVariable("a");
+    storm::expressions::Variable bVar = manager->declareBooleanVariable("b");
+    cvc5::Term cvc5Equivalent = termManager.mkTerm(cvc5::Kind::EQUAL, {adapter.translateExpression(aVar), adapter.translateExpression(bVar)});
+    storm::expressions::Expression translatedEquivalent = adapter.translateExpression(cvc5Equivalent);
+    ASSERT_TRUE(translatedEquivalent.hasBooleanType());
+    EXPECT_EQ(storm::expressions::iff(aVar.getExpression(), bVar.getExpression()).toString(), translatedEquivalent.toString());
 }
 #endif

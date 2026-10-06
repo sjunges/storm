@@ -404,4 +404,26 @@ TEST(Cvc5SmtSolver, UnsatAssumptions) {
     ASSERT_EQ(storm::solver::SmtSolver::CheckResult::Sat, result);
     ASSERT_ANY_THROW(s.getUnsatAssumptions());
 }
+
+TEST(Cvc5SmtSolver, UnsatAssumptionsWithBooleanEquivalence) {
+    std::shared_ptr<storm::expressions::ExpressionManager> manager(new storm::expressions::ExpressionManager());
+
+    storm::solver::Cvc5SmtSolver s(*manager);
+    storm::solver::SmtSolver::CheckResult result = storm::solver::SmtSolver::CheckResult::Unknown;
+
+    storm::expressions::Variable a = manager->declareBooleanVariable("a");
+    storm::expressions::Variable b = manager->declareBooleanVariable("b");
+    storm::expressions::Expression equivalence = storm::expressions::iff(a.getExpression(), b.getExpression());
+    storm::expressions::Expression exprA = a;
+    storm::expressions::Expression exprNotB = !b;
+
+    // a <=> b together with a and !b is contradictory. CVC5 encodes the equivalence as EQUAL, so translating the core
+    // back has to produce iff; storm's == only accepts numerical operands and would throw on boolean operands.
+    ASSERT_NO_THROW(result = s.checkWithAssumptions({equivalence, exprA, exprNotB}));
+    ASSERT_EQ(storm::solver::SmtSolver::CheckResult::Unsat, result);
+
+    std::vector<storm::expressions::Expression> unsatAssumptions;
+    ASSERT_NO_THROW(unsatAssumptions = s.getUnsatAssumptions());
+    EXPECT_FALSE(unsatAssumptions.empty());
+}
 #endif
