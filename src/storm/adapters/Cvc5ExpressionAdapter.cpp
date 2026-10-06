@@ -186,8 +186,17 @@ storm::expressions::Expression Cvc5ExpressionAdapter::translateExpression(cvc5::
     switch (term.getKind()) {
         case cvc5::Kind::CONST_BOOLEAN:
             return term == this->termManager.mkBoolean(true) ? this->manager.boolean(true) : this->manager.boolean(false);
-        case cvc5::Kind::EQUAL:
-            return this->translateExpression(term[0]) == this->translateExpression(term[1]);
+        case cvc5::Kind::EQUAL: {
+            // Storm's operator== only accepts numerical operands, while CVC5's EQUAL is also how it represents
+            // boolean equivalence. Use iff for boolean operands so that translating back an unsatisfiable core
+            // that contains an equivalence does not throw.
+            storm::expressions::Expression const first = this->translateExpression(term[0]);
+            storm::expressions::Expression const second = this->translateExpression(term[1]);
+            if (first.hasBooleanType() && second.hasBooleanType()) {
+                return storm::expressions::iff(first, second);
+            }
+            return first == second;
+        }
         case cvc5::Kind::DISTINCT: {
             STORM_LOG_THROW(term.getNumChildren() != 0, storm::exceptions::ExpressionEvaluationException,
                             "Failed to convert CVC5 expression. DISTINCT (mutual !=) operator with 0-arity is assumed to be an error.");
