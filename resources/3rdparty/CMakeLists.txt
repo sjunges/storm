@@ -356,8 +356,9 @@ if(NOT STORM_DISABLE_CVC5)
     endif()
 
     # Recent versions of CVC5 provide a config file, so try that first. Note that we cannot request a minimum
-    # version here, because cvc5's own version file uses the ExactVersion strategy and would accept nothing but that
-    # exact version. We compare the version we find ourselves further below instead.
+    # version here: cvc5's own version file uses the SamePatchVersion strategy and reports compatibility only
+    # for an exact major.minor.patch match, so requesting 1.2 would reject an installed 1.4.0. We compare the
+    # version we find ourselves further below instead.
     find_package(cvc5 QUIET NO_MODULE)
     if(TARGET cvc5::cvc5)
         set(cvc5_FOUND_VERSION "${cvc5_VERSION}")
