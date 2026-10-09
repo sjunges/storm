@@ -160,7 +160,7 @@ SmtSolver::CheckResult Cvc5SmtSolver::check() {
 #endif
 }
 
-SmtSolver::CheckResult Cvc5SmtSolver::checkWithAssumptions(std::set<storm::expressions::Expression> const& assumptions) {
+SmtSolver::CheckResult Cvc5SmtSolver::checkWithAssumptions(storm::expressions::ExpressionSet const& assumptions) {
 #ifdef STORM_HAVE_CVC5
     this->lastCheckAssumptions = true;
     std::vector<cvc5::Term> cvc5Assumptions;
@@ -382,29 +382,31 @@ SmtSolver::CheckResult Cvc5SmtSolver::translateResult(cvc5::Result const& result
 std::unordered_map<storm::expressions::Variable, cvc5::Term> Cvc5SmtSolver::collectVariableValues() const {
     std::unordered_map<storm::expressions::Variable, cvc5::Term> variableValues;
     for (auto const& variable : this->getManager().getVariables()) {
-        if (!(variable.getType().isBooleanType() || variable.getType().isIntegerType() || variable.getType().isRationalType())) {
-            continue;
+        if (variable.getType().isBooleanType() || variable.getType().isIntegerType() || variable.getType().isRationalType()) {
+            cvc5::Term value;
+            try {
+                value = this->solver->getValue(this->expressionAdapter->translateExpression(variable));
+            } catch (std::exception const&) {
+                // If CVC5 cannot provide a value for the variable, we simply do not add it to the model.
+                continue;
+            }
+            variableValues.insert({variable, value});
         }
-        // CVC5 returns a default value for any term, even for variables that never occurred in an assertion. Such
-        // variables are not part of the model, so we only query those the solver has actually seen.
-        if (!this->expressionAdapter->hasVariable(variable)) {
-            continue;
-        }
-        variableValues.insert({variable, this->solver->getValue(this->expressionAdapter->translateExpression(variable))});
     }
     return variableValues;
 }
 
 cvc5::Term Cvc5SmtSolver::createModelExpression(std::vector<storm::expressions::Variable> const& variables) const {
-    // We describe the model only in terms of the variables the solver knows about. For all other variables, CVC5
-    // merely returns a default value, which is not part of the model.
+    // The model covers all variables of the manager. A variable that never occurred in an assertion gets the default
+    // value CVC5 reports for it, so ruling out a model also rules out that value (as in a complete enumeration over
+    // the declared variables).
     auto const modelValues = this->collectVariableValues();
 
     cvc5::Term modelExpression = this->termManager->mkBoolean(true);
     for (auto const& variable : variables) {
         auto const& modelValue = modelValues.find(variable);
         if (modelValue == modelValues.end()) {
-            // The solver has never seen this variable, so it must not be part of the model expression.
+            // CVC5 could not provide a value for this variable, so it is not part of the model expression.
             continue;
         }
         cvc5::Term variableTerm = this->expressionAdapter->translateExpression(variable);

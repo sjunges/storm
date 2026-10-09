@@ -58,7 +58,7 @@ class Cvc5SmtSolver : public SmtSolver {
 
     virtual CheckResult check() override;
 
-    virtual CheckResult checkWithAssumptions(std::set<storm::expressions::Expression> const& assumptions) override;
+    virtual CheckResult checkWithAssumptions(storm::expressions::ExpressionSet const& assumptions) override;
 
     virtual CheckResult checkWithAssumptions(std::initializer_list<storm::expressions::Expression> const& assumptions) override;
 
