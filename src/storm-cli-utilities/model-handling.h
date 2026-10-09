@@ -3,8 +3,8 @@
 #include <boost/algorithm/string/join.hpp>
 #include <type_traits>
 
-#include "Qvbs.h"
 #include "storm-cli-utilities/AutomaticSettings.h"
+#include "storm-cli-utilities/Qvbs.h"
 #include "storm-cli-utilities/print.h"
 #include "storm-parsers/api/storm-parsers.h"
 #include "storm/adapters/RationalFunctionAdapter.h"
