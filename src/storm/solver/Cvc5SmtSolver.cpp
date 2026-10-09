@@ -135,7 +135,8 @@ void Cvc5SmtSolver::addNotCurrentModel(bool performSolverReset) {
     notThisModel = this->termManager->mkTerm(cvc5::Kind::NOT, {notThisModel});
 
     // Similar to Z3, CVC5 does not necessarily search for a different model when new assertions are added
-    // in incremental mode. To circumvent this, we reset the solver and re-assert all assertions.
+    // in incremental mode. To circumvent this, we reset the solver and re-assert all assertions. Note that this
+    // discards the push/pop scopes (as it does for the Z3 backend): all assertions end up on the base level.
     if (performSolverReset) {
         auto const allAssertions = this->solver->getAssertions();
         this->solver->resetAssertions();
@@ -381,30 +382,29 @@ SmtSolver::CheckResult Cvc5SmtSolver::translateResult(cvc5::Result const& result
 std::unordered_map<storm::expressions::Variable, cvc5::Term> Cvc5SmtSolver::collectVariableValues() const {
     std::unordered_map<storm::expressions::Variable, cvc5::Term> variableValues;
     for (auto const& variable : this->getManager().getVariables()) {
-        if (variable.getType().isBooleanType() || variable.getType().isIntegerType() || variable.getType().isRationalType()) {
-            cvc5::Term value;
-            try {
-                value = this->solver->getValue(this->expressionAdapter->translateExpression(variable));
-            } catch (std::exception const&) {
-                // If CVC5 cannot provide a value for the variable, we simply do not add it to the model.
-                continue;
-            }
-            variableValues.insert({variable, value});
+        if (!(variable.getType().isBooleanType() || variable.getType().isIntegerType() || variable.getType().isRationalType())) {
+            continue;
         }
+        // CVC5 returns a default value for any term, even for variables that never occurred in an assertion. Such
+        // variables are not part of the model, so we only query those the solver has actually seen.
+        if (!this->expressionAdapter->hasVariable(variable)) {
+            continue;
+        }
+        variableValues.insert({variable, this->solver->getValue(this->expressionAdapter->translateExpression(variable))});
     }
     return variableValues;
 }
 
 cvc5::Term Cvc5SmtSolver::createModelExpression(std::vector<storm::expressions::Variable> const& variables) const {
-    // We describe the model only in terms of the variables whose value the model actually provides. For
-    // all other variables, CVC5 merely returns a default value, which is not part of the model.
+    // We describe the model only in terms of the variables the solver knows about. For all other variables, CVC5
+    // merely returns a default value, which is not part of the model.
     auto const modelValues = this->collectVariableValues();
 
     cvc5::Term modelExpression = this->termManager->mkBoolean(true);
     for (auto const& variable : variables) {
         auto const& modelValue = modelValues.find(variable);
         if (modelValue == modelValues.end()) {
-            // The model does not constrain this variable, so it must not be part of the model expression.
+            // The solver has never seen this variable, so it must not be part of the model expression.
             continue;
         }
         cvc5::Term variableTerm = this->expressionAdapter->translateExpression(variable);
