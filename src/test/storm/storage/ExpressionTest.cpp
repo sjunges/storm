@@ -5,6 +5,7 @@
 #include <string>
 
 #include "storm-parsers/parser/ValueParser.h"
+#include "storm/adapters/JsonAdapter.h"
 #include "storm/adapters/RationalFunctionAdapter.h"
 #include "storm/exceptions/InvalidTypeException.h"
 #include "storm/storage/expressions/Expression.h"
@@ -500,6 +501,16 @@ TEST(ExpressionDeathTest, SimpleValuationContainsOnlyItsSnapshotVariables) {
     EXPECT_NE(std::string::npos, printed.find("x=true"));
     EXPECT_EQ(std::string::npos, printed.find("freshBoolean"));
     EXPECT_NO_THROW(printed = valuation.toString(false));
+
+    // Serialization must skip the variables that have no value in this snapshot.
+    auto const serialized = valuation.toJson();
+    EXPECT_TRUE(serialized.contains("x"));
+    EXPECT_TRUE(serialized.contains("y"));
+    EXPECT_TRUE(serialized.contains("z"));
+    EXPECT_FALSE(serialized.contains("freshBoolean"));
+    EXPECT_FALSE(serialized.contains("freshInteger"));
+    EXPECT_FALSE(serialized.contains("freshRational"));
+    EXPECT_FALSE(serialized.contains("freshBitVector"));
 }
 
 TEST(ExpressionDeathTest, SimpleValuationRejectsForeignVariables) {

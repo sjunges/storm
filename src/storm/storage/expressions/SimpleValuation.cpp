@@ -186,6 +186,10 @@ std::string SimpleValuation::toString(bool pretty) const {
 storm::json<storm::RationalNumber> SimpleValuation::toJson() const {
     storm::json<storm::RationalNumber> result;
     for (auto const& variable : getManager()) {
+        // Skip variables that were declared after this valuation was created, as there is no value for them.
+        if (!contains(variable.first)) {
+            continue;
+        }
         if (variable.second.isBooleanType()) {
             result[variable.first.getName()] = this->getBooleanValue(variable.first);
         } else if (variable.second.isIntegerType()) {
