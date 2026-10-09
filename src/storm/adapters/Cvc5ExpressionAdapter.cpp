@@ -314,10 +314,6 @@ storm::expressions::Variable const& Cvc5ExpressionAdapter::getVariable(cvc5::Ter
     return constantVariablePair->second;
 }
 
-bool Cvc5ExpressionAdapter::hasVariable(storm::expressions::Variable const& variable) const {
-    return variableToExpressionMapping.find(variable) != variableToExpressionMapping.end();
-}
-
 boost::any Cvc5ExpressionAdapter::visit(storm::expressions::BinaryBooleanFunctionExpression const& expression, boost::any const& data) {
     auto cacheIt = expressionCache.find(&expression);
     if (cacheIt != expressionCache.end()) {

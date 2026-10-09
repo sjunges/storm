@@ -67,15 +67,6 @@ class Cvc5ExpressionAdapter : public storm::expressions::ExpressionVisitor {
      */
     storm::expressions::Variable const& getVariable(cvc5::Term const& constant);
 
-    /*!
-     * Checks whether the given variable has already been translated, i.e., whether it occurs in a term handed to the solver
-     * (or was requested explicitly) so far.
-     *
-     * @param variable The variable to check.
-     * @return True iff a CVC5 constant has been created for the variable.
-     */
-    bool hasVariable(storm::expressions::Variable const& variable) const;
-
     virtual boost::any visit(storm::expressions::BinaryBooleanFunctionExpression const& expression, boost::any const& data) override;
 
     virtual boost::any visit(storm::expressions::BinaryNumericalFunctionExpression const& expression, boost::any const& data) override;
