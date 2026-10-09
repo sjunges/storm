@@ -8,7 +8,6 @@
 #include "storm/storage/expressions/ExpressionManager.h"
 #include "storm/storage/expressions/Variable.h"
 
-#include "storm/exceptions/InvalidArgumentException.h"
 #include "storm/exceptions/InvalidTypeException.h"
 #include "storm/utility/macros.h"
 
@@ -89,50 +88,42 @@ bool SimpleValuation::contains(Variable const& variable) const {
 }
 
 bool SimpleValuation::getBooleanValue(Variable const& booleanVariable) const {
-    STORM_LOG_THROW(contains(booleanVariable), storm::exceptions::InvalidArgumentException,
-                    "The valuation does not contain a value for variable '" << booleanVariable.getName() << "'.");
+    STORM_LOG_ASSERT(contains(booleanVariable), "The valuation does not contain a value for variable '" << booleanVariable.getName() << "'.");
     return booleanValues[booleanVariable.getOffset()];
 }
 
 int_fast64_t SimpleValuation::getIntegerValue(Variable const& integerVariable) const {
-    STORM_LOG_THROW(contains(integerVariable), storm::exceptions::InvalidArgumentException,
-                    "The valuation does not contain a value for variable '" << integerVariable.getName() << "'.");
+    STORM_LOG_ASSERT(contains(integerVariable), "The valuation does not contain a value for variable '" << integerVariable.getName() << "'.");
     return integerValues[integerVariable.getOffset()];
 }
 
 int_fast64_t SimpleValuation::getBitVectorValue(Variable const& bitVectorVariable) const {
-    STORM_LOG_THROW(contains(bitVectorVariable), storm::exceptions::InvalidArgumentException,
-                    "The valuation does not contain a value for variable '" << bitVectorVariable.getName() << "'.");
+    STORM_LOG_ASSERT(contains(bitVectorVariable), "The valuation does not contain a value for variable '" << bitVectorVariable.getName() << "'.");
     return integerValues[bitVectorVariable.getOffset()];
 }
 
 double SimpleValuation::getRationalValue(Variable const& rationalVariable) const {
-    STORM_LOG_THROW(contains(rationalVariable), storm::exceptions::InvalidArgumentException,
-                    "The valuation does not contain a value for variable '" << rationalVariable.getName() << "'.");
+    STORM_LOG_ASSERT(contains(rationalVariable), "The valuation does not contain a value for variable '" << rationalVariable.getName() << "'.");
     return rationalValues[rationalVariable.getOffset()];
 }
 
 void SimpleValuation::setBooleanValue(Variable const& booleanVariable, bool value) {
-    STORM_LOG_THROW(contains(booleanVariable), storm::exceptions::InvalidArgumentException,
-                    "The valuation does not contain a value for variable '" << booleanVariable.getName() << "'.");
+    STORM_LOG_ASSERT(contains(booleanVariable), "The valuation does not contain a value for variable '" << booleanVariable.getName() << "'.");
     booleanValues[booleanVariable.getOffset()] = value;
 }
 
 void SimpleValuation::setIntegerValue(Variable const& integerVariable, int_fast64_t value) {
-    STORM_LOG_THROW(contains(integerVariable), storm::exceptions::InvalidArgumentException,
-                    "The valuation does not contain a value for variable '" << integerVariable.getName() << "'.");
+    STORM_LOG_ASSERT(contains(integerVariable), "The valuation does not contain a value for variable '" << integerVariable.getName() << "'.");
     integerValues[integerVariable.getOffset()] = value;
 }
 
 void SimpleValuation::setBitVectorValue(Variable const& bitVectorVariable, int_fast64_t value) {
-    STORM_LOG_THROW(contains(bitVectorVariable), storm::exceptions::InvalidArgumentException,
-                    "The valuation does not contain a value for variable '" << bitVectorVariable.getName() << "'.");
+    STORM_LOG_ASSERT(contains(bitVectorVariable), "The valuation does not contain a value for variable '" << bitVectorVariable.getName() << "'.");
     integerValues[bitVectorVariable.getOffset()] = value;
 }
 
 void SimpleValuation::setRationalValue(Variable const& rationalVariable, double value) {
-    STORM_LOG_THROW(contains(rationalVariable), storm::exceptions::InvalidArgumentException,
-                    "The valuation does not contain a value for variable '" << rationalVariable.getName() << "'.");
+    STORM_LOG_ASSERT(contains(rationalVariable), "The valuation does not contain a value for variable '" << rationalVariable.getName() << "'.");
     rationalValues[rationalVariable.getOffset()] = value;
 }
 
