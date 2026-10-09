@@ -1,5 +1,6 @@
 #include "storm-pars-cli/monotonicity.h"
 
+#include "storm-cli-utilities/SettingsUtils.h"
 #include "storm-cli-utilities/model-handling.h"
 #include "storm-pars-cli/feasibility.h"
 #include "storm-pars-cli/monotonicity.h"
@@ -22,8 +23,6 @@
 #include "storm/models/ModelBase.h"
 
 #include "storm/settings/SettingsManager.h"
-#include "storm/settings/modules/CoreSettings.h"
-#include "storm/settings/modules/EliminationSettings.h"
 
 #include "storm/io/file.h"
 #include "storm/utility/Engine.h"
@@ -59,11 +58,7 @@ void analyzeMonotonicity(std::shared_ptr<storm::models::sparse::Model<ValueType>
         auto parametricSettings = storm::settings::getModule<storm::settings::modules::ParametricSettings>();
         auto regionSettings = storm::settings::getModule<storm::settings::modules::RegionSettings>();
 
-        // Prefer the dedicated elimination model checker if selected via the settings.
-        auto const& coreSettings = storm::settings::getModule<storm::settings::modules::CoreSettings>();
-        auto const& eliminationSettings = storm::settings::getModule<storm::settings::modules::EliminationSettings>();
-        bool const preferEliminationChecker =
-            coreSettings.getEquationSolver() == storm::solver::EquationSolverType::Elimination && eliminationSettings.isUseDedicatedModelCheckerSet();
+        bool const preferEliminationChecker = storm::cli::preferEliminationChecker();
 
         std::function<std::unique_ptr<storm::modelchecker::CheckResult>(std::shared_ptr<storm::logic::Formula const> const& formula)> verificationCallback;
         std::function<void(std::unique_ptr<storm::modelchecker::CheckResult> const&)> postprocessingCallback;

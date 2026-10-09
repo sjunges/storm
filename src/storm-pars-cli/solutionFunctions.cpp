@@ -1,5 +1,6 @@
 #include "storm-pars-cli/solutionFunctions.h"
 
+#include "storm-cli-utilities/SettingsUtils.h"
 #include "storm-cli-utilities/model-handling.h"
 #include "storm-pars-cli/print.h"
 #include "storm-pars/api/export.h"
@@ -20,8 +21,6 @@
 #include "storm/models/symbolic/Dtmc.h"
 #include "storm/models/symbolic/Model.h"
 #include "storm/settings/SettingsManager.h"
-#include "storm/settings/modules/CoreSettings.h"
-#include "storm/settings/modules/EliminationSettings.h"
 #include "storm/utility/ExtendedNumber.h"
 #include "storm/utility/Stopwatch.h"
 #include "storm/utility/macros.h"
@@ -61,11 +60,7 @@ void verifyProperties(
 
 template<typename ValueType>
 void computeSolutionFunctionsWithSparseEngine(std::shared_ptr<storm::models::sparse::Model<ValueType>> const& model, storm::cli::SymbolicInput const& input) {
-    // Prefer the dedicated elimination model checker if selected via the settings.
-    auto const& coreSettings = storm::settings::getModule<storm::settings::modules::CoreSettings>();
-    auto const& eliminationSettings = storm::settings::getModule<storm::settings::modules::EliminationSettings>();
-    bool const preferEliminationChecker =
-        coreSettings.getEquationSolver() == storm::solver::EquationSolverType::Elimination && eliminationSettings.isUseDedicatedModelCheckerSet();
+    bool const preferEliminationChecker = storm::cli::preferEliminationChecker();
     verifyProperties<ValueType>(
         input.properties,
         [&model, preferEliminationChecker](std::shared_ptr<storm::logic::Formula const> const& formula) {

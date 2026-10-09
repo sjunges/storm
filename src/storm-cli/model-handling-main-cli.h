@@ -3,6 +3,7 @@
 #include <filesystem>
 #include <sstream>
 
+#include "storm-cli-utilities/SettingsUtils.h"
 #include "storm-cli-utilities/model-handling.h"
 
 #include "storm-counterexamples/api/counterexamples.h"
@@ -12,9 +13,7 @@
 #include "storm/modelchecker/results/ExplicitParetoCurveCheckResult.h"
 #include "storm/modelchecker/results/SymbolicQualitativeCheckResult.h"
 #include "storm/settings/modules/AbstractionSettings.h"
-#include "storm/settings/modules/CoreSettings.h"
 #include "storm/settings/modules/CounterexampleGeneratorSettings.h"
-#include "storm/settings/modules/EliminationSettings.h"
 #include "storm/utility/NumberTraits.h"
 #include "storm/utility/SignalHandler.h"
 
@@ -434,10 +433,7 @@ template<typename ValueType>
 void verifyModel(std::shared_ptr<storm::models::sparse::Model<ValueType>> const& sparseModel, SymbolicInput const& input,
                  ModelProcessingInformation const& mpi) {
     auto const& ioSettings = storm::settings::getModule<storm::settings::modules::IOSettings>();
-    auto const& coreSettings = storm::settings::getModule<storm::settings::modules::CoreSettings>();
-    auto const& eliminationSettings = storm::settings::getModule<storm::settings::modules::EliminationSettings>();
-    bool const preferEliminationChecker =
-        coreSettings.getEquationSolver() == storm::solver::EquationSolverType::Elimination && eliminationSettings.isUseDedicatedModelCheckerSet();
+    bool const preferEliminationChecker = storm::cli::preferEliminationChecker();
     auto verificationCallback = [&sparseModel, &ioSettings, &mpi, preferEliminationChecker](std::shared_ptr<storm::logic::Formula const> const& formula,
                                                                                             std::shared_ptr<storm::logic::Formula const> const& states) {
         auto createTask = [&ioSettings](auto const& f, bool onlyInitialStates) {
