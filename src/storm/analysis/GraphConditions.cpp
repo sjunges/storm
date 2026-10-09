@@ -23,6 +23,14 @@ storm::expressions::Expression toExpression(PolynomialType const& polynomial, st
     return storm::expressions::polynomialToExpression(polynomial, manager);
 }
 
+/*!
+ * Hashes the given expression by its structure instead of by the identity of its underlying node.
+ */
+std::size_t structuralHash(storm::expressions::Expression const& expression) {
+    storm::expressions::HashVisitor visitor;
+    return visitor.hash(expression);
+}
+
 }  // namespace
 
 ConstraintCollector::ConstraintCollector(storm::models::sparse::Model<storm::RationalFunction> const& model)
@@ -61,25 +69,16 @@ storm::expressions::Expression ConstraintCollector::relateToZero(storm::RawPolyn
     STORM_LOG_THROW(false, storm::exceptions::UnexpectedException, "Unhandled relation.");
 }
 
-std::size_t ExpressionStructuralHash::operator()(storm::expressions::Expression const& expression) const {
-    storm::expressions::HashVisitor visitor;
-    return visitor.hash(expression);
-}
-
-bool ExpressionSyntacticalEquality::operator()(storm::expressions::Expression const& first, storm::expressions::Expression const& second) const {
-    return first.isSyntacticallyEqual(second);
-}
-
-void ConstraintCollector::addWellformedConstraint(storm::expressions::Expression const& constraint) {
-    if (this->wellformedConstraintIndex.insert(constraint).second) {
-        this->wellformedConstraintSet.push_back(constraint);
+bool ConstraintCollector::addConstraint(ConstraintSet& constraintSet, ConstraintIndex& constraintIndex, storm::expressions::Expression const& constraint) {
+    auto& candidates = constraintIndex[structuralHash(constraint)];
+    for (auto const& candidate : candidates) {
+        if (candidate.isSyntacticallyEqual(constraint)) {
+            return false;
+        }
     }
-}
-
-void ConstraintCollector::addGraphPreservingConstraint(storm::expressions::Expression const& constraint) {
-    if (this->graphPreservingConstraintIndex.insert(constraint).second) {
-        this->graphPreservingConstraintSet.push_back(constraint);
-    }
+    candidates.push_back(constraint);
+    constraintSet.push_back(constraint);
+    return true;
 }
 
 void ConstraintCollector::wellformedRequiresNonNegativeEntries(storm::RationalFunction const& value) {
@@ -98,14 +97,15 @@ void ConstraintCollector::wellformedRequiresNonNegativeEntries(storm::RationalFu
         // the nominator.
         STORM_LOG_ASSERT(denominator.constantPart() != 0, "Denominator should not be zero.");
         auto relation = denominator.constantPart() > 0 ? storm::expressions::RelationType::GreaterOrEqual : storm::expressions::RelationType::LessOrEqual;
-        addWellformedConstraint(relateToZero(nominator, relation));
+        addConstraint(wellformedConstraintSet, wellformedConstraintIndex, relateToZero(nominator, relation));
     } else {
         // The denominator may change its sign, so we need to constrain that it never vanishes and that the sign of
         // the nominator follows the sign of the denominator.
-        addWellformedConstraint(relateToZero(denominator, storm::expressions::RelationType::NotEqual));
-        addWellformedConstraint(storm::expressions::ite(relateToZero(denominator, storm::expressions::RelationType::Greater),
-                                                        relateToZero(nominator, storm::expressions::RelationType::GreaterOrEqual),
-                                                        relateToZero(nominator, storm::expressions::RelationType::LessOrEqual)));
+        addConstraint(wellformedConstraintSet, wellformedConstraintIndex, relateToZero(denominator, storm::expressions::RelationType::NotEqual));
+        addConstraint(wellformedConstraintSet, wellformedConstraintIndex,
+                      storm::expressions::ite(relateToZero(denominator, storm::expressions::RelationType::Greater),
+                                              relateToZero(nominator, storm::expressions::RelationType::GreaterOrEqual),
+                                              relateToZero(nominator, storm::expressions::RelationType::LessOrEqual)));
     }
 }
 
@@ -126,11 +126,12 @@ void ConstraintCollector::wellformedRequiresAtMostOne(storm::RationalFunction co
     // Express the bound as a relation of the difference to zero, so that it coincides with another constraint
     // whenever the two are equivalent.
     auto relation = denominator.constantPart() > 0 ? storm::expressions::RelationType::LessOrEqual : storm::expressions::RelationType::GreaterOrEqual;
-    addWellformedConstraint(relateToZero(nominator - denominator, relation));
+    addConstraint(wellformedConstraintSet, wellformedConstraintIndex, relateToZero(nominator - denominator, relation));
 }
 
 void ConstraintCollector::graphPreservingRequiresNonZero(storm::RationalFunction const& value) {
-    addGraphPreservingConstraint(relateToZero(value.nominator().polynomialWithCoefficient(), storm::expressions::RelationType::NotEqual));
+    addConstraint(graphPreservingConstraintSet, graphPreservingConstraintIndex,
+                  relateToZero(value.nominator().polynomialWithCoefficient(), storm::expressions::RelationType::NotEqual));
 }
 
 void ConstraintCollector::process(storm::models::sparse::Model<storm::RationalFunction> const& model) {
@@ -156,8 +157,9 @@ void ConstraintCollector::process(storm::models::sparse::Model<storm::RationalFu
                 auto sumVariables = sum.gatherVariables();
                 variableSet.insert(sumVariables.begin(), sumVariables.end());
                 // Assert: sum == 1
-                addWellformedConstraint(relateToZero(sum.nominator().polynomialWithCoefficient() - sum.denominator().polynomialWithCoefficient(),
-                                                     storm::expressions::RelationType::Equal));
+                addConstraint(wellformedConstraintSet, wellformedConstraintIndex,
+                              relateToZero(sum.nominator().polynomialWithCoefficient() - sum.denominator().polynomialWithCoefficient(),
+                                           storm::expressions::RelationType::Equal));
             }
         }
     } else {
