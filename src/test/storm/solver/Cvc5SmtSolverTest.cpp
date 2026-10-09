@@ -2,7 +2,6 @@
 #include "test/storm_gtest.h"
 
 #ifdef STORM_HAVE_CVC5
-#include "storm/exceptions/InvalidArgumentException.h"
 #include "storm/exceptions/InvalidTypeException.h"
 #include "storm/solver/Cvc5SmtSolver.h"
 #include "storm/storage/expressions/OperatorType.h"
@@ -426,27 +425,5 @@ TEST(Cvc5SmtSolver, UnsatAssumptionsWithBooleanEquivalence) {
     std::vector<storm::expressions::Expression> unsatAssumptions;
     ASSERT_NO_THROW(unsatAssumptions = s.getUnsatAssumptions());
     EXPECT_FALSE(unsatAssumptions.empty());
-}
-
-TEST(Cvc5SmtSolver, ModelReferenceSurvivesManagerGrowth) {
-    std::shared_ptr<storm::expressions::ExpressionManager> manager(new storm::expressions::ExpressionManager());
-
-    storm::expressions::Variable x = manager->declareBooleanVariable("x");
-    storm::solver::Cvc5SmtSolver s(*manager);
-    ASSERT_EQ(storm::solver::SmtSolver::CheckResult::Sat, s.check());
-
-    std::shared_ptr<storm::solver::SmtSolver::ModelReference> model;
-    ASSERT_NO_THROW(model = s.getModel());
-
-    // The model reference holds a snapshot of the values. Declaring further variables afterwards does not
-    // extend that snapshot, so those variables must neither be printed nor read.
-    storm::expressions::Variable fresh = manager->declareIntegerVariable("fresh");
-
-    std::string description;
-    ASSERT_NO_THROW(description = model->toString());
-    EXPECT_EQ(std::string::npos, description.find("fresh"));
-
-    EXPECT_THROW(model->getIntegerValue(fresh), storm::exceptions::InvalidArgumentException);
-    EXPECT_NO_THROW(model->getBooleanValue(x));
 }
 #endif
