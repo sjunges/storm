@@ -309,8 +309,13 @@ storm::expressions::Expression Cvc5ExpressionAdapter::translateExpression(cvc5::
 
 storm::expressions::Variable const& Cvc5ExpressionAdapter::getVariable(cvc5::Term const& constant) {
     auto const& constantVariablePair = expressionToVariableMapping.find(constant);
-    STORM_LOG_ASSERT(constantVariablePair != expressionToVariableMapping.end(), "Unable to find the variable corresponding to the given constant.");
+    STORM_LOG_THROW(constantVariablePair != expressionToVariableMapping.end(), storm::exceptions::ExpressionEvaluationException,
+                    "Unable to find the variable corresponding to the given constant.");
     return constantVariablePair->second;
+}
+
+bool Cvc5ExpressionAdapter::hasVariable(storm::expressions::Variable const& variable) const {
+    return variableToExpressionMapping.find(variable) != variableToExpressionMapping.end();
 }
 
 boost::any Cvc5ExpressionAdapter::visit(storm::expressions::BinaryBooleanFunctionExpression const& expression, boost::any const& data) {

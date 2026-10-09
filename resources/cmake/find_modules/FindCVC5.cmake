@@ -22,15 +22,16 @@ if (CVC5_INCLUDE_DIR AND CVC5_LIBRARY)
     #include <cvc5/cvc5.h>
 
     int main() {
-      cvc5::Solver solver;
+      cvc5::TermManager termManager;
+      cvc5::Solver solver(termManager);
       std::cout << solver.getVersion() << std::endl;
       return 0;
     }
   ")
 
     try_run(
-            VERSION_TEST_EXITCODE
-            VERSION_TEST_COMPILED
+            CVC5_VERSION_TEST_EXITCODE
+            CVC5_VERSION_TEST_COMPILED
             ${CMAKE_BINARY_DIR}
             ${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/CMakeTmp/cvc5.cpp
             COMPILE_DEFINITIONS
@@ -39,17 +40,17 @@ if (CVC5_INCLUDE_DIR AND CVC5_LIBRARY)
             CMAKE_FLAGS
             -DCMAKE_SKIP_RPATH:BOOL=${CMAKE_SKIP_RPATH}
             RUN_OUTPUT_VARIABLE
-            VERSION_TEST_RUN_OUTPUT
+            CVC5_VERSION_TEST_RUN_OUTPUT
     )
 
-    if (NOT VERSION_TEST_COMPILED)
+    if (NOT CVC5_VERSION_TEST_COMPILED)
         unset(CVC5_INCLUDE_DIR CACHE)
         unset(CVC5_LIBRARY CACHE)
-    elseif (NOT ("${VERSION_TEST_EXITCODE}" EQUAL 0))
+    elseif (NOT ("${CVC5_VERSION_TEST_EXITCODE}" EQUAL 0))
         unset(CVC5_INCLUDE_DIR CACHE)
         unset(CVC5_LIBRARY CACHE)
     else()
-        if ("${VERSION_TEST_RUN_OUTPUT}" MATCHES "([0-9]+\\.[0-9]+\\.[0-9]+)")
+        if ("${CVC5_VERSION_TEST_RUN_OUTPUT}" MATCHES "([0-9]+\\.[0-9]+\\.[0-9]+)")
             set(CVC5_VERSION "${CMAKE_MATCH_1}")
             # Only reject the library if the caller actually asked for a minimum version. Callers that need a
             # particular version check CVC5_VERSION themselves.

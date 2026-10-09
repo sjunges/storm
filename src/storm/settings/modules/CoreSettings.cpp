@@ -45,7 +45,7 @@ std::string getDefaultSmtSolverAsString() {
     return "z3";
 #elif defined STORM_DEFAULT_SMT_SOLVER_MATHSAT
     return "mathsat";
-#elif defined STORM_HAVE_CVC5
+#elif defined STORM_DEFAULT_SMT_SOLVER_CVC5
     return "cvc5";
 #else
     return "z3";
