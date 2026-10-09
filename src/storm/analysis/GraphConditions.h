@@ -6,13 +6,30 @@
 #include <vector>
 
 #include "storm/adapters/RationalFunctionAdapter.h"
-#include "storm/models/sparse/Model.h"
+#include "storm/models/sparse/ModelForward.h"
 #include "storm/storage/expressions/BinaryRelationType.h"
 #include "storm/storage/expressions/Expression.h"
-#include "storm/storage/expressions/ExpressionManager.h"
 
 namespace storm {
+namespace expressions {
+class ExpressionManager;
+}
 namespace analysis {
+
+/*!
+ * Hashes an expression by its structure instead of by the identity of its underlying node.
+ */
+struct ExpressionStructuralHash {
+    std::size_t operator()(storm::expressions::Expression const& expression) const;
+};
+
+/*!
+ * Considers two expressions equal if they are syntactically equal. This is the counterpart of
+ * ExpressionStructuralHash, so that syntactically equal expressions end up in the same bucket.
+ */
+struct ExpressionSyntacticalEquality {
+    bool operator()(storm::expressions::Expression const& first, storm::expressions::Expression const& second) const;
+};
 
 /*!
  * Class to collect constraints on parametric Markov chains.
@@ -34,21 +51,6 @@ class ConstraintCollector {
     using ConstraintSet = std::vector<storm::expressions::Expression>;
 
    private:
-    /*!
-     * Hashes an expression by its structure instead of by the identity of its underlying node.
-     */
-    struct ExpressionStructuralHash {
-        std::size_t operator()(storm::expressions::Expression const& expression) const;
-    };
-
-    /*!
-     * Considers two expressions equal if they are syntactically equal. This is the counterpart of
-     * ExpressionStructuralHash, so that syntactically equal expressions end up in the same bucket.
-     */
-    struct ExpressionSyntacticalEquality {
-        bool operator()(storm::expressions::Expression const& first, storm::expressions::Expression const& second) const;
-    };
-
     /*!
      * An index over a set of constraints, used to detect duplicates without scanning all of them.
      */

@@ -3,7 +3,9 @@
 #include "storm/exceptions/UnexpectedException.h"
 #include "storm/models/sparse/Ctmc.h"
 #include "storm/models/sparse/MarkovAutomaton.h"
+#include "storm/models/sparse/Model.h"
 #include "storm/models/sparse/StandardRewardModel.h"
+#include "storm/storage/expressions/ExpressionManager.h"
 #include "storm/storage/expressions/HashVisitor.h"
 #include "storm/storage/expressions/PolynomialToExpression.h"
 #include "storm/utility/constants.h"
@@ -59,13 +61,12 @@ storm::expressions::Expression ConstraintCollector::relateToZero(storm::RawPolyn
     STORM_LOG_THROW(false, storm::exceptions::UnexpectedException, "Unhandled relation.");
 }
 
-std::size_t ConstraintCollector::ExpressionStructuralHash::operator()(storm::expressions::Expression const& expression) const {
+std::size_t ExpressionStructuralHash::operator()(storm::expressions::Expression const& expression) const {
     storm::expressions::HashVisitor visitor;
     return visitor.hash(expression);
 }
 
-bool ConstraintCollector::ExpressionSyntacticalEquality::operator()(storm::expressions::Expression const& first,
-                                                                    storm::expressions::Expression const& second) const {
+bool ExpressionSyntacticalEquality::operator()(storm::expressions::Expression const& first, storm::expressions::Expression const& second) const {
     return first.isSyntacticallyEqual(second);
 }
 

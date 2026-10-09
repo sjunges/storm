@@ -58,6 +58,19 @@ std::shared_ptr<RawPolynomialCache> cacheOf(Polynomial const& polynomial) {
     return cache;
 }
 
+/*!
+ * Builds the rational function that has the given numerator over the given denominator, building the numerator as
+ * a polynomial that shares the given factorization cache.
+ *
+ * @param numerator The numerator of the rational function.
+ * @param denominator The denominator of the rational function.
+ * @param cache The factorization cache that the numerator shares.
+ * @return The corresponding rational function.
+ */
+RationalFunction toRationalFunction(RawPolynomial const& numerator, Polynomial const& denominator, std::shared_ptr<RawPolynomialCache> const& cache) {
+    return RationalFunction(Polynomial(numerator, cache), denominator);
+}
+
 }  // namespace
 
 typename BinaryDtmcTransformer::TransformationData BinaryDtmcTransformer::transformTransitions(
@@ -129,14 +142,14 @@ typename BinaryDtmcTransformer::TransformationData BinaryDtmcTransformer::transf
                 auto denominator = entry.getValue().denominator();
                 auto byP = RawPolynomial(nominator).divideBy(parameterPol);
                 if (byP.remainder.isZero()) {
-                    auto probability = RationalFunction(Polynomial(byP.quotient, cache), denominator);
+                    auto probability = toRationalFunction(byP.quotient, denominator, cache);
                     newStateLeft.push_back(storage::MatrixEntry<uint64_t, RationalFunction>(entry.getColumn(), probability));
                     sumOfLeftBranch += probability;
                     continue;
                 }
                 auto byOneMinusP = RawPolynomial(nominator).divideBy(oneMinusParameter);
                 if (byOneMinusP.remainder.isZero()) {
-                    auto probability = RationalFunction(Polynomial(byOneMinusP.quotient, cache), denominator);
+                    auto probability = toRationalFunction(byOneMinusP.quotient, denominator, cache);
                     newStateRight.push_back(storage::MatrixEntry<uint64_t, RationalFunction>(entry.getColumn(), probability));
                     sumOfRightBranch += probability;
                     continue;
