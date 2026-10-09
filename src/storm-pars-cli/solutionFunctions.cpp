@@ -20,6 +20,8 @@
 #include "storm/models/symbolic/Dtmc.h"
 #include "storm/models/symbolic/Model.h"
 #include "storm/settings/SettingsManager.h"
+#include "storm/settings/modules/CoreSettings.h"
+#include "storm/settings/modules/EliminationSettings.h"
 #include "storm/utility/ExtendedNumber.h"
 #include "storm/utility/Stopwatch.h"
 #include "storm/utility/macros.h"
@@ -59,11 +61,16 @@ void verifyProperties(
 
 template<typename ValueType>
 void computeSolutionFunctionsWithSparseEngine(std::shared_ptr<storm::models::sparse::Model<ValueType>> const& model, storm::cli::SymbolicInput const& input) {
+    // Prefer the dedicated elimination model checker if selected via the settings.
+    auto const& coreSettings = storm::settings::getModule<storm::settings::modules::CoreSettings>();
+    auto const& eliminationSettings = storm::settings::getModule<storm::settings::modules::EliminationSettings>();
+    bool const preferEliminationChecker =
+        coreSettings.getEquationSolver() == storm::solver::EquationSolverType::Elimination && eliminationSettings.isUseDedicatedModelCheckerSet();
     verifyProperties<ValueType>(
         input.properties,
-        [&model](std::shared_ptr<storm::logic::Formula const> const& formula) {
+        [&model, preferEliminationChecker](std::shared_ptr<storm::logic::Formula const> const& formula) {
             std::unique_ptr<storm::modelchecker::CheckResult> result =
-                storm::api::verifyWithSparseEngine<ValueType>(model, storm::api::createTask<ValueType>(formula, true));
+                storm::api::verifyWithSparseEngine<ValueType>(model, storm::api::createTask<ValueType>(formula, true), preferEliminationChecker);
             if (result) {
                 result->filter(storm::modelchecker::ExplicitQualitativeCheckResult<ValueType>(model->getInitialStates()));
             }

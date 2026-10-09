@@ -59,6 +59,7 @@ std::vector<SolutionType> SparseDtmcPrctlHelper<ValueType, RewardModelType, Solu
         std::unique_ptr<storm::solver::LinearEquationSolver<ValueType>> linEqSolver;
 
         Environment preciseEnv = env;
+        // Only iterative linear equation solvers have a precision (elimination does not).
         if (auto const linearEquationSolverPrecision = env.solver().getPrecisionOfLinearEquationSolver(env.solver().getLinearEquationSolverType()).first;
             linearEquationSolverPrecision) {
             ValueType precision =
