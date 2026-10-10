@@ -1,5 +1,6 @@
 #include "storm-pars-cli/solutionFunctions.h"
 
+#include "storm-cli-utilities/SettingsUtils.h"
 #include "storm-cli-utilities/model-handling.h"
 #include "storm-pars-cli/print.h"
 #include "storm-pars/api/export.h"
@@ -60,11 +61,12 @@ void verifyProperties(
 template<typename ValueType>
 void computeSolutionFunctionsWithSparseEngine(storm::Environment const& env, std::shared_ptr<storm::models::sparse::Model<ValueType>> const& model,
                                               storm::cli::SymbolicInput const& input) {
+    bool const preferEliminationChecker = storm::cli::preferEliminationChecker();
     verifyProperties<ValueType>(
         input.properties,
-        [&env, &model](std::shared_ptr<storm::logic::Formula const> const& formula) {
+        [&env, &model, preferEliminationChecker](std::shared_ptr<storm::logic::Formula const> const& formula) {
             std::unique_ptr<storm::modelchecker::CheckResult> result =
-                storm::api::verifyWithSparseEngine<ValueType>(env, model, storm::api::createTask<ValueType>(formula, true));
+                storm::api::verifyWithSparseEngine<ValueType>(env, model, storm::api::createTask<ValueType>(formula, true), preferEliminationChecker);
             if (result) {
                 result->filter(storm::modelchecker::ExplicitQualitativeCheckResult<ValueType>(model->getInitialStates()));
             }
