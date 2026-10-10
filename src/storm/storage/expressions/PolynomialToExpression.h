@@ -38,8 +38,8 @@ Expression polynomialToExpression(PolynomialType const& polynomial, std::shared_
     // depend on the order in which the polynomial happens to store them.
     polynomial.makeOrdered();
 
-    auto zero = storm::utility::convertNumber<storm::RationalNumber>(0);
-    auto one = storm::utility::convertNumber<storm::RationalNumber>(1);
+    auto zero = storm::utility::zero<storm::RationalNumber>();
+    auto one = storm::utility::one<storm::RationalNumber>();
 
     Expression result;
     bool isFirstTerm = true;
