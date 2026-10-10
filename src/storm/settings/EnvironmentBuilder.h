@@ -18,10 +18,10 @@ class EnvironmentBuilder {
     static storm::Environment buildEnvironment();
 
    private:
-    static void setSolverEnvironment(storm::SolverEnvironment& solver);
-    static void setModelcheckerEnvironment(storm::ModelCheckerEnvironment& modelchecker);
     static void setDdEnvironment(storm::DdEnvironment& dd);
     static void setExplorationEnvironment(storm::ExplorationEnvironment& exploration);
+    static void setModelcheckerEnvironment(storm::ModelCheckerEnvironment& modelchecker);
+    static void setSolverEnvironment(storm::SolverEnvironment& solver);
 };
 
 }  // namespace settings

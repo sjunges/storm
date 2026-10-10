@@ -54,7 +54,7 @@ void analyzeDFTBdd(storm::dft::DftEnvironment const& env, std::shared_ptr<storm:
     }
 
     if (useModularisation && calculateProbability) {
-        storm::dft::modelchecker::DftModularizationChecker<double> checker{dft, env};
+        storm::dft::modelchecker::DftModularizationChecker<double> checker{env, dft};
         if (chunksize == 1) {
             for (auto const& timebound : timepoints) {
                 auto const probability{checker.getProbabilityAtTimebound(timebound)};

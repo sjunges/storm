@@ -66,7 +66,9 @@ namespace settings {
 storm::Environment EnvironmentBuilder::buildEnvironment() {
     storm::Environment env;
 
-    applyIfRegistered<storm::settings::modules::GeneralSettings>([&](auto const& generalSettings) { env.setModelTolerance(generalSettings.getPrecision()); });
+    applyIfRegistered<storm::settings::modules::GeneralSettings>([&](auto const& generalSettings) {
+        applyIfSet(generalSettings.isPrecisionSet(), [&]() { env.setModelTolerance(generalSettings.getPrecision()); });
+    });
 
     setSolverEnvironment(env.solver());
     setModelcheckerEnvironment(env.modelchecker());
@@ -96,7 +98,7 @@ void EnvironmentBuilder::setSolverEnvironment(storm::SolverEnvironment& solver) 
         eigen.setPreconditioner(eigenSettings.getPreconditioningMethod());
         eigen.setRestartThreshold(eigenSettings.getRestartIterationCount());
         applyIfSet(eigenSettings.isMaximalIterationCountSet(), [&]() { eigen.setMaximalNumberOfIterations(eigenSettings.getMaximalIterationCount()); });
-        applyPrecision(eigen, eigenSettings.getPrecision());
+        applyIfSet(eigenSettings.isPrecisionSet(), [&]() { applyPrecision(eigen, eigenSettings.getPrecision()); });
     });
 
     applyIfRegistered<storm::settings::modules::EliminationSettings>([&](auto const& eliminationSettings) {
@@ -111,7 +113,7 @@ void EnvironmentBuilder::setSolverEnvironment(storm::SolverEnvironment& solver) 
         auto& game = solver.game();
         game.setMethod(gameSettings.getGameSolvingMethod(), gameSettings.isGameSolvingMethodSetFromDefaultValue());
         applyIfSet(gameSettings.isMaximalIterationCountSet(), [&]() { game.setMaximalNumberOfIterations(gameSettings.getMaximalIterationCount()); });
-        applyPrecision(game, gameSettings.getPrecision());
+        applyIfSet(gameSettings.isPrecisionSet(), [&]() { applyPrecision(game, gameSettings.getPrecision()); });
         game.setRelativeTerminationCriterion(gameSettings.getConvergenceCriterion() ==
                                              storm::settings::modules::GameSolverSettings::ConvergenceCriterion::Relative);
     });
@@ -129,7 +131,7 @@ void EnvironmentBuilder::setSolverEnvironment(storm::SolverEnvironment& solver) 
         gmmxx.setPreconditioner(gmmxxSettings.getPreconditioningMethod());
         gmmxx.setRestartThreshold(gmmxxSettings.getRestartIterationCount());
         applyIfSet(gmmxxSettings.isMaximalIterationCountSet(), [&]() { gmmxx.setMaximalNumberOfIterations(gmmxxSettings.getMaximalIterationCount()); });
-        applyPrecision(gmmxx, gmmxxSettings.getPrecision());
+        applyIfSet(gmmxxSettings.isPrecisionSet(), [&]() { applyPrecision(gmmxx, gmmxxSettings.getPrecision()); });
     });
 
     applyIfRegistered<storm::settings::modules::GurobiSettings>([&](auto const& gurobiSettings) {
@@ -146,7 +148,7 @@ void EnvironmentBuilder::setSolverEnvironment(storm::SolverEnvironment& solver) 
         auto& lra = solver.lra();
         lra.setDetLraMethod(lraSettings.getDetLraMethod(), lraSettings.isDetLraMethodSetFromDefaultValue());
         lra.setNondetLraMethod(lraSettings.getNondetLraMethod(), lraSettings.isNondetLraMethodSetFromDefaultValue());
-        applyPrecision(lra, lraSettings.getPrecision());
+        applyIfSet(lraSettings.isPrecisionSet(), [&]() { applyPrecision(lra, lraSettings.getPrecision()); });
         lra.setRelativeTerminationCriterion(lraSettings.isRelativePrecision());
         applyIfSet(lraSettings.isMaximalIterationCountSet(), [&]() { lra.setMaximalIterationCount(lraSettings.getMaximalIterationCount()); });
         lra.setAperiodicFactor(storm::utility::convertNumber<storm::RationalNumber>(lraSettings.getAperiodicFactor()));
@@ -156,7 +158,7 @@ void EnvironmentBuilder::setSolverEnvironment(storm::SolverEnvironment& solver) 
         auto& minMax = solver.minMax();
         minMax.setMethod(minMaxSettings.getMinMaxEquationSolvingMethod(), minMaxSettings.isMinMaxEquationSolvingMethodSetFromDefaultValue());
         applyIfSet(minMaxSettings.isMaximalIterationCountSet(), [&]() { minMax.setMaximalNumberOfIterations(minMaxSettings.getMaximalIterationCount()); });
-        applyPrecision(minMax, minMaxSettings.getPrecision());
+        applyIfSet(minMaxSettings.isPrecisionSet(), [&]() { applyPrecision(minMax, minMaxSettings.getPrecision()); });
         minMax.setRelativeTerminationCriterion(minMaxSettings.getConvergenceCriterion() ==
                                                storm::settings::modules::MinMaxEquationSolverSettings::ConvergenceCriterion::Relative);
         minMax.setMultiplicationStyle(minMaxSettings.getValueIterationMultiplicationStyle());
@@ -176,7 +178,7 @@ void EnvironmentBuilder::setSolverEnvironment(storm::SolverEnvironment& solver) 
         auto& native = solver.native();
         native.setMethod(nativeSettings.getLinearEquationSystemMethod(), nativeSettings.isLinearEquationSystemTechniqueSetFromDefaultValue());
         applyIfSet(nativeSettings.isMaximalIterationCountSet(), [&]() { native.setMaximalNumberOfIterations(nativeSettings.getMaximalIterationCount()); });
-        applyPrecision(native, nativeSettings.getPrecision());
+        applyIfSet(nativeSettings.isPrecisionSet(), [&]() { applyPrecision(native, nativeSettings.getPrecision()); });
         native.setRelativeTerminationCriterion(nativeSettings.getConvergenceCriterion() ==
                                                storm::settings::modules::NativeEquationSolverSettings::ConvergenceCriterion::Relative);
         native.setPowerMethodMultiplicationStyle(nativeSettings.getPowerMethodMultiplicationStyle());
@@ -193,7 +195,7 @@ void EnvironmentBuilder::setSolverEnvironment(storm::SolverEnvironment& solver) 
     applyIfRegistered<storm::settings::modules::TimeBoundedSolverSettings>([&](auto const& tbSettings) {
         auto& timeBounded = solver.timeBounded();
         timeBounded.setMaMethod(tbSettings.getMaMethod(), tbSettings.isMaMethodSetFromDefaultValue());
-        applyPrecision(timeBounded, tbSettings.getPrecision());
+        applyIfSet(tbSettings.isPrecisionSet(), [&]() { applyPrecision(timeBounded, tbSettings.getPrecision()); });
         timeBounded.setRelativeTerminationCriterion(tbSettings.isRelativePrecision());
         timeBounded.setUnifPlusKappa(storm::utility::convertNumber<storm::RationalNumber>(tbSettings.getUnifPlusKappa()));
     });
@@ -236,7 +238,7 @@ void EnvironmentBuilder::setModelcheckerEnvironment(storm::ModelCheckerEnvironme
             multiobjective.setPlotPathOverApproximation(exportPlotDirectory + "overapproximation.csv");
             multiobjective.setPlotPathParetoPoints(exportPlotDirectory + "paretopoints.csv");
         });
-        applyPrecision(multiobjective, multiobjectiveSettings.getPrecision());
+        applyIfSet(multiobjectiveSettings.isPrecisionSet(), [&]() { applyPrecision(multiobjective, multiobjectiveSettings.getPrecision()); });
         if (multiobjectiveSettings.getPrecisionAbsolute()) {
             multiobjective.setPrecisionType(MultiObjectiveModelCheckerEnvironment::PrecisionType::Absolute);
         } else if (multiobjectiveSettings.getPrecisionRelativeToDiff()) {
@@ -250,6 +252,8 @@ void EnvironmentBuilder::setModelcheckerEnvironment(storm::ModelCheckerEnvironme
             multiobjective.setEncodingType(MultiObjectiveModelCheckerEnvironment::EncodingType::Classic);
         } else if (multiobjectiveSettings.isFlowEncodingSet()) {
             multiobjective.setEncodingType(MultiObjectiveModelCheckerEnvironment::EncodingType::Flow);
+        } else {
+            STORM_LOG_THROW(false, storm::exceptions::IllegalArgumentException, "Unhandled encoding type.");
         }
         multiobjective.setUseBsccOrderEncoding(multiobjectiveSettings.isBsccDetectionViaOrderConstraintsSet());
         multiobjective.setUseIndicatorConstraints(multiobjectiveSettings.isIndicatorConstraintsSet());
@@ -287,7 +291,7 @@ void EnvironmentBuilder::setExplorationEnvironment(storm::ExplorationEnvironment
         applyIfSet(explorationSettings.isNumberOfSampledPathsUntilPrecomputationSet(),
                    [&]() { exploration.setSampledPathsUntilPrecomputation(explorationSettings.getNumberOfSampledPathsUntilPrecomputation()); });
         exploration.setNextStateHeuristic(explorationSettings.getNextStateHeuristic());
-        exploration.setPrecision(explorationSettings.getPrecision());
+        applyIfSet(explorationSettings.isPrecisionSet(), [&]() { exploration.setPrecision(explorationSettings.getPrecision()); });
     });
 }
 

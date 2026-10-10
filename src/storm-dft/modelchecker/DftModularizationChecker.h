@@ -27,10 +27,10 @@ class DftModularizationChecker {
 
     /*!
      * Initializes and computes all modules.
-     * @param dft DFT.
      * @param env Environment used for analysing the dynamic modules.
+     * @param dft DFT.
      */
-    DftModularizationChecker(std::shared_ptr<storm::dft::storage::DFT<ValueType>> dft, storm::dft::DftEnvironment const &env = storm::dft::DftEnvironment());
+    DftModularizationChecker(storm::dft::DftEnvironment const &env, std::shared_ptr<storm::dft::storage::DFT<ValueType>> dft);
 
     /*!
      * Calculate the properties specified by the formulas.

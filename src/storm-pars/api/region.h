@@ -273,14 +273,6 @@ std::unique_ptr<storm::modelchecker::RegionCheckResult<ValueType>> checkRegionsW
 
 template<typename ValueType>
 std::unique_ptr<storm::modelchecker::RegionCheckResult<ValueType>> checkRegionsWithSparseEngine(
-    std::shared_ptr<storm::models::sparse::Model<ValueType>> const& model, storm::modelchecker::CheckTask<storm::logic::Formula, ValueType> const& task,
-    std::vector<storm::storage::ParameterRegion<ValueType>> const& regions, storm::modelchecker::RegionCheckEngine engine,
-    std::vector<storm::modelchecker::RegionResultHypothesis> const& hypotheses, bool sampleVerticesOfRegions) {
-    return checkRegionsWithSparseEngine(Environment(), model, task, regions, engine, hypotheses, sampleVerticesOfRegions);
-}
-
-template<typename ValueType>
-std::unique_ptr<storm::modelchecker::RegionCheckResult<ValueType>> checkRegionsWithSparseEngine(
     Environment const& env, std::shared_ptr<storm::models::sparse::Model<ValueType>> const& model,
     storm::modelchecker::CheckTask<storm::logic::Formula, ValueType> const& task, std::vector<storm::storage::ParameterRegion<ValueType>> const& regions,
     storm::modelchecker::RegionCheckEngine engine,
@@ -288,15 +280,6 @@ std::unique_ptr<storm::modelchecker::RegionCheckResult<ValueType>> checkRegionsW
     bool sampleVerticesOfRegions = false) {
     std::vector<storm::modelchecker::RegionResultHypothesis> hypotheses(regions.size(), hypothesis);
     return checkRegionsWithSparseEngine(env, model, task, regions, engine, hypotheses, sampleVerticesOfRegions);
-}
-
-template<typename ValueType>
-std::unique_ptr<storm::modelchecker::RegionCheckResult<ValueType>> checkRegionsWithSparseEngine(
-    std::shared_ptr<storm::models::sparse::Model<ValueType>> const& model, storm::modelchecker::CheckTask<storm::logic::Formula, ValueType> const& task,
-    std::vector<storm::storage::ParameterRegion<ValueType>> const& regions, storm::modelchecker::RegionCheckEngine engine,
-    storm::modelchecker::RegionResultHypothesis const& hypothesis = storm::modelchecker::RegionResultHypothesis::Unknown,
-    bool sampleVerticesOfRegions = false) {
-    return checkRegionsWithSparseEngine(Environment(), model, task, regions, engine, hypothesis, sampleVerticesOfRegions);
 }
 
 template<typename ValueType, typename ImpreciseType = double, typename PreciseType = storm::RationalNumber>
@@ -333,14 +316,6 @@ std::unique_ptr<storm::modelchecker::RegionRefinementCheckResult<ValueType>> che
     return regionRefinementChecker->performRegionPartitioning(env, region, coverageThreshold, refinementDepthThreshold, hypothesis, monThresh);
 }
 
-template<typename ValueType>
-std::unique_ptr<storm::modelchecker::RegionRefinementCheckResult<ValueType>> checkAndRefineRegionWithSparseEngine(
-    RefinementOptions<ValueType> settings, storm::storage::ParameterRegion<ValueType> const& region, std::optional<ValueType> const& coverageThreshold,
-    std::optional<uint64_t> const& refinementDepthThreshold = std::nullopt,
-    storm::modelchecker::RegionResultHypothesis hypothesis = storm::modelchecker::RegionResultHypothesis::Unknown, uint64_t monThresh = 0) {
-    return checkAndRefineRegionWithSparseEngine(Environment(), std::move(settings), region, coverageThreshold, refinementDepthThreshold, hypothesis, monThresh);
-}
-
 // TODO: update documentation
 /*!
  * Finds the extremal value in the given region
@@ -363,13 +338,6 @@ std::pair<storm::ExtendedRationalNumber, typename storm::storage::ParameterRegio
     return {storm::utility::convertNumber<storm::ExtendedRationalNumber>(res.first), std::move(res.second)};
 }
 
-template<typename ValueType>
-std::pair<storm::ExtendedRationalNumber, typename storm::storage::ParameterRegion<ValueType>::Valuation> computeExtremalValue(
-    RefinementOptions<ValueType> settings, storm::storage::ParameterRegion<ValueType> const& region, storm::solver::OptimizationDirection const& dir,
-    std::optional<ValueType> const& precision, bool absolutePrecision, std::optional<storm::logic::Bound> const& boundInvariant) {
-    return computeExtremalValue(Environment(), std::move(settings), region, dir, precision, absolutePrecision, boundInvariant);
-}
-
 /*!
  * Verifies whether a region satisfies a property.
  * @param settings The refinement options
@@ -386,11 +354,6 @@ bool verifyRegion(Environment const& env, RefinementOptions<ValueType> settings,
     storm::logic::Bound const& bound = settings.task.getFormula().asOperatorFormula().getBound();
     auto refinementChecker = initializeRegionRefinementChecker(env, settings);
     return refinementChecker->verifyRegion(env, region, bound);
-}
-
-template<typename ValueType>
-bool verifyRegion(RefinementOptions<ValueType> settings, storm::storage::ParameterRegion<ValueType> const& region) {
-    return verifyRegion(Environment(), std::move(settings), region);
 }
 
 template<typename ValueType>

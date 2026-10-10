@@ -13,23 +13,11 @@ std::shared_ptr<storm::counterexamples::Counterexample> computeHighLevelCountere
     return storm::counterexamples::MILPMinimalLabelSetGenerator<double>::computeCounterexample(env, symbolicModel, *mdp, formula);
 }
 
-std::shared_ptr<storm::counterexamples::Counterexample> computeHighLevelCounterexampleMilp(storm::storage::SymbolicModelDescription const& symbolicModel,
-                                                                                           std::shared_ptr<storm::models::sparse::Mdp<double>> mdp,
-                                                                                           std::shared_ptr<storm::logic::Formula const> const& formula) {
-    return computeHighLevelCounterexampleMilp(Environment(), symbolicModel, mdp, formula);
-}
-
 std::shared_ptr<storm::counterexamples::Counterexample> computeHighLevelCounterexampleMaxSmt(storm::Environment const& env,
                                                                                              storm::storage::SymbolicModelDescription const& symbolicModel,
                                                                                              std::shared_ptr<storm::models::sparse::Model<double>> model,
                                                                                              std::shared_ptr<storm::logic::Formula const> const& formula) {
     return storm::counterexamples::SMTMinimalLabelSetGenerator<double>::computeCounterexample(env, symbolicModel, *model, formula);
-}
-
-std::shared_ptr<storm::counterexamples::Counterexample> computeHighLevelCounterexampleMaxSmt(storm::storage::SymbolicModelDescription const& symbolicModel,
-                                                                                             std::shared_ptr<storm::models::sparse::Model<double>> model,
-                                                                                             std::shared_ptr<storm::logic::Formula const> const& formula) {
-    return computeHighLevelCounterexampleMaxSmt(Environment(), symbolicModel, model, formula);
 }
 
 std::shared_ptr<storm::counterexamples::Counterexample> computeKShortestPathCounterexample(std::shared_ptr<storm::models::sparse::Model<double>> model,
