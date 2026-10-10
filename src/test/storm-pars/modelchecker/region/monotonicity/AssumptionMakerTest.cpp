@@ -1,8 +1,6 @@
 #include "storm-config.h"
 #include "test/storm_gtest.h"
 
-#include "storm/environment/Environment.h"
-
 #include "storm-pars/api/region.h"
 #include "storm-pars/modelchecker/region/monotonicity/AssumptionChecker.h"
 #include "storm-pars/modelchecker/region/monotonicity/AssumptionMaker.h"
@@ -18,6 +16,7 @@
 #include "storm-parsers/parser/PrismParser.h"
 #include "storm/api/builder.h"
 #include "storm/api/properties.h"
+#include "storm/environment/Environment.h"
 #include "storm/logic/Formulas.h"
 #include "storm/modelchecker/prctl/SparseDtmcPrctlModelChecker.h"
 #include "storm/models/sparse/StandardRewardModel.h"

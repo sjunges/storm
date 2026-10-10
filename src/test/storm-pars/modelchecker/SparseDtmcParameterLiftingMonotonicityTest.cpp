@@ -1,8 +1,6 @@
 #include "storm-config.h"
 #include "test/storm_gtest.h"
 
-#include "storm/environment/Environment.h"
-
 #include "storm-pars/api/region.h"
 #include "storm-pars/modelchecker/region/monotonicity/MonotonicityHelper.h"
 #include "storm-pars/transformer/SparseParametricModelSimplifier.h"
@@ -13,6 +11,7 @@
 #include "storm/api/builder.h"
 #include "storm/api/properties.h"
 #include "storm/api/verification.h"
+#include "storm/environment/Environment.h"
 #include "storm/environment/solver/MinMaxSolverEnvironment.h"
 #include "storm/storage/prism/Program.h"
 #include "storm/utility/constants.h"

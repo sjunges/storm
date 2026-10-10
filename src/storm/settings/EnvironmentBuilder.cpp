@@ -4,7 +4,7 @@
 #include "storm/environment/exploration/ExplorationEnvironment.h"
 #include "storm/environment/modelchecker/AllModelCheckerEnvironments.h"
 #include "storm/environment/solver/AllSolverEnvironments.h"
-
+#include "storm/exceptions/IllegalArgumentException.h"
 #include "storm/settings/SettingsManager.h"
 #include "storm/settings/modules/ConditionalSettings.h"
 #include "storm/settings/modules/CoreSettings.h"
@@ -29,8 +29,6 @@
 #include "storm/settings/modules/SylvanSettings.h"
 #include "storm/settings/modules/TimeBoundedSolverSettings.h"
 #include "storm/settings/modules/TopologicalEquationSolverSettings.h"
-
-#include "storm/exceptions/IllegalArgumentException.h"
 #include "storm/utility/constants.h"
 #include "storm/utility/macros.h"
 
@@ -66,9 +64,8 @@ namespace settings {
 storm::Environment EnvironmentBuilder::buildEnvironment() {
     storm::Environment env;
 
-    applyIfRegistered<storm::settings::modules::GeneralSettings>([&](auto const& generalSettings) {
-        applyIfSet(generalSettings.isPrecisionSet(), [&]() { env.setModelTolerance(generalSettings.getPrecision()); });
-    });
+    applyIfRegistered<storm::settings::modules::GeneralSettings>(
+        [&](auto const& generalSettings) { applyIfSet(generalSettings.isPrecisionSet(), [&]() { env.setModelTolerance(generalSettings.getPrecision()); }); });
 
     setSolverEnvironment(env.solver());
     setModelcheckerEnvironment(env.modelchecker());
