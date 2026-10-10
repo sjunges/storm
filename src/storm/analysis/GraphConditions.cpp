@@ -51,7 +51,7 @@ std::set<storm::RationalFunctionVariable> const& ConstraintCollector::getVariabl
 }
 
 storm::expressions::Expression ConstraintCollector::relateToZero(storm::RawPolynomial const& polynomial, storm::expressions::RelationType relation) const {
-    auto zero = expressionManager->rational(storm::utility::convertNumber<storm::RationalNumber>(0));
+    auto zero = expressionManager->rational(storm::utility::zero<storm::RationalNumber>());
     switch (relation) {
         case storm::expressions::RelationType::Less:
             return toExpression(polynomial, expressionManager) < zero;
