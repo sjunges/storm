@@ -3,6 +3,7 @@
 #include <filesystem>
 #include <sstream>
 
+#include "storm-cli-utilities/SettingsUtils.h"
 #include "storm-cli-utilities/model-handling.h"
 
 #include "storm-counterexamples/api/counterexamples.h"
@@ -432,8 +433,9 @@ template<typename ValueType>
 void verifyModel(std::shared_ptr<storm::models::sparse::Model<ValueType>> const& sparseModel, SymbolicInput const& input,
                  ModelProcessingInformation const& mpi) {
     auto const& ioSettings = storm::settings::getModule<storm::settings::modules::IOSettings>();
-    auto verificationCallback = [&sparseModel, &ioSettings, &mpi](std::shared_ptr<storm::logic::Formula const> const& formula,
-                                                                  std::shared_ptr<storm::logic::Formula const> const& states) {
+    bool const preferEliminationChecker = storm::cli::preferEliminationChecker();
+    auto verificationCallback = [&sparseModel, &ioSettings, &mpi, preferEliminationChecker](std::shared_ptr<storm::logic::Formula const> const& formula,
+                                                                                            std::shared_ptr<storm::logic::Formula const> const& states) {
         auto createTask = [&ioSettings](auto const& f, bool onlyInitialStates) {
             if constexpr (storm::IsIntervalType<ValueType>) {
                 STORM_LOG_THROW(ioSettings.isUncertaintyResolutionModeSet(), storm::exceptions::InvalidSettingsException,
@@ -449,14 +451,15 @@ void verifyModel(std::shared_ptr<storm::models::sparse::Model<ValueType>> const&
         if (ioSettings.isExportSchedulerSet()) {
             task.setProduceSchedulers(true);
         }
-        std::unique_ptr<storm::modelchecker::CheckResult> result = storm::api::verifyWithSparseEngine<ValueType>(mpi.env, sparseModel, task);
+        std::unique_ptr<storm::modelchecker::CheckResult> result =
+            storm::api::verifyWithSparseEngine<ValueType>(mpi.env, sparseModel, task, preferEliminationChecker);
 
         std::unique_ptr<storm::modelchecker::CheckResult> filter;
         if (filterForInitialStates) {
             using SolutionType = storm::IntervalBaseType<ValueType>;
             filter = std::make_unique<storm::modelchecker::ExplicitQualitativeCheckResult<SolutionType>>(sparseModel->getInitialStates());
         } else if (!states->isTrueFormula()) {  // No need to apply filter if it is the formula 'true'
-            filter = storm::api::verifyWithSparseEngine<ValueType>(mpi.env, sparseModel, createTask(states, false));
+            filter = storm::api::verifyWithSparseEngine<ValueType>(mpi.env, sparseModel, createTask(states, false), preferEliminationChecker);
         }
         if (result && filter) {
             result->filter(filter->asQualitativeCheckResult());
