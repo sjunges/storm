@@ -65,6 +65,7 @@ class ConstraintCollector {
 
     /*!
      * Builds the constraint that the given polynomial stands in the given relation to zero.
+     * The polynomial is on the left-hand side of the relation: polynomial relation 0.
      *
      * Relations in which the polynomial occurs on the greater side are normalized by negating the polynomial,
      * so that e.g. `a >= 0` is built as `-a <= 0`. Without this normalization the same constraint would be
